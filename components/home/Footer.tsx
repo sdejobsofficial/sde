@@ -37,7 +37,7 @@ const SOCIAL_LINKS = [
 
 const COMPANY_LINKS = [
   { label: "About us", href: "/about" },
-  { label: "Careers", href: "/" },
+  { label: "Careers", href: "/careers" },
   { label: "Employer home", href: "/recruiter/login" },
 ];
 
