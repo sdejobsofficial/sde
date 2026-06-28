@@ -26,7 +26,6 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  // Probably some database calls here to update order or add premium status to user
   return NextResponse.json(
     { message: "payment verified successfully", isOk: true },
     { status: 200 }

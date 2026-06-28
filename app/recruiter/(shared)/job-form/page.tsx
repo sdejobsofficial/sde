@@ -35,7 +35,7 @@ import {
   ReferralStatus,
   JobStatus,
 } from "@/models/jobModel";
-import { useCreateJob, useJobById, useUpdateJob } from "@/hooks/useJobs";
+import { useCreateJob, useJobById, useUpdateJob, useMyJobs } from "@/hooks/useJobs";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect } from "react";
 import type { JobInteraction } from "@/models/jobModel";
@@ -69,7 +69,10 @@ import { FieldError } from "@/components/common/FormComponents";
 import Link from "next/link";
 import Image from "next/image";
 import { DescriptionEditor } from "@/components/company/CompanyDescriptionEditor";
+import Script from "next/script";
+import toast from "react-hot-toast";
 
+const JOB_POSTING_FEE = 499; // Amount in INR
 function BasicsStep({
   onNext,
   defaultValues,
@@ -796,6 +799,7 @@ function ApplicationStep({
   includePortfolio,
   onTogglePortfolio,
   isLoading,
+  isChargeable,
 }: {
   onSubmit: (data: ApplicationValues) => void;
   onBack: () => void;
@@ -811,6 +815,7 @@ function ApplicationStep({
   includePortfolio: boolean;
   onTogglePortfolio: () => void;
   isLoading?: boolean;
+  isChargeable?: boolean;
 }) {
   const {
     register,
@@ -1208,7 +1213,7 @@ function ApplicationStep({
             </span>
           ) : (
             <>
-              <Send size={14} /> Publish job
+              <Send size={14} /> {isChargeable ? `Publish job (₹${JOB_POSTING_FEE})` : "Publish job"}
             </>
           )}
         </Button>
@@ -1236,6 +1241,7 @@ function PostJobContent() {
   const id = searchParams.get("id");
 
   const { data: user, isLoading: isUserLoading } = useCurrentUser();
+  const { data: myJobs = [], isLoading: isLoadingMyJobs } = useMyJobs();
 
   const [step, setStep] = useState<Step>("basics");
 
@@ -1385,7 +1391,49 @@ function PostJobContent() {
     if (id) {
       await updateJob(payload as any);
     } else {
-      await createJob(payload);
+      if (myJobs.length >= 4) {
+        try {
+          const res = await fetch("/api/createOrder", {
+            method: "POST",
+            body: JSON.stringify({ amount: JOB_POSTING_FEE * 100 }),
+          });
+          const data = await res.json();
+
+          const paymentData = {
+            key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+            order_id: data.id,
+
+            handler: async function (response: any) {
+              const verifyRes = await fetch("/api/verifyOrder", {
+                method: "POST",
+                body: JSON.stringify({
+                  orderId: response.razorpay_order_id,
+                  razorpayPaymentId: response.razorpay_payment_id,
+                  razorpaySignature: response.razorpay_signature,
+                }),
+              });
+              const verifyData = await verifyRes.json();
+
+              if (verifyData.isOk) {
+                await createJob(payload);
+              } else {
+                toast.error("Payment failed. Please try again.");
+              }
+            },
+
+            modal: {
+              ondismiss: () => toast.error("Payment cancelled. Job was not posted."),
+            },
+          };
+
+          const payment = new (window as any).Razorpay(paymentData);
+          payment.open();
+        } catch {
+          toast.error("Something went wrong. Please try again.");
+        }
+      } else {
+        await createJob(payload);
+      }
     }
   };
 
@@ -1439,6 +1487,10 @@ function PostJobContent() {
 
   return (
     <div className="min-h-screen bg-muted/50/80 flex flex-col">
+      <Script
+        src="https://checkout.razorpay.com/v1/checkout.js"
+        strategy="afterInteractive"
+      />
       {/* Header */}
       <header className="w-full bg-card border-b border-gray-100 px-6 lg:px-10 py-4 flex items-center gap-3">
         <div className="shrink-0">
@@ -1530,6 +1582,7 @@ function PostJobContent() {
 
             {step === "application" && (
               <ApplicationStep
+                isChargeable={!id && myJobs.length >= 4}
                 onSubmit={handleApplicationSubmit}
                 onBack={() => {
                   setStep("salary");
@@ -1545,7 +1598,7 @@ function PostJobContent() {
                 onToggleLinkedIn={() => setIncludeLinkedIn((v) => !v)}
                 includePortfolio={includePortfolio}
                 onTogglePortfolio={() => setIncludePortfolio((v) => !v)}
-                isLoading={isPending}
+                isLoading={isPending || isLoadingMyJobs}
               />
             )}
           </div>

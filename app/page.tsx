@@ -5,6 +5,7 @@ import InterviewPrep from "@/components/home/InterviewPrep";
 import Navbar from "@/components/home/Navbar";
 import PremiumServices from "@/components/home/PremiumServices";
 import SponsoredCompanies from "@/components/home/SponsoredCompanies";
+import Testimonials from "@/components/home/Testimonials";
 import TopCompanies from "@/components/home/TopCompanies";
 import UpcomingEvents from "@/components/home/UpcomingEvents";
 
@@ -18,6 +19,7 @@ export default function Home() {
       <SponsoredCompanies />
       <UpcomingEvents />
       <InterviewPrep />
+      <Testimonials />
       <PremiumServices />
       <Footer />
     </main>

@@ -147,3 +147,11 @@ body {
 html {
   scroll-behavior: smooth;
 }
+@keyframes progress-bar {
+  from { width: 0%; }
+  to   { width: 100%; }
+}
+
+.animate-progress-bar {
+  animation: progress-bar 4s linear forwards;
+}
