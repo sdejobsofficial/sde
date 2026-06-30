@@ -49,18 +49,19 @@ export default function CampusAndRoles() {
                 "Pathfinder",
                 "Jobs & Internships",
               ].map((tag) => (
-                <span
-                  key={tag}
-                  className="text-xs px-3 py-1.5 border border-border rounded-full text-muted-foreground hover:border-primary/50 hover:text-primary cursor-pointer transition-colors bg-card shadow-sm"
-                >
-                  {tag} ›
-                </span>
+                <Link href={"/careers"} key={tag}>
+                  <span className="text-xs px-3 py-1.5 border border-border rounded-full text-muted-foreground hover:border-primary/50 hover:text-primary cursor-pointer transition-colors bg-card shadow-sm">
+                    {tag} ›
+                  </span>
+                </Link>
               ))}
             </div>
           </div>
-          <button className="bg-primary text-primary-foreground px-6 py-3 rounded-full text-sm font-semibold hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 whitespace-nowrap">
-            Explore now
-          </button>
+          <Link href={"/careers"}>
+            <button className="bg-primary text-primary-foreground px-6 py-3 rounded-full text-sm font-semibold hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 whitespace-nowrap">
+              Explore now
+            </button>
+          </Link>
         </div>
 
         {/* Popular Roles */}
@@ -78,15 +79,16 @@ export default function CampusAndRoles() {
           {/* Right roles grid */}
           <div className="flex-1 p-8 grid grid-cols-1 sm:grid-cols-2 gap-3">
             {roles.map((role) => (
-              <button
-                key={role.title}
-                className="text-left p-4 rounded-xl border border-border bg-card hover:border-primary/50 hover:shadow-md transition-all group"
-              >
-                <p className="font-semibold text-foreground group-hover:text-primary transition-colors text-sm">
-                  {role.title}
-                </p>
-                <p className="text-xs text-muted-foreground/60 mt-1">{role.count} ›</p>
-              </button>
+              <Link href={"/jobs"} key={role.title}>
+                <button className="text-left p-4 w-full rounded-xl border border-border bg-card hover:border-primary/50 hover:shadow-md transition-all group">
+                  <p className="font-semibold text-foreground group-hover:text-primary transition-colors text-sm">
+                    {role.title}
+                  </p>
+                  <p className="text-xs text-muted-foreground/60 mt-1">
+                    {role.count} ›
+                  </p>
+                </button>
+              </Link>
             ))}
           </div>
         </div>

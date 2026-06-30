@@ -267,7 +267,8 @@ export default function TopCompaniesAndSponsored() {
               Top companies hiring now
             </h2>
             <p className="text-muted-foreground text-base max-w-2xl mx-auto">
-              Explore opportunities at world-class organizations actively looking for talent.
+              Explore opportunities at world-class organizations actively
+              looking for talent.
             </p>
           </div>
 
@@ -277,39 +278,51 @@ export default function TopCompaniesAndSponsored() {
             style={{ scrollbarWidth: "none" }}
           >
             {companyTypes.map((ct) => (
-              <div
-                key={ct.type}
-                className="min-w-[280px] border border-border rounded-[2rem] p-6 hover:shadow-xl hover:border-primary/30 transition-all duration-300 cursor-pointer bg-background flex-shrink-0 group"
-              >
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-[10px] items-center px-2 py-0.5 rounded-full bg-primary/5 text-primary font-bold uppercase tracking-widest border border-primary/10">
-                    {ct.type}
-                  </span>
-                  <span className="text-muted-foreground group-hover:text-primary transition-colors">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14m-7-7 7 7-7 7" /></svg>
-                  </span>
-                </div>
-                <p className="text-sm font-semibold text-foreground mb-4 leading-tight group-hover:text-primary transition-colors">{ct.count}</p>
-                <div className="flex -space-x-3 mt-auto">
-                  {ct.companies.map((company, i) => (
-                    <div
-                      key={i}
-                      title={company.name}
-                      className="w-12 h-12 rounded-2xl overflow-hidden flex items-center justify-center shadow-md border-4 border-background bg-muted/50 p-1.5 transition-transform group-hover:-translate-y-1"
-                      style={{ transitionDelay: `${i * 50}ms` }}
-                    >
-                      <BrandLogo
-                        logo={company.logo}
-                        name={company.name}
-                        size={32}
-                      />
+              <Link key={ct.type} href={"/companies"}>
+                <div className="min-w-[280px] border border-border rounded-[2rem] p-6 hover:shadow-xl hover:border-primary/30 transition-all duration-300 cursor-pointer bg-background flex-shrink-0 group">
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="text-[10px] items-center px-2 py-0.5 rounded-full bg-primary/5 text-primary font-bold uppercase tracking-widest border border-primary/10">
+                      {ct.type}
+                    </span>
+                    <span className="text-muted-foreground group-hover:text-primary transition-colors">
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M5 12h14m-7-7 7 7-7 7" />
+                      </svg>
+                    </span>
+                  </div>
+                  <p className="text-sm font-semibold text-foreground mb-4 leading-tight group-hover:text-primary transition-colors">
+                    {ct.count}
+                  </p>
+                  <div className="flex -space-x-3 mt-auto">
+                    {ct.companies.map((company, i) => (
+                      <div
+                        key={i}
+                        title={company.name}
+                        className="w-12 h-12 rounded-2xl overflow-hidden flex items-center justify-center shadow-md border-4 border-background bg-muted/50 p-1.5 transition-transform group-hover:-translate-y-1"
+                        style={{ transitionDelay: `${i * 50}ms` }}
+                      >
+                        <BrandLogo
+                          logo={company.logo}
+                          name={company.name}
+                          size={32}
+                        />
+                      </div>
+                    ))}
+                    <div className="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center border-4 border-background text-[10px] font-bold text-muted-foreground">
+                      +10
                     </div>
-                  ))}
-                  <div className="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center border-4 border-background text-[10px] font-bold text-muted-foreground">
-                    +10
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
 
@@ -319,34 +332,34 @@ export default function TopCompaniesAndSponsored() {
               Featured companies
             </h2>
             <p className="text-muted-foreground text-sm max-w-xl mx-auto">
-              Get direct referrals and priority visibility at these top-tier firms.
+              Get direct referrals and priority visibility at these top-tier
+              firms.
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
             {featuredCompanies.map((company) => (
-              <div
-                key={company.name}
-                className="border border-border rounded-[2.5rem] p-8 hover:shadow-2xl hover:border-primary/30 transition-all duration-500 hover:-translate-y-2 cursor-pointer bg-background text-center flex flex-col group shadow-sm"
-              >
-                <div className="w-20 h-20 rounded-[2rem] flex items-center justify-center mb-6 mx-auto overflow-hidden shadow-lg border-4 border-slate-50 bg-card p-3 group-hover:scale-110 transition-transform duration-500">
-                  <BrandLogo
-                    logo={company.logo}
-                    name={company.name}
-                    size={56}
-                  />
+              <Link key={company.name} href={"/companies"}>
+                <div className="border border-border rounded-[2.5rem] p-8 hover:shadow-2xl hover:border-primary/30 transition-all duration-500 hover:-translate-y-2 cursor-pointer bg-background text-center flex flex-col group shadow-sm">
+                  <div className="w-20 h-20 rounded-[2rem] flex items-center justify-center mb-6 mx-auto overflow-hidden shadow-lg border-4 border-slate-50 bg-card p-3 group-hover:scale-110 transition-transform duration-500">
+                    <BrandLogo
+                      logo={company.logo}
+                      name={company.name}
+                      size={56}
+                    />
+                  </div>
+                  <h3 className="font-semibold text-foreground text-lg mb-2 tracking-tight group-hover:text-primary transition-colors">
+                    {company.name}
+                  </h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed mb-8 font-medium">
+                    {company.desc}
+                  </p>
+                  <div className="mt-auto">
+                    <button className="w-full text-primary-foreground text-xs font-bold uppercase tracking-widest bg-primary px-6 py-4 rounded-2xl hover:bg-primary/90 transition-all shadow-lg active:scale-95">
+                      View open jobs
+                    </button>
+                  </div>
                 </div>
-                <h3 className="font-semibold text-foreground text-lg mb-2 tracking-tight group-hover:text-primary transition-colors">
-                  {company.name}
-                </h3>
-                <p className="text-sm text-muted-foreground leading-relaxed mb-8 font-medium">
-                  {company.desc}
-                </p>
-                <div className="mt-auto">
-                  <button className="w-full text-primary-foreground text-xs font-bold uppercase tracking-widest bg-primary px-6 py-4 rounded-2xl hover:bg-primary/90 transition-all shadow-lg active:scale-95">
-                    View open jobs
-                  </button>
-                </div>
-              </div>
+              </Link>
             ))}
           </div>
 
@@ -354,7 +367,19 @@ export default function TopCompaniesAndSponsored() {
             <Link href="/companies">
               <button className="flex items-center gap-2 group text-foreground font-semibold text-xs uppercase tracking-widest border-b-2 border-primary/20 pb-1 hover:border-primary transition-all">
                 Explore all companies
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="group-hover:translate-x-1 transition-transform"><path d="M5 12h14m-7-7 7 7-7 7" /></svg>
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="group-hover:translate-x-1 transition-transform"
+                >
+                  <path d="M5 12h14m-7-7 7 7-7 7" />
+                </svg>
               </button>
             </Link>
           </div>
@@ -374,10 +399,11 @@ export default function TopCompaniesAndSponsored() {
                   <button
                     key={f}
                     onClick={() => setActiveFilter(f)}
-                    className={`px-5 py-2 rounded-xl text-xs font-semibold transition-all border ${activeFilter === f
-                      ? "bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/20"
-                      : "bg-background text-muted-foreground border-border hover:border-primary/30 hover:bg-primary/5"
-                      }`}
+                    className={`px-5 py-2 rounded-xl text-xs font-semibold transition-all border ${
+                      activeFilter === f
+                        ? "bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/20"
+                        : "bg-background text-muted-foreground border-border hover:border-primary/30 hover:bg-primary/5"
+                    }`}
                   >
                     {f}
                   </button>
@@ -389,28 +415,31 @@ export default function TopCompaniesAndSponsored() {
           {/* Company grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredSponsored.map((c) => (
-              <div
-                key={c.name}
-                className="group border border-border/60 rounded-3xl p-6 hover:shadow-xl hover:border-primary/20 transition-all duration-300 hover:-translate-y-1 cursor-pointer bg-background/50 backdrop-blur-sm"
-              >
-                <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6 border border-border/40 bg-card p-2 overflow-hidden shadow-md group-hover:shadow-primary/10 transition-all">
-                  <BrandLogo logo={c.logo} name={c.name} size={40} />
+              <Link key={c.name} href={"/companies"}>
+                <div className="group border border-border/60 rounded-3xl p-6 hover:shadow-xl hover:border-primary/20 transition-all duration-300 hover:-translate-y-1 cursor-pointer bg-background/50 backdrop-blur-sm">
+                  <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6 border border-border/40 bg-card p-2 overflow-hidden shadow-md group-hover:shadow-primary/10 transition-all">
+                    <BrandLogo logo={c.logo} name={c.name} size={40} />
+                  </div>
+                  <h3 className="font-bold text-foreground text-lg mb-4 tracking-tight group-hover:text-primary transition-colors">
+                    {c.name}
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {c.tags.slice(0, 2).map((tag) => (
+                      <span
+                        key={tag}
+                        className="text-[10px] bg-muted/50 text-slate-500 font-bold px-3 py-1 rounded-lg uppercase tracking-tight"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                    {c.tags.length > 2 && (
+                      <span className="text-[10px] text-muted-foreground/40 font-bold self-center">
+                        +1
+                      </span>
+                    )}
+                  </div>
                 </div>
-                <h3 className="font-bold text-foreground text-lg mb-4 tracking-tight group-hover:text-primary transition-colors">{c.name}</h3>
-                <div className="flex flex-wrap gap-2">
-                  {c.tags.slice(0, 2).map((tag) => (
-                    <span
-                      key={tag}
-                      className="text-[10px] bg-muted/50 text-slate-500 font-bold px-3 py-1 rounded-lg uppercase tracking-tight"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                  {c.tags.length > 2 && (
-                    <span className="text-[10px] text-muted-foreground/40 font-bold self-center">+1</span>
-                  )}
-                </div>
-              </div>
+              </Link>
             ))}
           </div>
 
