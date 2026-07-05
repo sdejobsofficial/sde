@@ -18,6 +18,9 @@ export const registerSchema = z.object({
     .min(8, "Password must be at least 8 characters")
     .regex(/[A-Z]/, "Include at least one uppercase letter")
     .regex(/[0-9]/, "Include at least one number"),
+  agreeTerms: z.boolean().refine((val) => val === true, {
+    message: "You must agree to the Terms & Conditions and Privacy Policy",
+  }),
 });
 
 export type RegisterFormValues = z.infer<typeof registerSchema>;

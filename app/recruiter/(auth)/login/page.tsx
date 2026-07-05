@@ -34,7 +34,7 @@ import {
   registerSchema,
   STATS,
 } from "@/constants/company/CAuthConstants";
-import PhoneOtpModal from "@/components/common/PhoneOtpModal.tsx";
+import EmailOtpModal from "@/components/common/EmailOtpModal";
 import Image from "next/image";
 
 function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
@@ -45,7 +45,7 @@ function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
   const loading = registering || googleLoading;
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
-  const [phoneVerified, setPhoneVerified] = useState(false);
+  const [emailVerified, setEmailVerified] = useState(false);
   const [showOtpModal, setShowOtpModal] = useState(false);
 
   const {
@@ -55,12 +55,12 @@ function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
     formState: { errors },
   } = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
-    defaultValues: { companyName: "", email: "", password: "", confirmPassword: "", phone: "" },
+    defaultValues: { companyName: "", email: "", password: "", confirmPassword: "", phone: "", agreeTerms: false },
     mode: "onTouched",
   });
 
-  const phoneValue = useWatch({ control, name: "phone" });
-  const isPhoneComplete = /^\d{10}$/.test(phoneValue ?? "");
+  const emailValue = useWatch({ control, name: "email" });
+  const isEmailComplete = emailValue && emailValue.includes("@");
 
   const onSubmit = async (values: RegisterFormValues) => {
     await register({
@@ -137,23 +137,49 @@ function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
           >
             Work email
           </Label>
-          <div className="relative">
-            <Mail
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/80 pointer-events-none"
-              size={14}
-            />
-            <Input
-              id="reg-email"
-              type="email"
-              placeholder="you@company.com"
-              {...rhf("email")}
-              className={cn(
-                "pl-9 h-10 text-sm rounded-xl border-gray-200 bg-muted/50/80 focus:bg-card transition-all",
-                errors.email && "border-red-400 focus:border-red-400",
-              )}
-            />
+          <div className="flex gap-2">
+            <div className="relative flex-1">
+              <Mail
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/80 pointer-events-none"
+                size={14}
+              />
+              <Input
+                id="reg-email"
+                type="email"
+                placeholder="you@company.com"
+                {...rhf("email")}
+                disabled={emailVerified}
+                className={cn(
+                  "pl-9 h-10 text-sm rounded-xl border-gray-200 bg-muted/50/80 focus:bg-card transition-all",
+                  errors.email && "border-red-400 focus:border-red-400",
+                  emailVerified && "border-green-400 bg-green-50/50 text-green-700"
+                )}
+              />
+            </div>
+            {emailVerified ? (
+              <div className="h-10 px-3 flex items-center gap-1.5 rounded-xl bg-green-50 border border-green-300 text-green-700 text-xs font-bold flex-shrink-0 select-none">
+                <CheckCircle2 size={13} />
+                Verified
+              </div>
+            ) : (
+              <Button
+                type="button"
+                variant="outline"
+                disabled={!isEmailComplete}
+                onClick={() => setShowOtpModal(true)}
+                className="h-10 px-3 rounded-xl border-primary/40 text-primary font-bold text-xs flex-shrink-0 hover:bg-primary/5 hover:border-primary/60 transition-all disabled:opacity-40"
+              >
+                Verify
+              </Button>
+            )}
           </div>
-          <FieldError message={errors.email?.message} />
+          {errors.email ? (
+            <FieldError message={errors.email?.message} />
+          ) : emailVerified ? (
+            <p className="text-[10px] text-green-600 font-medium">
+              ✓ Email verified
+            </p>
+          ) : null}
         </div>
 
         {/* Phone */}
@@ -178,40 +204,15 @@ function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
               placeholder="10-digit mobile number"
               {...rhf("phone")}
               maxLength={10}
-              disabled={phoneVerified}
               className={cn(
                 "h-10 text-sm rounded-xl border-gray-200 bg-muted/50/80 focus:bg-card transition-all",
-                errors.phone && "border-red-400 focus:border-red-400",
-                phoneVerified &&
-                  "border-green-400 bg-green-50/50 text-green-700",
+                errors.phone && "border-red-400 focus:border-red-400"
               )}
             />
-
-            {/* Verify / Verified button */}
-            {phoneVerified ? (
-              <div className="h-10 px-3 flex items-center gap-1.5 rounded-xl bg-green-50 border border-green-300 text-green-700 text-xs font-bold flex-shrink-0 select-none">
-                <CheckCircle2 size={13} />
-                Verified
-              </div>
-            ) : (
-              <Button
-                type="button"
-                variant="outline"
-                disabled={!isPhoneComplete}
-                onClick={() => setShowOtpModal(true)}
-                className="h-10 px-3 rounded-xl border-primary/40 text-primary font-bold text-xs flex-shrink-0 hover:bg-primary/5 hover:border-primary/60 transition-all disabled:opacity-40"
-              >
-                Verify
-              </Button>
-            )}
           </div>
 
           {errors.phone ? (
             <FieldError message={errors.phone.message} />
-          ) : phoneVerified ? (
-            <p className="text-[10px] text-green-600 font-medium">
-              ✓ Phone number verified
-            </p>
           ) : (
             <p className="text-[10px] text-muted-foreground/80 font-medium">
               Candidates will contact you on this number
@@ -220,10 +221,10 @@ function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
         </div>
 
         {/* OTP Modal */}
-        {showOtpModal && isPhoneComplete && (
-          <PhoneOtpModal
-            phone={phoneValue}
-            onVerified={() => setPhoneVerified(true)}
+        {showOtpModal && isEmailComplete && (
+          <EmailOtpModal
+            email={emailValue ?? ""}
+            onVerified={() => setEmailVerified(true)}
             onClose={() => setShowOtpModal(false)}
           />
         )}
@@ -311,9 +312,35 @@ function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
           ))}
         </div>
 
+        {/* Agree Terms */}
+        <div className="space-y-1.5 pt-1 mb-4">
+          <div className="flex items-start gap-2">
+            <input
+              id="recruiter-agreeTerms"
+              type="checkbox"
+              {...rhf("agreeTerms")}
+              className="mt-0.5 h-4 w-4 shrink-0 rounded-sm border-gray-300 text-primary shadow-sm focus:ring-primary/20 cursor-pointer accent-primary"
+            />
+            <Label
+              htmlFor="recruiter-agreeTerms"
+              className="text-xs text-muted-foreground/80 leading-relaxed cursor-pointer"
+            >
+              I agree to the{" "}
+              <Link href="/terms" className="text-primary/100 hover:underline">
+                Terms
+              </Link>{" "}
+              and{" "}
+              <Link href="/privacy" className="text-primary/100 hover:underline">
+                Privacy Policy
+              </Link>
+            </Label>
+          </div>
+          <FieldError message={errors.agreeTerms?.message} />
+        </div>
+
         <Button
           type="submit"
-          disabled={loading || !phoneVerified}
+          disabled={loading || !emailVerified}
           className="w-full h-11 bg-primary hover:bg-primary/90 active:bg-primary/90 text-primary-foreground rounded-xl font-medium text-sm transition-all shadow-md shadow-primary/30 flex items-center justify-center gap-2"
         >
           {loading ? (
@@ -347,27 +374,15 @@ function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
           )}
         </Button>
 
-        {!phoneVerified && (
+        {!emailVerified && (
           <p className="text-[11px] text-amber-600 font-medium text-center flex items-center justify-center gap-1.5 -mt-1">
-            <Phone size={11} />
-            Please verify your mobile number to continue
+            <Mail size={11} />
+            Please verify your email to continue
           </p>
         )}
       </form>
 
-      <p className="text-center text-xs text-muted-foreground/80 leading-relaxed">
-        By signing up, you agree to our{" "}
-        <Link href="/terms" className="text-primary/100 hover:underline">
-          Terms
-        </Link>{" "}
-        and{" "}
-        <Link href="/privacy" className="text-primary/100 hover:underline">
-          Privacy Policy
-        </Link>
-        .
-      </p>
-
-      <p className="text-center text-sm text-muted-foreground">
+      <p className="text-center text-sm text-muted-foreground mt-4">
         Already have an account?{" "}
         <button
           type="button"
@@ -477,12 +492,12 @@ function LoginForm({ onSwitch }: { onSwitch: () => void }) {
             >
               Password
             </Label>
-            {/* <Link
+            <Link
               href="/forgot-password"
               className="text-xs text-primary/100 hover:text-primary hover:underline transition-colors"
             >
               Forgot password?
-            </Link> */}
+            </Link>
           </div>
           <div className="relative">
             <Lock

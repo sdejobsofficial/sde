@@ -29,7 +29,7 @@ import {
   STATS,
 } from "@/constants/student/SRegisterConstants";
 import Image from "next/image";
-import PhoneOtpModal from "@/components/common/PhoneOtpModal.tsx";
+import EmailOtpModal from "@/components/common/EmailOtpModal";
 
 export default function RegisterPage() {
   const { mutateAsync: emailRegister, isPending: emailRegistering } =
@@ -38,7 +38,7 @@ export default function RegisterPage() {
     useJobSeekerGoogleLogin();
   const loading = emailRegistering || googleLoginLoading;
   const [showPassword, setShowPassword] = useState(false);
-  const [phoneVerified, setPhoneVerified] = useState(false);
+  const [emailVerified, setEmailVerified] = useState(false);
   const [showOtpModal, setShowOtpModal] = useState(false);
 
   const {
@@ -48,12 +48,12 @@ export default function RegisterPage() {
     formState: { errors },
   } = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
-    defaultValues: { fullName: "", email: "", phone: "", password: "" },
+    defaultValues: { fullName: "", email: "", phone: "", password: "", agreeTerms: false },
     mode: "onTouched",
   });
 
-  const phoneValue = useWatch({ control, name: "phone" });
-  const isPhoneComplete = /^\d{10}$/.test(phoneValue ?? "");
+  const emailValue = useWatch({ control, name: "email" });
+  const isEmailComplete = emailValue && emailValue.includes("@");
 
   const onSubmit = async (values: RegisterFormValues) => {
     await emailRegister({
@@ -245,24 +245,50 @@ export default function RegisterPage() {
                   >
                     Email address
                   </Label>
-                  <div className="relative">
-                    <Mail
-                      className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/50 pointer-events-none"
-                      size={16}
-                    />
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="you@email.com"
-                      {...register("email")}
-                      className={cn(
-                        "pl-11 h-12 text-sm rounded-xl border-border bg-background focus:bg-card focus:border-primary/50 transition-all font-medium",
-                        errors.email &&
-                          "border-red-400 focus:border-red-500 focus:ring-red-500/10",
-                      )}
-                    />
+                  <div className="flex gap-2">
+                    <div className="relative flex-1">
+                      <Mail
+                        className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/50 pointer-events-none"
+                        size={16}
+                      />
+                      <Input
+                        id="email"
+                        type="email"
+                        placeholder="you@email.com"
+                        {...register("email")}
+                        disabled={emailVerified}
+                        className={cn(
+                          "pl-11 h-12 text-sm rounded-xl border-border bg-background focus:bg-card focus:border-primary/50 transition-all font-medium",
+                          errors.email &&
+                            "border-red-400 focus:border-red-500 focus:ring-red-500/10",
+                          emailVerified && "border-green-400 bg-green-50/50 text-green-700"
+                        )}
+                      />
+                    </div>
+                    {emailVerified ? (
+                      <div className="h-12 px-4 flex items-center gap-1.5 rounded-xl bg-green-50 border border-green-300 text-green-700 text-xs font-bold flex-shrink-0 select-none">
+                        <CheckCircle2 size={14} />
+                        Verified
+                      </div>
+                    ) : (
+                      <Button
+                        type="button"
+                        variant="outline"
+                        disabled={!isEmailComplete}
+                        onClick={() => setShowOtpModal(true)}
+                        className="h-12 px-4 rounded-xl border-primary/40 text-primary font-bold text-xs flex-shrink-0 hover:bg-primary/5 hover:border-primary/60 transition-all disabled:opacity-40"
+                      >
+                        Verify
+                      </Button>
+                    )}
                   </div>
-                  <FieldError message={errors.email?.message} />
+                  {errors.email ? (
+                    <FieldError message={errors.email?.message} />
+                  ) : emailVerified ? (
+                    <p className="text-[10px] text-green-600 ml-1 font-medium">
+                      ✓ Email verified
+                    </p>
+                  ) : null}
                 </div>
               </div>
 
@@ -288,40 +314,15 @@ export default function RegisterPage() {
                     placeholder="10-digit mobile number"
                     {...register("phone")}
                     maxLength={10}
-                    disabled={phoneVerified}
                     className={cn(
                       "h-12 text-sm rounded-xl border-border bg-background focus:bg-card focus:border-primary/50 transition-all font-medium",
                       errors.phone && "border-red-400 focus:border-red-500",
-                      phoneVerified &&
-                        "border-green-400 bg-green-50/50 text-green-700",
                     )}
                   />
-
-                  {/* Verify / Verified button */}
-                  {phoneVerified ? (
-                    <div className="h-12 px-4 flex items-center gap-1.5 rounded-xl bg-green-50 border border-green-300 text-green-700 text-xs font-bold flex-shrink-0 select-none">
-                      <CheckCircle2 size={14} />
-                      Verified
-                    </div>
-                  ) : (
-                    <Button
-                      type="button"
-                      variant="outline"
-                      disabled={!isPhoneComplete}
-                      onClick={() => setShowOtpModal(true)}
-                      className="h-12 px-4 rounded-xl border-primary/40 text-primary font-bold text-xs flex-shrink-0 hover:bg-primary/5 hover:border-primary/60 transition-all disabled:opacity-40"
-                    >
-                      Verify
-                    </Button>
-                  )}
                 </div>
 
                 {errors.phone ? (
                   <FieldError message={errors.phone.message} />
-                ) : phoneVerified ? (
-                  <p className="text-[10px] text-green-600 ml-1 font-medium">
-                    ✓ Phone number verified
-                  </p>
                 ) : (
                   <p className="text-[10px] text-muted-foreground/60 ml-1 font-medium">
                     Recruiters will contact you on this number
@@ -330,10 +331,10 @@ export default function RegisterPage() {
               </div>
 
               {/* OTP Modal */}
-              {showOtpModal && isPhoneComplete && (
-                <PhoneOtpModal
-                  phone={phoneValue}
-                  onVerified={() => setPhoneVerified(true)}
+              {showOtpModal && isEmailComplete && (
+                <EmailOtpModal
+                  email={emailValue ?? ""}
+                  onVerified={() => setEmailVerified(true)}
                   onClose={() => setShowOtpModal(false)}
                 />
               )}
@@ -373,10 +374,42 @@ export default function RegisterPage() {
                 <FieldError message={errors.password?.message} />
               </div>
 
+              {/* Agree Terms */}
+              <div className="space-y-1.5">
+                <div className="flex items-start gap-2">
+                  <input
+                    id="agreeTerms"
+                    type="checkbox"
+                    {...register("agreeTerms")}
+                    className="mt-1 h-4 w-4 shrink-0 rounded-sm border-primary/50 text-primary shadow focus:ring-primary/20 cursor-pointer accent-primary"
+                  />
+                  <Label
+                    htmlFor="agreeTerms"
+                    className="text-xs text-muted-foreground leading-relaxed cursor-pointer font-medium"
+                  >
+                    I agree to the{" "}
+                    <Link
+                      href="/terms"
+                      className="text-primary font-bold hover:underline"
+                    >
+                      Terms of Service
+                    </Link>{" "}
+                    and{" "}
+                    <Link
+                      href="/privacy"
+                      className="text-primary font-bold hover:underline"
+                    >
+                      Privacy Policy
+                    </Link>
+                  </Label>
+                </div>
+                <FieldError message={errors.agreeTerms?.message} />
+              </div>
+
               {/* Submit */}
               <Button
                 type="submit"
-                disabled={loading || !phoneVerified}
+                disabled={loading || !emailVerified}
                 className="w-full h-12 bg-primary text-primary-foreground hover:bg-primary/90 active:scale-[0.98] rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 mt-2 shadow-lg shadow-primary/20"
               >
                 {loading ? (
@@ -410,10 +443,10 @@ export default function RegisterPage() {
                 )}
               </Button>
 
-              {!phoneVerified && (
+              {!emailVerified && (
                 <p className="text-[11px] text-amber-600 font-medium text-center -mt-1 flex items-center justify-center gap-1.5">
-                  <Phone size={11} />
-                  Please verify your mobile number to continue
+                  <Mail size={11} />
+                  Please verify your email to continue
                 </p>
               )}
             </form>
@@ -460,25 +493,7 @@ export default function RegisterPage() {
               Continue with Google
             </Button>
 
-            {/* Terms + Sign in */}
-            <p className="text-center text-[10px] text-muted-foreground mt-8 leading-relaxed font-medium">
-              By creating an account, you agree to our{" "}
-              <Link
-                href="/terms"
-                className="text-primary font-bold hover:underline"
-              >
-                Terms of Service
-              </Link>{" "}
-              and{" "}
-              <Link
-                href="/privacy"
-                className="text-primary font-bold hover:underline"
-              >
-                Privacy Policy
-              </Link>
-              .
-            </p>
-            <p className="text-center text-sm text-muted-foreground mt-4 font-medium">
+            <p className="text-center text-sm text-muted-foreground mt-6 font-medium">
               Already have an account?{" "}
               <Link
                 href="/login"

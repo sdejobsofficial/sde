@@ -42,6 +42,9 @@ export const useJobSeekerEmailRegister = () => {
       // toast.success("Please check your email to verify your account.");
       toast.success("Registration successful! Please complete your profile.");
     },
+    onError: (error: Error) => {
+      toast.error(error.message || "Registration failed. Please try again.");
+    },
   });
 };
 
@@ -103,6 +106,9 @@ export const useLogout = () => {
       queryClient.invalidateQueries({ queryKey: ["currentUser"] });
       router.push("/");
     },
+    onError: (error: Error) => {
+      toast.error(error.message || "Failed to log out.");
+    },
   });
 };
 
@@ -156,6 +162,9 @@ export const useRecruiterEmailRegister = () => {
       toast.success(
         "Registration successful! Please complete your company profile.",
       );
+    },
+    onError: (error: Error) => {
+      toast.error(error.message || "Registration failed. Please try again.");
     },
   });
 };

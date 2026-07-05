@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import {
   Crown,
   Check,
@@ -318,8 +318,9 @@ function PricingPageContent() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [isPaying, setIsPaying] = useState(false);
 
-  const { data: user } = useCurrentUser();
+  const { data: user, isLoading } = useCurrentUser();
   const { mutateAsync: handlePremiumUpgrade } = useHandlePremiumUpgrade();
+  const router = useRouter();
 
   // Read ?ref=CODE from the share link the sales person sent.
   const searchParams = useSearchParams();
@@ -515,12 +516,29 @@ function PricingPageContent() {
 
             {/* CTA — opens modal instead of going straight to Razorpay */}
             <button
-              onClick={() => setShowCheckout(true)}
-              className="w-full py-3 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground text-sm font-bold shadow-lg shadow-primary/30 flex items-center justify-center gap-2 transition-all"
+              onClick={() => {
+                if (isLoading) return;
+                if (!user) {
+                  router.push("/login?callbackUrl=/premium");
+                } else {
+                  setShowCheckout(true);
+                }
+              }}
+              disabled={isLoading}
+              className="w-full py-3 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground text-sm font-bold shadow-lg shadow-primary/30 flex items-center justify-center gap-2 transition-all disabled:opacity-70 disabled:cursor-not-allowed"
             >
-              <Crown size={14} />
-              Get Premium — ₹{PRICE}
-              <ExternalLink size={12} className="opacity-70" />
+              {isLoading ? (
+                <>
+                  <Loader2 size={14} className="animate-spin" />
+                  Please wait...
+                </>
+              ) : (
+                <>
+                  <Crown size={14} />
+                  Get Premium — ₹{PRICE}
+                  <ExternalLink size={12} className="opacity-70" />
+                </>
+              )}
             </button>
           </div>
         </div>

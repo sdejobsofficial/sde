@@ -14,6 +14,8 @@ import {
   Bookmark,
   ClipboardList,
   Bell,
+  Menu,
+  X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useCurrentUser, useLogout } from "@/hooks/useUser";
@@ -60,6 +62,7 @@ export default function StudentHeader() {
   const { data: user, isLoading } = useCurrentUser();
   const { mutateAsync: logout, isPending } = useLogout();
   const [profileOpen, setProfileOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const avatarUrl =
     user?.Meta && "AvatarUrl" in user.Meta ? user.Meta.AvatarUrl : null;
@@ -79,7 +82,15 @@ export default function StudentHeader() {
     <header className="sticky top-0 z-50 w-full bg-background border-b border-border shadow-sm">
       <div className="max-w-7xl mx-auto px-4 lg:px-8 h-14 flex items-center gap-4">
         {/* ── Logo ── */}
-        <div className="shrink-0">
+        <div className="shrink-0 flex items-center gap-2">
+          {/* Mobile menu toggle */}
+          <button
+            className="md:hidden p-1.5 -ml-1.5 rounded-md text-muted-foreground hover:bg-muted transition-colors"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+          
           <Link href="/" className="flex items-center gap-2.5">
             <Image
               src="/icon.png"
@@ -88,7 +99,7 @@ export default function StudentHeader() {
               height={32}
               className="rounded-md"
             />
-            <span className="font-bold text-base text-foreground tracking-tight">
+            <span className="font-bold text-base text-foreground tracking-tight hidden sm:block">
               SDE Jobs & <span className="text-primary">Internships</span>
             </span>
           </Link>
@@ -182,14 +193,6 @@ export default function StudentHeader() {
                         <ClipboardList size={14} />
                         My Applications
                       </Link>
-                      {/* <Link
-                        href="/account"
-                        onClick={() => setProfileOpen(false)}
-                        className="flex items-center gap-2.5 px-4 py-2 text-sm text-muted-foreground hover:bg-primary/10 hover:text-primary transition-colors"
-                      >
-                        <Settings size={14} />
-                        Account
-                      </Link> */}
                       <div className="border-t border-gray-50 mt-1 pt-1">
                         <button
                           disabled={isPending}
@@ -221,6 +224,29 @@ export default function StudentHeader() {
           )}
         </div>
       </div>
+      
+      {/* ── Mobile Nav Menu ── */}
+      {mobileMenuOpen && (
+        <div className="md:hidden border-t border-border bg-background px-4 py-3 space-y-1 shadow-lg">
+          {NAV_LINKS.map(({ label, href, icon: Icon }) => (
+            <Link
+              key={href}
+              href={href}
+              onClick={() => setMobileMenuOpen(false)}
+              className={cn(
+                "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all",
+                pathname.startsWith(href)
+                  ? "text-primary bg-primary/10"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted",
+              )}
+            >
+              <Icon size={16} />
+              {label}
+            </Link>
+          ))}
+        </div>
+      )}
     </header>
   );
 }
+
