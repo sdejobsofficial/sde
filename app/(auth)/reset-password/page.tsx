@@ -1,6 +1,5 @@
 "use client";
 
-import { Suspense } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
@@ -18,15 +17,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useState } from "react";
 import { FieldError } from "@/components/common/FormComponents";
 import {
   ResetPasswordFormValues,
   resetPasswordSchema,
   RESET_HIGHLIGHTS,
 } from "@/constants/shared/resetPasswordConstants";
-import { useExchangeCodeForSession, useUpdatePassword } from "@/hooks/useUser";
+import { useUpdatePassword } from "@/hooks/useUser";
 
 // ── Small password-strength rule indicator ─────────────────────────────────
 function Rule({ met, label }: { met: boolean; label: string }) {
@@ -44,33 +42,12 @@ function Rule({ met, label }: { met: boolean; label: string }) {
   );
 }
 
-// ── Inner component (uses useSearchParams) ─────────────────────────────────
-function ResetPasswordContent() {
-  const searchParams = useSearchParams();
-  const code = searchParams.get("code");
-
-  const { mutateAsync: exchangeCode, isPending: exchanging } =
-    useExchangeCodeForSession();
-  const { mutateAsync: updatePassword, isPending: updating } =
+export default function ResetPasswordPage() {
+  const { mutateAsync: updatePassword, isPending: loading } =
     useUpdatePassword();
-  const loading = exchanging || updating;
 
-  const [sessionReady, setSessionReady] = useState(false);
-  const [sessionError, setSessionError] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
-
-  // Exchange the one-time code for a session as soon as the page mounts
-  useEffect(() => {
-    if (!code) {
-      setSessionError(true);
-      return;
-    }
-    exchangeCode(code)
-      .then(() => setSessionReady(true))
-      .catch(() => setSessionError(true));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const {
     register,
@@ -210,212 +187,150 @@ function ResetPasswordContent() {
               </span>
             </div>
 
-            {/* ── Invalid / expired link ── */}
-            {sessionError && (
-              <div className="flex flex-col items-center text-center space-y-6 py-4">
-                <div className="w-16 h-16 rounded-2xl bg-red-50 border border-red-200 flex items-center justify-center">
-                  <XCircle className="text-red-500" size={28} />
-                </div>
-                <div>
-                  <h2 className="text-2xl font-extrabold text-foreground tracking-tight">
-                    Link expired
-                  </h2>
-                  <p className="text-muted-foreground text-sm mt-2 leading-relaxed font-medium max-w-xs mx-auto">
-                    This password reset link is invalid or has expired. Reset
-                    links are only valid for 1 hour.
-                  </p>
-                </div>
-                <Link
-                  href="/forgot-password"
-                  className="inline-flex items-center gap-2 h-12 px-6 bg-primary text-primary-foreground rounded-xl font-bold text-sm shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all"
-                >
-                  Request a new link
-                  <ArrowRight size={16} />
-                </Link>
+            {/* Heading */}
+            <div className="mb-8">
+              <div className="inline-flex items-center gap-1.5 bg-primary/10 text-primary text-[10px] font-bold px-3 py-1 rounded-full mb-3 border border-primary/20 uppercase tracking-wider">
+                <ShieldCheck size={11} />
+                Set new password
               </div>
-            )}
+              <h2 className="text-3xl font-extrabold text-foreground tracking-tight">
+                New password
+              </h2>
+              <p className="text-muted-foreground text-sm mt-1.5 font-medium">
+                Make it strong — you&apos;ve got this.
+              </p>
+            </div>
 
-            {/* ── Loading / exchanging code ── */}
-            {!sessionError && !sessionReady && (
-              <div className="flex flex-col items-center text-center space-y-4 py-8">
-                <svg
-                  className="animate-spin h-8 w-8 text-primary"
-                  viewBox="0 0 24 24"
-                  fill="none"
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="space-y-5"
+              noValidate
+            >
+              {/* New password */}
+              <div className="space-y-1.5">
+                <Label
+                  htmlFor="password"
+                  className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1"
                 >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
+                  New password
+                </Label>
+                <div className="relative">
+                  <Lock
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/50 pointer-events-none"
+                    size={16}
                   />
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8v8z"
+                  <Input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Create a strong password"
+                    {...register("password")}
+                    className={cn(
+                      "pl-11 pr-11 h-12 text-sm rounded-xl border-border bg-background focus:bg-card focus:border-primary/50 transition-all font-medium",
+                      errors.password &&
+                        "border-red-400 focus:border-red-500 focus:ring-red-500/10",
+                    )}
                   />
-                </svg>
-                <p className="text-sm text-muted-foreground font-medium">
-                  Verifying your reset link…
-                </p>
-              </div>
-            )}
-
-            {/* ── Reset form ── */}
-            {!sessionError && sessionReady && (
-              <>
-                {/* Heading */}
-                <div className="mb-8">
-                  <div className="inline-flex items-center gap-1.5 bg-primary/10 text-primary text-[10px] font-bold px-3 py-1 rounded-full mb-3 border border-primary/20 uppercase tracking-wider">
-                    <ShieldCheck size={11} />
-                    Set new password
-                  </div>
-                  <h2 className="text-3xl font-extrabold text-foreground tracking-tight">
-                    New password
-                  </h2>
-                  <p className="text-muted-foreground text-sm mt-1.5 font-medium">
-                    Make it strong — you&apos;ve got this.
-                  </p>
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((v) => !v)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground/50 hover:text-foreground transition-colors"
+                  >
+                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
                 </div>
+                <FieldError message={errors.password?.message} />
 
-                <form
-                  onSubmit={handleSubmit(onSubmit)}
-                  className="space-y-5"
-                  noValidate
+                {/* Inline strength rules */}
+                {password.length > 0 && (
+                  <ul className="flex flex-wrap gap-x-4 gap-y-1 pt-1 pl-1">
+                    <Rule met={rules.length} label="8+ characters" />
+                    <Rule met={rules.upper} label="Uppercase letter" />
+                    <Rule met={rules.number} label="Number" />
+                  </ul>
+                )}
+              </div>
+
+              {/* Confirm password */}
+              <div className="space-y-1.5">
+                <Label
+                  htmlFor="confirmPassword"
+                  className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1"
                 >
-                  {/* New password */}
-                  <div className="space-y-1.5">
-                    <Label
-                      htmlFor="password"
-                      className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1"
-                    >
-                      New password
-                    </Label>
-                    <div className="relative">
-                      <Lock
-                        className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/50 pointer-events-none"
-                        size={16}
-                      />
-                      <Input
-                        id="password"
-                        type={showPassword ? "text" : "password"}
-                        placeholder="Create a strong password"
-                        {...register("password")}
-                        className={cn(
-                          "pl-11 pr-11 h-12 text-sm rounded-xl border-border bg-background focus:bg-card focus:border-primary/50 transition-all font-medium",
-                          errors.password &&
-                            "border-red-400 focus:border-red-500 focus:ring-red-500/10",
-                        )}
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword((v) => !v)}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground/50 hover:text-foreground transition-colors"
-                      >
-                        {showPassword ? (
-                          <EyeOff size={16} />
-                        ) : (
-                          <Eye size={16} />
-                        )}
-                      </button>
-                    </div>
-                    <FieldError message={errors.password?.message} />
-
-                    {/* Inline strength rules */}
-                    {password.length > 0 && (
-                      <ul className="flex flex-wrap gap-x-4 gap-y-1 pt-1 pl-1">
-                        <Rule met={rules.length} label="8+ characters" />
-                        <Rule met={rules.upper} label="Uppercase letter" />
-                        <Rule met={rules.number} label="Number" />
-                      </ul>
+                  Confirm password
+                </Label>
+                <div className="relative">
+                  <Lock
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/50 pointer-events-none"
+                    size={16}
+                  />
+                  <Input
+                    id="confirmPassword"
+                    type={showConfirm ? "text" : "password"}
+                    placeholder="Re-enter your password"
+                    {...register("confirmPassword")}
+                    className={cn(
+                      "pl-11 pr-11 h-12 text-sm rounded-xl border-border bg-background focus:bg-card focus:border-primary/50 transition-all font-medium",
+                      errors.confirmPassword &&
+                        "border-red-400 focus:border-red-500 focus:ring-red-500/10",
                     )}
-                  </div>
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirm((v) => !v)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground/50 hover:text-foreground transition-colors"
+                  >
+                    {showConfirm ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
+                <FieldError message={errors.confirmPassword?.message} />
+              </div>
 
-                  {/* Confirm password */}
-                  <div className="space-y-1.5">
-                    <Label
-                      htmlFor="confirmPassword"
-                      className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1"
+              {/* Submit */}
+              <Button
+                type="submit"
+                disabled={loading}
+                className="w-full h-12 bg-primary text-primary-foreground hover:bg-primary/90 active:scale-[0.98] rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 mt-2 shadow-lg shadow-primary/20"
+              >
+                {loading ? (
+                  <span className="flex items-center gap-2">
+                    <svg
+                      className="animate-spin h-5 w-5 text-current"
+                      viewBox="0 0 24 24"
+                      fill="none"
                     >
-                      Confirm password
-                    </Label>
-                    <div className="relative">
-                      <Lock
-                        className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/50 pointer-events-none"
-                        size={16}
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
                       />
-                      <Input
-                        id="confirmPassword"
-                        type={showConfirm ? "text" : "password"}
-                        placeholder="Re-enter your password"
-                        {...register("confirmPassword")}
-                        className={cn(
-                          "pl-11 pr-11 h-12 text-sm rounded-xl border-border bg-background focus:bg-card focus:border-primary/50 transition-all font-medium",
-                          errors.confirmPassword &&
-                            "border-red-400 focus:border-red-500 focus:ring-red-500/10",
-                        )}
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8v8z"
                       />
-                      <button
-                        type="button"
-                        onClick={() => setShowConfirm((v) => !v)}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground/50 hover:text-foreground transition-colors"
-                      >
-                        {showConfirm ? <EyeOff size={16} /> : <Eye size={16} />}
-                      </button>
-                    </div>
-                    <FieldError message={errors.confirmPassword?.message} />
-                  </div>
+                    </svg>
+                    Updating password...
+                  </span>
+                ) : (
+                  <>
+                    Update password
+                    <ArrowRight size={16} />
+                  </>
+                )}
+              </Button>
+            </form>
 
-                  {/* Submit */}
-                  <Button
-                    type="submit"
-                    disabled={loading}
-                    className="w-full h-12 bg-primary text-primary-foreground hover:bg-primary/90 active:scale-[0.98] rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 mt-2 shadow-lg shadow-primary/20"
-                  >
-                    {loading ? (
-                      <span className="flex items-center gap-2">
-                        <svg
-                          className="animate-spin h-5 w-5 text-current"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                        >
-                          <circle
-                            className="opacity-25"
-                            cx="12"
-                            cy="12"
-                            r="10"
-                            stroke="currentColor"
-                            strokeWidth="4"
-                          />
-                          <path
-                            className="opacity-75"
-                            fill="currentColor"
-                            d="M4 12a8 8 0 018-8v8z"
-                          />
-                        </svg>
-                        Updating password...
-                      </span>
-                    ) : (
-                      <>
-                        Update password
-                        <ArrowRight size={16} />
-                      </>
-                    )}
-                  </Button>
-                </form>
-
-                <p className="text-center text-sm text-muted-foreground mt-8 font-medium">
-                  <Link
-                    href="/login"
-                    className="text-primary font-bold hover:underline transition-all"
-                  >
-                    ← Back to sign in
-                  </Link>
-                </p>
-              </>
-            )}
+            <p className="text-center text-sm text-muted-foreground mt-8 font-medium">
+              <Link
+                href="/login"
+                className="text-primary font-bold hover:underline transition-all"
+              >
+                ← Back to sign in
+              </Link>
+            </p>
           </div>
         </div>
       </main>
@@ -433,38 +348,5 @@ function ResetPasswordContent() {
         </Link>
       </footer>
     </div>
-  );
-}
-
-// ── Page export — wraps inner component in Suspense ────────────────────────
-export default function ResetPasswordPage() {
-  return (
-    <Suspense
-      fallback={
-        <div className="min-h-screen w-full bg-[#f8fafc] flex items-center justify-center">
-          <svg
-            className="animate-spin h-8 w-8 text-primary"
-            viewBox="0 0 24 24"
-            fill="none"
-          >
-            <circle
-              className="opacity-25"
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              strokeWidth="4"
-            />
-            <path
-              className="opacity-75"
-              fill="currentColor"
-              d="M4 12a8 8 0 018-8v8z"
-            />
-          </svg>
-        </div>
-      }
-    >
-      <ResetPasswordContent />
-    </Suspense>
   );
 }

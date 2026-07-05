@@ -436,7 +436,7 @@ export default function CompanyProfilePage() {
                 </button>
               </div>
 
-              <div className="grid grid-cols-2 gap-x-8 gap-y-4">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-4">
                 <div>
                   <p className="text-xs text-muted-foreground/80 mb-2">Industries</p>
                   {industries.length > 0 ? (

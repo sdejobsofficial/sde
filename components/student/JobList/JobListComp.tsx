@@ -127,7 +127,7 @@ export function PremiumPromo() {
             </div>
           ))}
         </div>
-        <Link href={"/account"}>
+        <Link href={"/premium"}>
           <Button className="w-full h-10 bg-card text-primary hover:bg-muted/50 transition-all rounded-xl text-xs font-medium flex items-center justify-center gap-1.5 shadow-md">
             Upgrade to Premium <ArrowRight size={14} />
           </Button>

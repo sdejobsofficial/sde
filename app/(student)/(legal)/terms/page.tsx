@@ -271,8 +271,8 @@ const SECTIONS: TermsSection[] = [
     content: ["If you have questions about these Terms, please contact us:"],
     contact: {
       name: "SDE Jobs & Internships",
-      email: "legal@sdejobs.in",
-      support: "support@sdejobs.in",
+      email: "sdejobsofficial@gmail.com",
+      support: "sdejobsofficial@gmail.com",
       address: "Bengaluru, Karnataka, India",
     },
   },
@@ -467,10 +467,10 @@ export default function TermsAndConditionsPage() {
                 least 18 years old and have read, understood, and agree to these
                 Terms and Conditions. For questions, contact{" "}
                 <a
-                  href="mailto:legal@sdejobs.in"
+                  href="mailto:sdejobsofficial@gmail.com"
                   className="font-semibold hover:underline"
                 >
-                  legal@sdejobs.in
+                  sdejobsofficial@gmail.com
                 </a>
               </p>
             </div>

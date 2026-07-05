@@ -367,10 +367,10 @@ export default function CareersPage() {
           ourselves.
         </p>
         <a
-          href="mailto:careers@sdejobs.in?subject=General application"
+          href="mailto:sdejobsofficial@gmail.com?subject=General application"
           className="inline-flex items-center gap-2 h-11 px-6 bg-primary text-primary-foreground rounded-xl text-sm font-bold hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
         >
-          Email careers@sdejobs.in
+          Email sdejobsofficial@gmail.com
           <ArrowRight size={14} />
         </a>
       </section>

@@ -191,7 +191,7 @@ const SECTIONS: PrivacySection[] = [
     ],
     contact: {
       name: "SDE Jobs & Internships — Data Protection Officer",
-      email: "privacy@sdejobs.in",
+      email: "sdejobsofficial@gmail.com",
       address: "SDE Jobs & Internships, Bengaluru, Karnataka, India",
     },
     footer: `If you are not satisfied with our response, you may approach the Data Protection Board of India as established under the DPDPA 2023.`,
@@ -369,10 +369,10 @@ export default function PrivacyPolicyPage() {
                 By using SDE Jobs & Internships, you acknowledge that you have
                 read and understood this Privacy Policy. For questions, contact{" "}
                 <a
-                  href="mailto:privacy@sdejobs.in"
+                  href="mailto:sdejobsofficial@gmail.com"
                   className="font-semibold hover:underline"
                 >
-                  privacy@sdejobs.in
+                  sdejobsofficial@gmail.com
                 </a>
               </p>
             </div>
