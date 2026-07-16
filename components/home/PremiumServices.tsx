@@ -20,7 +20,7 @@ export default function PremiumServices() {
             </h3>
 
             <p className="text-sm text-muted-foreground mb-4">
-              Upgrade to Premium for just ₹499/month and unlock exclusive
+              Upgrade to Premium for just ₹299/month and unlock exclusive
               premium job listings, curated resources, and priority support to
               accelerate your software engineering career.
             </p>
@@ -49,7 +49,7 @@ export default function PremiumServices() {
             </Link>
 
             <span className="text-[10px] text-muted-foreground/60">
-              ₹499/month
+              ₹299/month
             </span>
           </div>
         </div>

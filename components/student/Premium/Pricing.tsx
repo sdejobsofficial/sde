@@ -26,7 +26,7 @@ import toast from "react-hot-toast";
 
 // ─── Config ───────────────────────────────────────────────────────────────
 
-const PRICE = 499;
+const PRICE = 299;
 
 const FREE_BENEFITS = [
   { label: "Limited access to platform features", included: true },

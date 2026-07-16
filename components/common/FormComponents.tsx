@@ -88,7 +88,7 @@ export function TagSelector({
 
       <div
         className={cn(
-          "min-h-[42px] flex flex-wrap gap-1.5 px-3 py-2 rounded-xl border bg-muted/50/80 transition-all",
+          "min-h-[42px] flex flex-wrap gap-1.5 px-3 py-2 rounded-xl border bg-muted/50/80 text-foreground transition-all dark:bg-card/70",
           error ? "border-red-300" : "border-gray-200",
           selected.length > 0 && "bg-card",
         )}
@@ -101,7 +101,7 @@ export function TagSelector({
           selected.map((s) => (
             <span
               key={s}
-              className="inline-flex items-center gap-1 bg-gray-900 text-primary-foreground text-xs px-2.5 py-1 rounded-full font-medium"
+              className="inline-flex items-center gap-1 bg-primary/15 text-primary border border-primary/20 text-xs px-2.5 py-1 rounded-full font-medium"
             >
               {s}
               <button
@@ -124,7 +124,7 @@ export function TagSelector({
               key={opt}
               type="button"
               onClick={() => toggle(opt)}
-              className="inline-flex items-center gap-1 text-xs px-3 py-1.5 rounded-full border border-gray-200 bg-card text-muted-foreground hover:border-primary/40 hover:text-primary hover:bg-primary/10 transition-all"
+              className="inline-flex items-center gap-1 text-xs px-3 py-1.5 rounded-full border border-gray-200 bg-card text-foreground/80 hover:border-primary/40 hover:text-primary hover:bg-primary/10 transition-all"
             >
               {opt}
               {!single && <Plus size={11} />}
@@ -214,7 +214,7 @@ export function SkillInput({
               key={s}
               type="button"
               onClick={() => add(s)}
-              className="inline-flex items-center gap-1 text-xs px-3 py-1.5 rounded-full border border-gray-200 bg-card text-muted-foreground hover:border-primary/40 hover:text-primary hover:bg-primary/10 transition-all"
+              className="inline-flex items-center gap-1 text-xs px-3 py-1.5 rounded-full border border-gray-200 bg-card text-foreground/80 hover:border-primary/40 hover:text-primary hover:bg-primary/10 transition-all"
             >
               {s} <Plus size={11} />
             </button>
@@ -268,8 +268,8 @@ export function YearPicker({
             className={cn(
               "text-xs px-3 py-1.5 rounded-full border transition-all",
               value === String(y)
-                ? "bg-gray-900 text-primary-foreground border-gray-900"
-                : "border-gray-200 bg-card text-muted-foreground hover:border-primary/40 hover:text-primary hover:bg-primary/10",
+                ? "bg-primary text-primary-foreground border-primary shadow-sm shadow-primary/20"
+                : "border-gray-200 bg-card text-foreground/80 hover:border-primary/40 hover:text-primary hover:bg-primary/10",
             )}
           >
             {y}
@@ -300,7 +300,7 @@ export function GradingSelector({
 
       <div
         className={cn(
-          "min-h-[42px] flex flex-wrap gap-1.5 px-3 py-2 rounded-xl border bg-muted/50/80 transition-all",
+          "min-h-[42px] flex flex-wrap gap-1.5 px-3 py-2 rounded-xl border bg-muted/50/80 text-foreground transition-all dark:bg-card/70",
           error ? "border-red-300" : "border-gray-200",
           selected && "bg-card",
         )}
@@ -310,7 +310,7 @@ export function GradingSelector({
             Select grading system
           </span>
         ) : (
-          <span className="inline-flex items-center gap-1 bg-gray-900 text-primary-foreground text-xs px-2.5 py-1 rounded-full font-medium">
+          <span className="inline-flex items-center gap-1 bg-primary/15 text-primary border border-primary/20 text-xs px-2.5 py-1 rounded-full font-medium">
             {selected.label}
             <button
               type="button"
@@ -330,7 +330,7 @@ export function GradingSelector({
             key={g.value}
             type="button"
             onClick={() => onChange(g.value)}
-            className="text-xs px-3 py-1.5 rounded-full border border-gray-200 bg-card text-muted-foreground hover:border-primary/40 hover:text-primary hover:bg-primary/10 transition-all"
+            className="text-xs px-3 py-1.5 rounded-full border border-gray-200 bg-card text-foreground/80 hover:border-primary/40 hover:text-primary hover:bg-primary/10 transition-all"
           >
             {g.label}
           </button>
