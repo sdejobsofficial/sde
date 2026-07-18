@@ -13,7 +13,7 @@ import {
   useJobSeekerEmailLogin,
   useJobSeekerGoogleLogin,
 } from "@/hooks/useUser";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { FieldError } from "@/components/common/FormComponents";
 import {
@@ -22,7 +22,7 @@ import {
   HIGHLIGHTS,
 } from "@/constants/student/SLoginConstants";
 
-export default function LoginPage() {
+function LoginPageContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const nextPath = searchParams.get("next");
@@ -385,5 +385,13 @@ export default function LoginPage() {
         </Link>
       </footer>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense>
+      <LoginPageContent />
+    </Suspense>
   );
 }
