@@ -81,7 +81,7 @@ const getAuthErrorMessage = (error: Error, fallback: string) => {
     return "Too many attempts. Please wait a moment and try again.";
   }
 
-  return error.message || fallback;
+  return fallback;
 };
 
 export const useJobSeekerEmailRegister = () => {
@@ -97,7 +97,7 @@ export const useJobSeekerEmailRegister = () => {
       toast.success("Registration successful! Please complete your profile.");
     },
     onError: (error: Error) => {
-      toast.error(getAuthErrorMessage(error, "Registration failed. Please try again."));
+      toast.error(getAuthErrorMessage(error, "Registration failed. Please try again or use a different email."));
     },
   });
 };
@@ -218,7 +218,7 @@ export const useRecruiterEmailRegister = () => {
       );
     },
     onError: (error: Error) => {
-      toast.error(getAuthErrorMessage(error, "Registration failed. Please try again."));
+      toast.error(getAuthErrorMessage(error, "Registration failed. Please try again or use a different email."));
     },
   });
 };

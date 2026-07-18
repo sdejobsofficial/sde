@@ -56,17 +56,25 @@ export default function RegisterPage() {
   const isEmailComplete = emailValue && emailValue.includes("@");
 
   const onSubmit = async (values: RegisterFormValues) => {
-    await emailRegister({
-      Email: values.email,
-      Password: values.password,
-      Name: values.fullName,
-      Phone: values.phone,
-      Role: UserRole.JobSeeker,
-    });
+    try {
+      await emailRegister({
+        Email: values.email,
+        Password: values.password,
+        Name: values.fullName,
+        Phone: values.phone,
+        Role: UserRole.JobSeeker,
+      });
+    } catch {
+      // Auth errors are already surfaced by the mutation hook toast.
+    }
   };
 
   const handleGoogleSignIn = async () => {
-    await googleLogin();
+    try {
+      await googleLogin();
+    } catch {
+      // Auth errors are already surfaced by the mutation hook toast.
+    }
   };
 
   return (

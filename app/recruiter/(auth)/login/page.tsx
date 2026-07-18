@@ -63,12 +63,16 @@ function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
   const isEmailComplete = emailValue && emailValue.includes("@");
 
   const onSubmit = async (values: RegisterFormValues) => {
-    await register({
-      companyName: values.companyName,
-      email: values.email,
-      password: values.password,
-      phone: values.phone,
-    });
+    try {
+      await register({
+        companyName: values.companyName,
+        email: values.email,
+        password: values.password,
+        phone: values.phone,
+      });
+    } catch {
+      // Auth errors are already surfaced by the mutation hook toast.
+    }
   };
 
   return (
