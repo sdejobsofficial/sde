@@ -1287,6 +1287,7 @@ function PostJobContent() {
     if (job && !basicsData) {
       setBasicsData({
         title: job.Title,
+        companyName: (job as any).CompanyName ?? "",
         location: job.Location,
         jobType: job.JobType,
         workMode: job.WorkMode,
