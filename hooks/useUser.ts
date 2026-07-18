@@ -29,21 +29,75 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
+const getAuthErrorMessage = (error: Error, fallback: string) => {
+  const message = error.message.toLowerCase();
+
+  if (
+    (message.includes("already") && message.includes("registered")) ||
+    message.includes("already exists") ||
+    message.includes("already in use") ||
+    message.includes("duplicate")
+  ) {
+    return "This email already exists. Please use a different email or sign in.";
+  }
+
+  if (
+    message.includes("invalid login") ||
+    message.includes("invalid_grant") ||
+    message.includes("invalid credentials") ||
+    message.includes("wrong password")
+  ) {
+    return "Invalid email or password.";
+  }
+
+  if (
+    message.includes("weak password") ||
+    message.includes("password should be") ||
+    message.includes("password is too weak")
+  ) {
+    return "Please choose a stronger password.";
+  }
+
+  if (
+    message.includes("email not confirmed") ||
+    message.includes("confirm your email") ||
+    message.includes("email_not_confirmed")
+  ) {
+    return "Please verify your email before signing in.";
+  }
+
+  if (
+    message.includes("invalid email") ||
+    message.includes("email format")
+  ) {
+    return "Please enter a valid email address.";
+  }
+
+  if (
+    message.includes("rate limit") ||
+    message.includes("too many requests") ||
+    message.includes("temporarily unavailable")
+  ) {
+    return "Too many attempts. Please wait a moment and try again.";
+  }
+
+  return error.message || fallback;
+};
+
 export const useJobSeekerEmailRegister = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (payload: RegisterJobSeekerDTO) =>
       jobSeekerEmailRegister(payload),
-    onSuccess: (_, payload) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["currentUser"] });
-      // router.push(`/verify?email=${encodeURIComponent(payload.Email)}`);
       router.push("/onboarding");
       // toast.success("Please check your email to verify your account.");
       toast.success("Registration successful! Please complete your profile.");
     },
     onError: (error: Error) => {
-      toast.error(error.message || "Registration failed. Please try again.");
+      toast.error(getAuthErrorMessage(error, "Registration failed. Please try again."));
     },
   });
 };
@@ -55,7 +109,7 @@ export const useResendVerificationEmail = () => {
       toast.success("Verification email resent! Please check your inbox.");
     },
     onError: (error: Error) => {
-      toast.error(error.message || "Failed to resend. Please try again.");
+      toast.error(getAuthErrorMessage(error, "Failed to resend. Please try again."));
     },
   });
 };
@@ -73,7 +127,7 @@ export const useJobSeekerEmailLogin = () => {
     },
     onError: (error: Error) => {
       toast.error(
-        error.message || "Login failed. Please check your credentials.",
+        getAuthErrorMessage(error, "Login failed. Please check your credentials."),
       );
     },
   });
@@ -125,7 +179,7 @@ export const useRecruiterEmailLogin = () => {
     },
     onError: (error: Error) => {
       toast.error(
-        error.message || "Login failed. Please check your credentials.",
+        getAuthErrorMessage(error, "Login failed. Please check your credentials."),
       );
     },
   });
@@ -164,7 +218,7 @@ export const useRecruiterEmailRegister = () => {
       );
     },
     onError: (error: Error) => {
-      toast.error(error.message || "Registration failed. Please try again.");
+      toast.error(getAuthErrorMessage(error, "Registration failed. Please try again."));
     },
   });
 };
@@ -229,7 +283,7 @@ export const useSendPasswordResetEmail = () => {
       toast.success("Reset link sent! Please check your inbox.");
     },
     onError: (error: Error) => {
-      toast.error(error.message || "Failed to send reset email. Try again.");
+      toast.error(getAuthErrorMessage(error, "Failed to send reset email. Try again."));
     },
   });
 };
@@ -243,7 +297,7 @@ export const useUpdatePassword = () => {
       router.push("/login");
     },
     onError: (error: Error) => {
-      toast.error(error.message || "Failed to update password. Try again.");
+      toast.error(getAuthErrorMessage(error, "Failed to update password. Try again."));
     },
   });
 };
@@ -253,7 +307,7 @@ export const useExchangeCodeForSession = () => {
     mutationFn: (code: string) => exchangeCodeForSession(code),
     onError: (error: Error) => {
       toast.error(
-        error.message || "This reset link is invalid or has expired.",
+        getAuthErrorMessage(error, "This reset link is invalid or has expired."),
       );
     },
   });
