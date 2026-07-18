@@ -1357,6 +1357,7 @@ function PostJobContent() {
 
     const payload: JobInteraction = {
       Title: basicsData.title,
+      CompanyName: basicsData.companyName,
       Location: basicsData.location,
       JobType: basicsData.jobType,
       WorkMode: basicsData.workMode,

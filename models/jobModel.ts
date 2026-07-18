@@ -294,6 +294,7 @@ export interface JobCard {
 
 export interface JobInteraction {
   Title: string;
+  CompanyName?: string;
   Location: string;
   Skills: string[];
   Description: JobDescription;
