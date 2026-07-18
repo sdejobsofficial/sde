@@ -900,7 +900,7 @@ export default function StudentProfilePage() {
             </Label>
             <Input
               {...basicForm.register("name")}
-              className="h-10 text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card"
+              className="h-10 text-sm rounded-xl border-border bg-muted/50 focus:bg-card"
             />
             <FieldError message={basicForm.formState.errors.name?.message} />
           </div>
@@ -911,7 +911,7 @@ export default function StudentProfilePage() {
               </Label>
               <Input
                 {...basicForm.register("phone")}
-                className="h-10 text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card"
+                className="h-10 text-sm rounded-xl border-border bg-muted/50 focus:bg-card"
               />
               <FieldError message={basicForm.formState.errors.phone?.message} />
             </div>
@@ -921,7 +921,7 @@ export default function StudentProfilePage() {
               </Label>
               <Input
                 {...basicForm.register("location")}
-                className="h-10 text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card"
+                className="h-10 text-sm rounded-xl border-border bg-muted/50 focus:bg-card"
               />
               <FieldError
                 message={basicForm.formState.errors.location?.message}
@@ -935,7 +935,7 @@ export default function StudentProfilePage() {
             <Textarea
               {...basicForm.register("bio")}
               rows={3}
-              className="text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card resize-none"
+              className="text-sm rounded-xl border-border bg-muted/50 focus:bg-card resize-none"
             />
           </div>
           <div className="flex gap-3 pt-2">
@@ -943,7 +943,7 @@ export default function StudentProfilePage() {
               type="button"
               variant="outline"
               onClick={close}
-              className="flex-1 h-10 rounded-xl border-gray-200 text-sm"
+              className="flex-1 h-10 rounded-xl border-border text-sm"
             >
               Cancel
             </Button>
@@ -973,7 +973,7 @@ export default function StudentProfilePage() {
         <div className="space-y-4">
           <div
             onClick={() => avatarInputRef.current?.click()}
-            className="flex flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed border-gray-200 py-10 cursor-pointer hover:border-primary/40 hover:bg-primary/10/30 transition-all"
+            className="flex flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed border-border py-10 cursor-pointer hover:border-primary/40 hover:bg-primary/10/30 transition-all"
           >
             <input
               ref={avatarInputRef}
@@ -1035,7 +1035,7 @@ export default function StudentProfilePage() {
               type="button"
               variant="outline"
               onClick={close}
-              className="flex-1 h-10 rounded-xl border-gray-200 text-sm"
+              className="flex-1 h-10 rounded-xl border-border text-sm"
             >
               Cancel
             </Button>
@@ -1084,7 +1084,7 @@ export default function StudentProfilePage() {
                 "relative flex flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed py-10 px-6 cursor-pointer transition-all",
                 dragOver
                   ? "border-primary bg-primary/10"
-                  : "border-gray-200 bg-muted/50/80 hover:border-primary/40 hover:bg-primary/10/40",
+                  : "border-border bg-muted/50/80 hover:border-primary/40 hover:bg-primary/10/40",
               )}
             >
               <input
@@ -1130,7 +1130,7 @@ export default function StudentProfilePage() {
               <button
                 type="button"
                 onClick={() => setResumeFile(null)}
-                className="w-7 h-7 rounded-lg bg-card border border-gray-200 flex items-center justify-center text-muted-foreground/80 hover:text-red-500 hover:border-red-200 transition-all flex-shrink-0"
+                className="w-7 h-7 rounded-lg bg-card border border-border flex items-center justify-center text-muted-foreground/80 hover:text-red-500 hover:border-red-200 transition-all flex-shrink-0"
               >
                 <X size={13} />
               </button>
@@ -1141,7 +1141,7 @@ export default function StudentProfilePage() {
               type="button"
               variant="outline"
               onClick={close}
-              className="flex-1 h-10 rounded-xl border-gray-200 text-sm"
+              className="flex-1 h-10 rounded-xl border-border text-sm"
             >
               Cancel
             </Button>
@@ -1170,7 +1170,7 @@ export default function StudentProfilePage() {
         badge="Add 8%"
       >
         <div className="space-y-4">
-          <div className="min-h-[90px] rounded-xl border p-3 bg-muted/50 focus-within:bg-card focus-within:border-primary transition-all border-gray-200">
+          <div className="min-h-[90px] rounded-xl border p-3 bg-muted/50 focus-within:bg-card focus-within:border-primary transition-all border-border">
             <div className="flex flex-wrap gap-1.5 mb-2">
               {skills.map((s) => (
                 <span
@@ -1205,7 +1205,7 @@ export default function StudentProfilePage() {
                   key={s}
                   type="button"
                   onClick={() => addSkill(s)}
-                  className="text-xs px-3 py-1.5 rounded-full border border-gray-200 bg-card text-muted-foreground hover:border-primary/40 hover:text-primary hover:bg-primary/10 transition-all flex items-center gap-1"
+                  className="text-xs px-3 py-1.5 rounded-full border border-border bg-card text-muted-foreground hover:border-primary/40 hover:text-primary hover:bg-primary/10 transition-all flex items-center gap-1"
                 >
                   <Plus size={11} /> {s}
                 </button>
@@ -1217,7 +1217,7 @@ export default function StudentProfilePage() {
               type="button"
               variant="outline"
               onClick={close}
-              className="flex-1 h-10 rounded-xl border-gray-200 text-sm"
+              className="flex-1 h-10 rounded-xl border-border text-sm"
             >
               Cancel
             </Button>
@@ -1258,7 +1258,7 @@ export default function StudentProfilePage() {
             <Input
               {...eduForm.register("College")}
               placeholder="Eg. IIT Delhi"
-              className="h-10 text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card"
+              className="h-10 text-sm rounded-xl border-border bg-muted/50 focus:bg-card"
             />
             <FieldError message={eduForm.formState.errors.College?.message} />
           </div>
@@ -1270,7 +1270,7 @@ export default function StudentProfilePage() {
               <Input
                 {...eduForm.register("Course")}
                 placeholder="B.Tech / B.E."
-                className="h-10 text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card"
+                className="h-10 text-sm rounded-xl border-border bg-muted/50 focus:bg-card"
               />
               <FieldError message={eduForm.formState.errors.Course?.message} />
             </div>
@@ -1281,7 +1281,7 @@ export default function StudentProfilePage() {
               <Input
                 {...eduForm.register("Specialization")}
                 placeholder="Computer Science"
-                className="h-10 text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card"
+                className="h-10 text-sm rounded-xl border-border bg-muted/50 focus:bg-card"
               />
             </div>
           </div>
@@ -1294,7 +1294,7 @@ export default function StudentProfilePage() {
                 type="number"
                 {...eduForm.register("StartingYear")}
                 placeholder="2020"
-                className="h-10 text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card"
+                className="h-10 text-sm rounded-xl border-border bg-muted/50 focus:bg-card"
               />
             </div>
             <div className="space-y-1.5">
@@ -1305,7 +1305,7 @@ export default function StudentProfilePage() {
                 type="number"
                 {...eduForm.register("GraduationYear")}
                 placeholder="2024"
-                className="h-10 text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card"
+                className="h-10 text-sm rounded-xl border-border bg-muted/50 focus:bg-card"
               />
             </div>
           </div>
@@ -1316,7 +1316,7 @@ export default function StudentProfilePage() {
             <Input
               {...eduForm.register("GPA")}
               placeholder="e.g. 8.5 or 85%"
-              className="h-10 text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card"
+              className="h-10 text-sm rounded-xl border-border bg-muted/50 focus:bg-card"
             />
           </div>
           <div className="flex gap-3 pt-2">
@@ -1324,7 +1324,7 @@ export default function StudentProfilePage() {
               type="button"
               variant="outline"
               onClick={close}
-              className="flex-1 h-10 rounded-xl border-gray-200 text-sm"
+              className="flex-1 h-10 rounded-xl border-border text-sm"
             >
               Cancel
             </Button>
@@ -1366,7 +1366,7 @@ export default function StudentProfilePage() {
             <Input
               {...expForm.register("CompanyName")}
               placeholder="Google, Amazon…"
-              className="h-10 text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card"
+              className="h-10 text-sm rounded-xl border-border bg-muted/50 focus:bg-card"
             />
             <FieldError
               message={expForm.formState.errors.CompanyName?.message}
@@ -1379,7 +1379,7 @@ export default function StudentProfilePage() {
             <Input
               {...expForm.register("Role")}
               placeholder="Software Engineer"
-              className="h-10 text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card"
+              className="h-10 text-sm rounded-xl border-border bg-muted/50 focus:bg-card"
             />
             <FieldError message={expForm.formState.errors.Role?.message} />
           </div>
@@ -1391,7 +1391,7 @@ export default function StudentProfilePage() {
               <Input
                 type="month"
                 {...expForm.register("StartDate")}
-                className="h-10 text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card"
+                className="h-10 text-sm rounded-xl border-border bg-muted/50 focus:bg-card"
               />
               <FieldError
                 message={expForm.formState.errors.StartDate?.message}
@@ -1405,7 +1405,7 @@ export default function StudentProfilePage() {
                 type="month"
                 {...expForm.register("EndDate")}
                 disabled={expForm.watch("CurrentlyWorking")}
-                className="h-10 text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card disabled:opacity-40"
+                className="h-10 text-sm rounded-xl border-border bg-muted/50 focus:bg-card disabled:opacity-40"
               />
             </div>
           </div>
@@ -1425,7 +1425,7 @@ export default function StudentProfilePage() {
               {...expForm.register("Description")}
               rows={3}
               placeholder="Describe your role and achievements…"
-              className="text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card resize-none"
+              className="text-sm rounded-xl border-border bg-muted/50 focus:bg-card resize-none"
             />
           </div>
           <div className="flex gap-3 pt-2">
@@ -1433,7 +1433,7 @@ export default function StudentProfilePage() {
               type="button"
               variant="outline"
               onClick={close}
-              className="flex-1 h-10 rounded-xl border-gray-200 text-sm"
+              className="flex-1 h-10 rounded-xl border-border text-sm"
             >
               Cancel
             </Button>
@@ -1471,7 +1471,7 @@ export default function StudentProfilePage() {
             <Input
               {...projForm.register("Title")}
               placeholder="E-commerce Platform"
-              className="h-10 text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card"
+              className="h-10 text-sm rounded-xl border-border bg-muted/50 focus:bg-card"
             />
             <FieldError message={projForm.formState.errors.Title?.message} />
           </div>
@@ -1483,7 +1483,7 @@ export default function StudentProfilePage() {
               {...projForm.register("Description")}
               rows={3}
               placeholder="What did you build and what technologies did you use?"
-              className="text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card resize-none"
+              className="text-sm rounded-xl border-border bg-muted/50 focus:bg-card resize-none"
             />
             <FieldError
               message={projForm.formState.errors.Description?.message}
@@ -1497,7 +1497,7 @@ export default function StudentProfilePage() {
               {...projForm.register("Link")}
               type="url"
               placeholder="https://github.com/you/project"
-              className="h-10 text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card"
+              className="h-10 text-sm rounded-xl border-border bg-muted/50 focus:bg-card"
             />
             <FieldError message={projForm.formState.errors.Link?.message} />
           </div>
@@ -1506,7 +1506,7 @@ export default function StudentProfilePage() {
               type="button"
               variant="outline"
               onClick={close}
-              className="flex-1 h-10 rounded-xl border-gray-200 text-sm"
+              className="flex-1 h-10 rounded-xl border-border text-sm"
             >
               Cancel
             </Button>
@@ -1549,7 +1549,7 @@ export default function StudentProfilePage() {
                   placeholder={placeholder}
                   {...socialForm.register(name)}
                   className={cn(
-                    "h-10 text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card transition-all",
+                    "h-10 text-sm rounded-xl border-border bg-muted/50 focus:bg-card transition-all",
                     socialForm.formState.errors[name] && "border-red-300",
                   )}
                 />
@@ -1564,7 +1564,7 @@ export default function StudentProfilePage() {
               type="button"
               variant="outline"
               onClick={close}
-              className="flex-1 h-10 rounded-xl border-gray-200 text-sm"
+              className="flex-1 h-10 rounded-xl border-border text-sm"
             >
               Cancel
             </Button>
@@ -1602,7 +1602,7 @@ export default function StudentProfilePage() {
             <Input
               type="date"
               {...personalForm.register("DateOfBirth")}
-              className="h-10 text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card"
+              className="h-10 text-sm rounded-xl border-border bg-muted/50 focus:bg-card"
             />
           </div>
           <div className="space-y-2">
@@ -1633,7 +1633,7 @@ export default function StudentProfilePage() {
               {...personalForm.register("CurrentAddress")}
               rows={2}
               placeholder="Flat no, Street, City, State, PIN"
-              className="text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card resize-none"
+              className="text-sm rounded-xl border-border bg-muted/50 focus:bg-card resize-none"
             />
           </div>
           <div className="space-y-1.5">
@@ -1644,7 +1644,7 @@ export default function StudentProfilePage() {
               {...personalForm.register("PermanentAddress")}
               rows={2}
               placeholder="Flat no, Street, City, State, PIN"
-              className="text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card resize-none"
+              className="text-sm rounded-xl border-border bg-muted/50 focus:bg-card resize-none"
             />
           </div>
           <div className="flex gap-3 pt-2">
@@ -1652,7 +1652,7 @@ export default function StudentProfilePage() {
               type="button"
               variant="outline"
               onClick={close}
-              className="flex-1 h-10 rounded-xl border-gray-200 text-sm"
+              className="flex-1 h-10 rounded-xl border-border text-sm"
             >
               Cancel
             </Button>

@@ -207,7 +207,7 @@ export default function JobDetailPage({
                           </span>
                         )}
                         {!isOpen && (
-                          <span className="text-xs bg-muted text-muted-foreground border border-gray-200 px-2.5 py-0.5 rounded-full font-medium">
+                          <span className="text-xs bg-muted text-muted-foreground border border-border px-2.5 py-0.5 rounded-full font-medium">
                             Closed
                           </span>
                         )}

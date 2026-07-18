@@ -175,7 +175,7 @@ function ResumeUploadStep({
             "relative flex flex-col items-center justify-center gap-4 rounded-2xl border-2 border-dashed py-12 px-6 cursor-pointer transition-all",
             dragOver
               ? "border-primary bg-primary/5"
-              : "border-gray-200 bg-muted/50/80 hover:border-primary/40 hover:bg-primary/5",
+              : "border-border bg-muted/50/80 hover:border-primary/40 hover:bg-primary/5",
           )}
         >
           <input
@@ -223,7 +223,7 @@ function ResumeUploadStep({
                   setStatus("idle");
                   setParsedPreview(null);
                 }}
-                className="w-7 h-7 rounded-lg bg-card border border-gray-200 flex items-center justify-center text-muted-foreground/80 hover:text-red-500 hover:border-red-200 transition-all flex-shrink-0"
+                className="w-7 h-7 rounded-lg bg-card border border-border flex items-center justify-center text-muted-foreground/80 hover:text-red-500 hover:border-red-200 transition-all flex-shrink-0"
               >
                 <X size={13} />
               </button>
@@ -336,7 +336,7 @@ function ResumeUploadStep({
         <button
           type="button"
           onClick={onSkip}
-          className="w-full h-10 rounded-xl border border-gray-200 text-muted-foreground text-sm font-medium hover:bg-muted/50 transition-all flex items-center justify-center gap-2"
+          className="w-full h-10 rounded-xl border border-border text-muted-foreground text-sm font-medium hover:bg-muted/50 transition-all flex items-center justify-center gap-2"
         >
           <SkipForward size={14} />
           Skip — I&apos;ll fill in manually
@@ -348,7 +348,7 @@ function ResumeUploadStep({
 
 function PreviewChip({ label, value }: { label: string; value: string }) {
   return (
-    <div className="inline-flex items-center gap-1.5 bg-card border border-gray-200 rounded-full px-3 py-1 text-xs">
+    <div className="inline-flex items-center gap-1.5 bg-card border border-border rounded-full px-3 py-1 text-xs">
       <span className="text-muted-foreground/80 font-medium">{label}:</span>
       <span className="text-foreground/80 font-semibold truncate max-w-[140px]">
         {value}
@@ -405,7 +405,7 @@ function BasicStep({
             placeholder="John Doe"
             {...register("name")}
             className={cn(
-              "pl-9 h-10 text-sm rounded-xl border-gray-200 bg-muted/50/80 focus:bg-card transition-all",
+              "pl-9 h-10 text-sm rounded-xl border-border bg-muted/50/80 focus:bg-card transition-all",
               errors.name && "border-red-300",
             )}
           />
@@ -419,7 +419,7 @@ function BasicStep({
             Mobile number<span className="text-red-500 ml-0.5">*</span>
           </Label>
           <div className="flex gap-2">
-            <div className="h-10 px-2.5 flex items-center border border-gray-200 bg-muted/50/80 rounded-xl text-xs text-muted-foreground font-medium flex-shrink-0 gap-1">
+            <div className="h-10 px-2.5 flex items-center border border-border bg-muted/50/80 rounded-xl text-xs text-muted-foreground font-medium flex-shrink-0 gap-1">
               <Phone size={12} className="text-muted-foreground/80" /> +91
             </div>
             <Input
@@ -428,7 +428,7 @@ function BasicStep({
               {...register("phone")}
               maxLength={10}
               className={cn(
-                "h-10 text-sm rounded-xl border-gray-200 bg-muted/50/80 focus:bg-card transition-all",
+                "h-10 text-sm rounded-xl border-border bg-muted/50/80 focus:bg-card transition-all",
                 errors.phone && "border-red-300",
               )}
             />
@@ -449,7 +449,7 @@ function BasicStep({
               placeholder="City, State"
               {...register("location")}
               className={cn(
-                "pl-9 h-10 text-sm rounded-xl border-gray-200 bg-muted/50/80 focus:bg-card transition-all",
+                "pl-9 h-10 text-sm rounded-xl border-border bg-muted/50/80 focus:bg-card transition-all",
                 errors.location && "border-red-300",
               )}
             />
@@ -467,7 +467,7 @@ function BasicStep({
           placeholder="Write a short bio about yourself — your goals, interests and what you're looking for..."
           {...register("bio")}
           rows={3}
-          className="text-sm rounded-xl border-gray-200 bg-muted/50/80 focus:bg-card resize-none transition-all"
+          className="text-sm rounded-xl border-border bg-muted/50/80 focus:bg-card resize-none transition-all"
         />
         <FieldError message={errors.bio?.message} />
       </div>
@@ -597,7 +597,7 @@ function EducationStep({
             placeholder="Eg. National Institute of Technology (NIT)"
             {...register("college")}
             className={cn(
-              "pr-9 h-10 text-sm rounded-xl border-gray-200 bg-muted/50/80 focus:bg-card transition-all",
+              "pr-9 h-10 text-sm rounded-xl border-border bg-muted/50/80 focus:bg-card transition-all",
               errors.college && "border-red-300",
             )}
           />
@@ -654,7 +654,7 @@ function EducationStep({
                 : "e.g. 8.5"
             }
             {...register("gpa")}
-            className="h-10 text-sm rounded-xl border-gray-200 bg-muted/50/80 focus:bg-card transition-all"
+            className="h-10 text-sm rounded-xl border-border bg-muted/50/80 focus:bg-card transition-all"
           />
           <p className="text-xs text-muted-foreground/80">
             CGPA is the marks obtained from all the GPAs
@@ -672,7 +672,7 @@ function EducationStep({
             step="0.01"
             placeholder="e.g. 82.5"
             {...register("gpa")}
-            className="h-10 text-sm rounded-xl border-gray-200 bg-muted/50/80 focus:bg-card transition-all"
+            className="h-10 text-sm rounded-xl border-border bg-muted/50/80 focus:bg-card transition-all"
           />
         </div>
       )}
@@ -688,7 +688,7 @@ function EducationStep({
           type="button"
           variant="outline"
           onClick={onBack}
-          className="flex-1 h-11 rounded-xl border-gray-200 text-muted-foreground hover:bg-muted/50 text-sm font-medium transition-all"
+          className="flex-1 h-11 rounded-xl border-border text-muted-foreground hover:bg-muted/50 text-sm font-medium transition-all"
         >
           Back
         </Button>
@@ -847,7 +847,7 @@ function LastStep({
               "relative flex flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed py-10 px-6 cursor-pointer transition-all",
               dragOver
                 ? "border-primary bg-primary/5"
-                : "border-gray-200 bg-muted/50/80 hover:border-primary/40 hover:bg-primary/5",
+                : "border-border bg-muted/50/80 hover:border-primary/40 hover:bg-primary/5",
             )}
           >
             <input
@@ -890,7 +890,7 @@ function LastStep({
             <button
               type="button"
               onClick={removeResume}
-              className="w-7 h-7 rounded-lg bg-card border border-gray-200 flex items-center justify-center text-muted-foreground/80 hover:text-red-500 hover:border-red-200 transition-all flex-shrink-0"
+              className="w-7 h-7 rounded-lg bg-card border border-border flex items-center justify-center text-muted-foreground/80 hover:text-red-500 hover:border-red-200 transition-all flex-shrink-0"
             >
               <X size={13} />
             </button>
@@ -942,7 +942,7 @@ function LastStep({
                     placeholder={placeholder}
                     {...register(name)}
                     className={cn(
-                      "h-10 text-sm rounded-xl border-gray-200 bg-muted/50/80 focus:bg-card transition-all pr-9",
+                      "h-10 text-sm rounded-xl border-border bg-muted/50/80 focus:bg-card transition-all pr-9",
                       errors[name] && "border-red-300",
                     )}
                   />
@@ -978,7 +978,7 @@ function LastStep({
           variant="outline"
           onClick={onBack}
           disabled={loading}
-          className="flex-1 h-11 rounded-xl border-gray-200 text-muted-foreground hover:bg-muted/50 text-sm font-medium transition-all disabled:opacity-50"
+          className="flex-1 h-11 rounded-xl border-border text-muted-foreground hover:bg-muted/50 text-sm font-medium transition-all disabled:opacity-50"
         >
           Back
         </Button>
@@ -1041,7 +1041,7 @@ function Stepper({ current }: { current: ExtendedStep }) {
                   "w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 border-2 transition-all duration-300 z-10",
                   done && "bg-primary border-primary text-primary-foreground",
                   active && "bg-card border-primary text-primary",
-                  pending && "bg-card border-gray-200 text-gray-300",
+                  pending && "bg-card border-border text-gray-300",
                 )}
               >
                 {done ? (

@@ -181,7 +181,7 @@ export default function CompanyProfilePage({
                 >
                   <Button
                     variant="outline"
-                    className="h-9 px-4 rounded-xl border-gray-200 bg-card shadow-sm text-xs font-semibold text-muted-foreground hover:bg-muted/50 flex items-center gap-1.5"
+                    className="h-9 px-4 rounded-xl border-border bg-card shadow-sm text-xs font-semibold text-muted-foreground hover:bg-muted/50 flex items-center gap-1.5"
                   >
                     <Globe size={13} /> Website <ExternalLink size={11} />
                   </Button>
@@ -401,7 +401,7 @@ export default function CompanyProfilePage({
                   <Link href={`/jobs?company=${id}`}>
                     <Button
                       variant="outline"
-                      className="h-9 px-5 rounded-xl border-gray-200 text-xs text-primary hover:bg-primary/10 hover:border-primary/30 font-semibold flex items-center gap-1.5 mx-auto"
+                      className="h-9 px-5 rounded-xl border-border text-xs text-primary hover:bg-primary/10 hover:border-primary/30 font-semibold flex items-center gap-1.5 mx-auto"
                     >
                       View all {jobsData?.total} jobs <ArrowRight size={13} />
                     </Button>

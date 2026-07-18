@@ -91,7 +91,7 @@ export function StatusModal({
                     "flex items-center gap-2.5 px-3 py-2.5 rounded-xl border text-left transition-all",
                     isSelected
                       ? `${cfg.bg} ${cfg.border} shadow-sm`
-                      : "border-gray-100 bg-muted/50 hover:border-gray-200 hover:bg-card",
+                      : "border-gray-100 bg-muted/50 hover:border-border hover:bg-card",
                   )}
                 >
                   <div
@@ -140,7 +140,7 @@ export function StatusModal({
                       "text-xs px-2.5 py-1.5 rounded-lg border transition-all",
                       reason === Number(val)
                         ? "bg-red-50 border-red-200 text-red-600 font-medium"
-                        : "border-gray-200 bg-card text-muted-foreground hover:border-gray-300",
+                        : "border-border bg-card text-muted-foreground hover:border-gray-300",
                     )}
                   >
                     {lbl}
@@ -152,7 +152,7 @@ export function StatusModal({
                 onChange={(e) => setNote(e.target.value)}
                 placeholder="Optional note for your records..."
                 rows={2}
-                className="text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card resize-none"
+                className="text-sm rounded-xl border-border bg-muted/50 focus:bg-card resize-none"
               />
             </div>
           )}
@@ -163,7 +163,7 @@ export function StatusModal({
               type="button"
               variant="outline"
               onClick={onClose}
-              className="flex-1 h-10 rounded-xl border-gray-200 text-sm text-muted-foreground"
+              className="flex-1 h-10 rounded-xl border-border text-sm text-muted-foreground"
             >
               Cancel
             </Button>
@@ -289,7 +289,7 @@ export  function PipelineBar({
                     active && `${cfg.bg} ${cfg.border} ${cfg.color}`,
                     !done &&
                       !active &&
-                      "bg-card border-gray-200 text-gray-300",
+                      "bg-card border-border text-gray-300",
                   )}
                 >
                   {done ? <Check size={13} strokeWidth={3} /> : i + 1}

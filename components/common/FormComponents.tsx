@@ -89,7 +89,7 @@ export function TagSelector({
       <div
         className={cn(
           "min-h-[42px] flex flex-wrap gap-1.5 px-3 py-2 rounded-xl border bg-muted/50/80 text-foreground transition-all dark:bg-card/70",
-          error ? "border-red-300" : "border-gray-200",
+          error ? "border-red-300" : "border-border",
           selected.length > 0 && "bg-card",
         )}
       >
@@ -124,7 +124,7 @@ export function TagSelector({
               key={opt}
               type="button"
               onClick={() => toggle(opt)}
-              className="inline-flex items-center gap-1 text-xs px-3 py-1.5 rounded-full border border-gray-200 bg-card text-foreground/80 hover:border-primary/40 hover:text-primary hover:bg-primary/10 transition-all"
+              className="inline-flex items-center gap-1 text-xs px-3 py-1.5 rounded-full border border-border bg-card text-foreground/80 hover:border-primary/40 hover:text-primary hover:bg-primary/10 transition-all"
             >
               {opt}
               {!single && <Plus size={11} />}
@@ -164,7 +164,7 @@ export function SkillInput({
       <div
         className={cn(
           "min-h-[90px] rounded-xl border p-3 bg-muted/50/80 focus-within:bg-card focus-within:border-primary transition-all",
-          error ? "border-red-300" : "border-gray-200",
+          error ? "border-red-300" : "border-border",
         )}
       >
         <div className="flex flex-wrap gap-1.5 mb-2">
@@ -214,7 +214,7 @@ export function SkillInput({
               key={s}
               type="button"
               onClick={() => add(s)}
-              className="inline-flex items-center gap-1 text-xs px-3 py-1.5 rounded-full border border-gray-200 bg-card text-foreground/80 hover:border-primary/40 hover:text-primary hover:bg-primary/10 transition-all"
+              className="inline-flex items-center gap-1 text-xs px-3 py-1.5 rounded-full border border-border bg-card text-foreground/80 hover:border-primary/40 hover:text-primary hover:bg-primary/10 transition-all"
             >
               {s} <Plus size={11} />
             </button>
@@ -255,7 +255,7 @@ export function YearPicker({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className={cn(
-          "h-10 rounded-xl border-gray-200 bg-muted/50/80 focus:bg-card text-sm transition-all",
+          "h-10 rounded-xl border-border bg-muted/50/80 focus:bg-card text-sm transition-all",
           error && "border-red-300",
         )}
       />
@@ -269,7 +269,7 @@ export function YearPicker({
               "text-xs px-3 py-1.5 rounded-full border transition-all",
               value === String(y)
                 ? "bg-primary text-primary-foreground border-primary shadow-sm shadow-primary/20"
-                : "border-gray-200 bg-card text-foreground/80 hover:border-primary/40 hover:text-primary hover:bg-primary/10",
+                : "border-border bg-card text-foreground/80 hover:border-primary/40 hover:text-primary hover:bg-primary/10",
             )}
           >
             {y}
@@ -301,7 +301,7 @@ export function GradingSelector({
       <div
         className={cn(
           "min-h-[42px] flex flex-wrap gap-1.5 px-3 py-2 rounded-xl border bg-muted/50/80 text-foreground transition-all dark:bg-card/70",
-          error ? "border-red-300" : "border-gray-200",
+          error ? "border-red-300" : "border-border",
           selected && "bg-card",
         )}
       >
@@ -330,7 +330,7 @@ export function GradingSelector({
             key={g.value}
             type="button"
             onClick={() => onChange(g.value)}
-            className="text-xs px-3 py-1.5 rounded-full border border-gray-200 bg-card text-foreground/80 hover:border-primary/40 hover:text-primary hover:bg-primary/10 transition-all"
+            className="text-xs px-3 py-1.5 rounded-full border border-border bg-card text-foreground/80 hover:border-primary/40 hover:text-primary hover:bg-primary/10 transition-all"
           >
             {g.label}
           </button>
@@ -360,7 +360,7 @@ export function PillButton({
         "inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg border transition-all duration-150 font-medium",
         selected
           ? "bg-primary text-primary-foreground border-primary shadow-sm shadow-primary/30"
-          : "border-gray-200 bg-card text-muted-foreground hover:border-primary/40 hover:text-primary hover:bg-primary/10",
+          : "border-border bg-card text-muted-foreground hover:border-primary/40 hover:text-primary hover:bg-primary/10",
       )}
     >
       {selected && <Check size={11} strokeWidth={3} />}

@@ -45,7 +45,7 @@ export default function CompanySidebar() {
     <aside className="hidden lg:flex w-60 shrink-0 flex-col bg-card border-r border-gray-100 h-full">
       {/* Brand */}
       <div className="px-5 py-5 border-b border-gray-100 shrink-0">
-        <Link href="/" className="flex items-center gap-2.5">
+        <Link href="/recruiter/dashboard" className="flex items-center gap-2.5">
           <Image
             src="/icon.png"
             alt="ReferNest Logo"

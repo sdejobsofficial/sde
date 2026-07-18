@@ -157,7 +157,7 @@ export default function PostedJobsPage() {
             placeholder="Search by title or location..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="pl-8 h-9 text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card focus:border-primary transition-all"
+            className="pl-8 h-9 text-sm rounded-xl border-border bg-muted/50 focus:bg-card focus:border-primary transition-all"
           />
         </div>
 

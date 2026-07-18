@@ -221,7 +221,7 @@ function CheckoutModal({
                       ? "bg-emerald-50 border-emerald-200 text-emerald-700 cursor-not-allowed"
                       : isInvalid
                         ? "bg-red-50 border-red-200 text-red-700 focus:border-red-400"
-                        : "bg-background border-gray-200 text-foreground focus:border-primary",
+                        : "bg-background border-border text-foreground focus:border-primary",
                   )}
                 />
                 <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
@@ -243,7 +243,7 @@ function CheckoutModal({
                   type="button"
                   onClick={handleClear}
                   disabled={isPending}
-                  className="h-10 px-3.5 rounded-xl border border-gray-200 text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all whitespace-nowrap disabled:opacity-40"
+                  className="h-10 px-3.5 rounded-xl border border-border text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all whitespace-nowrap disabled:opacity-40"
                 >
                   Remove
                 </button>
@@ -468,7 +468,7 @@ function PricingPageContent() {
               ))}
             </ul>
 
-            <button className="w-full py-3 rounded-xl border border-gray-200 text-sm font-semibold text-muted-foreground cursor-default">
+            <button className="w-full py-3 rounded-xl border border-border text-sm font-semibold text-muted-foreground cursor-default">
               Current plan
             </button>
           </div>

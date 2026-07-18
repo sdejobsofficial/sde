@@ -293,7 +293,7 @@ export function DescriptionEditor({
   );
 
   return (
-    <div className="rounded-xl border border-gray-200 overflow-hidden focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 transition-all bg-card">
+    <div className="rounded-xl border border-border overflow-hidden focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 transition-all bg-card">
       {/* ── Toolbar ─────────────────────────────────────────────────────── */}
       <div className="flex flex-wrap items-center gap-0.5 px-2.5 py-2 border-b border-gray-100 bg-muted/50/80">
         {/* History */}
@@ -440,7 +440,7 @@ export function DescriptionEditor({
           "[&_blockquote]:border-l-4 [&_blockquote]:border-primary/40 [&_blockquote]:pl-3 [&_blockquote]:italic [&_blockquote]:text-muted-foreground [&_blockquote]:my-2",
           "[&_pre]:bg-muted [&_pre]:rounded-lg [&_pre]:px-3 [&_pre]:py-2 [&_pre]:text-xs [&_pre]:font-mono [&_pre]:my-1.5 [&_pre]:text-foreground/80",
           "[&_a]:text-primary [&_a]:underline [&_a]:cursor-pointer",
-          "[&_hr]:border-gray-200 [&_hr]:my-3",
+          "[&_hr]:border-border [&_hr]:my-3",
           "empty:before:content-[attr(data-placeholder)] before:text-muted-foreground/80 before:pointer-events-none",
         )}
       />

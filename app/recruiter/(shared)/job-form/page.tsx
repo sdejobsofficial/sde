@@ -121,7 +121,7 @@ function BasicsStep({
           {...register("title")}
           placeholder="e.g. Senior Frontend Engineer"
           className={cn(
-            "h-10 text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card focus:border-primary transition-all",
+            "h-10 text-sm rounded-xl border-border bg-muted/50 focus:bg-card focus:border-primary transition-all",
             errors.title && "border-red-300",
           )}
         />
@@ -158,7 +158,7 @@ function BasicsStep({
             {...register("location")}
             placeholder="e.g. Bengaluru, KA or Remote"
             className={cn(
-              "pl-9 h-10 text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card focus:border-primary transition-all",
+              "pl-9 h-10 text-sm rounded-xl border-border bg-muted/50 focus:bg-card focus:border-primary transition-all",
               errors.location && "border-red-300",
             )}
           />
@@ -269,7 +269,7 @@ function ExperienceStep({
             type="number"
             {...register("experienceMinYears", { valueAsNumber: true })}
             min={0}
-            className="h-10 text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card focus:border-primary"
+            className="h-10 text-sm rounded-xl border-border bg-muted/50 focus:bg-card focus:border-primary"
           />
           <FieldError message={errors.totalOpenings?.message} />
         </div>
@@ -281,7 +281,7 @@ function ExperienceStep({
             type="number"
             {...register("experienceMaxYears", { valueAsNumber: true })}
             min={0}
-            className="h-10 text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card focus:border-primary"
+            className="h-10 text-sm rounded-xl border-border bg-muted/50 focus:bg-card focus:border-primary"
           />
           <FieldError message={errors.totalOpenings?.message} />
         </div>
@@ -294,7 +294,7 @@ function ExperienceStep({
             {...register("totalOpenings", { valueAsNumber: true })}
             min={1}
             className={cn(
-              "h-10 text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card focus:border-primary",
+              "h-10 text-sm rounded-xl border-border bg-muted/50 focus:bg-card focus:border-primary",
               errors.totalOpenings && "border-red-300",
             )}
           />
@@ -307,7 +307,7 @@ function ExperienceStep({
           type="button"
           variant="outline"
           onClick={onBack}
-          className="flex-1 h-11 rounded-xl border-gray-200 text-muted-foreground hover:bg-muted/50 text-sm font-medium transition-all"
+          className="flex-1 h-11 rounded-xl border-border text-muted-foreground hover:bg-muted/50 text-sm font-medium transition-all"
         >
           Back
         </Button>
@@ -377,7 +377,7 @@ function SalaryStep({
           <Label className="text-sm font-medium text-foreground/80">Currency</Label>
           <select
             {...register("salaryCurrency")}
-            className="w-full h-10 px-3 text-sm rounded-xl border border-gray-200 bg-muted/50 focus:bg-card focus:border-primary outline-none transition-all"
+            className="w-full h-10 px-3 text-sm rounded-xl border border-border bg-muted/50 focus:bg-card focus:border-primary outline-none transition-all"
           >
             {["INR", "USD", "EUR", "GBP", "AED"].map((c) => (
               <option key={c} value={c}>
@@ -395,7 +395,7 @@ function SalaryStep({
             {...register("salaryMin", { valueAsNumber: true })}
             min={0}
             className={cn(
-              "h-10 text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card focus:border-primary",
+              "h-10 text-sm rounded-xl border-border bg-muted/50 focus:bg-card focus:border-primary",
               errors.salaryMin && "border-red-300",
             )}
           />
@@ -411,7 +411,7 @@ function SalaryStep({
             {...register("salaryMax", { valueAsNumber: true })}
             min={0}
             className={cn(
-              "h-10 text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card focus:border-primary",
+              "h-10 text-sm rounded-xl border-border bg-muted/50 focus:bg-card focus:border-primary",
               errors.salaryMax && "border-red-300",
             )}
           />
@@ -440,7 +440,7 @@ function SalaryStep({
           type="button"
           variant="outline"
           onClick={onBack}
-          className="flex-1 h-11 rounded-xl border-gray-200 text-muted-foreground hover:bg-muted/50 text-sm font-medium transition-all"
+          className="flex-1 h-11 rounded-xl border-border text-muted-foreground hover:bg-muted/50 text-sm font-medium transition-all"
         >
           Back
         </Button>
@@ -492,7 +492,7 @@ function FormFieldCard({
   };
 
   return (
-    <div className="bg-card rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+    <div className="bg-card rounded-2xl border border-border shadow-sm overflow-hidden">
       <div className="flex items-center gap-3 px-4 py-3 border-b border-gray-100 bg-muted/50/50">
         <div className="w-7 h-7 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center flex-shrink-0">
           <FieldIcon size={13} className="text-primary" />
@@ -598,7 +598,7 @@ function FormFieldCard({
                 value={field.label}
                 onChange={(e) => onChange({ ...field, label: e.target.value })}
                 placeholder="e.g. Why do you want to join?"
-                className="h-9 text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card"
+                className="h-9 text-sm rounded-xl border-border bg-muted/50 focus:bg-card"
               />
             </div>
             <div className="space-y-1.5">
@@ -611,7 +611,7 @@ function FormFieldCard({
                   onChange({ ...field, placeholder: e.target.value })
                 }
                 placeholder="e.g. Your answer here..."
-                className="h-9 text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card"
+                className="h-9 text-sm rounded-xl border-border bg-muted/50 focus:bg-card"
               />
             </div>
           </div>
@@ -624,7 +624,7 @@ function FormFieldCard({
               value={field.helpText}
               onChange={(e) => onChange({ ...field, helpText: e.target.value })}
               placeholder="Optional hint shown below the field"
-              className="h-9 text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card"
+              className="h-9 text-sm rounded-xl border-border bg-muted/50 focus:bg-card"
             />
           </div>
 
@@ -644,7 +644,7 @@ function FormFieldCard({
                         opts[i] = e.target.value;
                         onChange({ ...field, options: opts });
                       }}
-                      className="h-8 text-sm rounded-lg border-gray-200 bg-muted/50 focus:bg-card flex-1"
+                      className="h-8 text-sm rounded-lg border-border bg-muted/50 focus:bg-card flex-1"
                     />
                     <button
                       type="button"
@@ -672,7 +672,7 @@ function FormFieldCard({
                       }
                     }}
                     placeholder="Add option and press Enter"
-                    className="h-8 text-sm rounded-lg border-dashed border-gray-200 bg-muted/50 focus:bg-card flex-1"
+                    className="h-8 text-sm rounded-lg border-dashed border-border bg-muted/50 focus:bg-card flex-1"
                   />
                   <button
                     type="button"
@@ -698,7 +698,7 @@ function FormFieldCard({
                     onChange({ ...field, acceptedFileTypes: e.target.value })
                   }
                   placeholder=".pdf,.doc,.docx"
-                  className="h-9 text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card"
+                  className="h-9 text-sm rounded-xl border-border bg-muted/50 focus:bg-card"
                 />
               </div>
               <div className="space-y-1.5">
@@ -714,7 +714,7 @@ function FormFieldCard({
                       maxFileSizeMb: Number(e.target.value),
                     })
                   }
-                  className="h-9 text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card"
+                  className="h-9 text-sm rounded-xl border-border bg-muted/50 focus:bg-card"
                 />
               </div>
             </div>
@@ -734,7 +734,7 @@ function FormFieldCard({
                     onChange={(e) =>
                       onChange({ ...field, min: Number(e.target.value) })
                     }
-                    className="h-9 text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card"
+                    className="h-9 text-sm rounded-xl border-border bg-muted/50 focus:bg-card"
                   />
                 </div>
                 <div className="space-y-1.5">
@@ -747,7 +747,7 @@ function FormFieldCard({
                     onChange={(e) =>
                       onChange({ ...field, max: Number(e.target.value) })
                     }
-                    className="h-9 text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card"
+                    className="h-9 text-sm rounded-xl border-border bg-muted/50 focus:bg-card"
                   />
                 </div>
               </div>
@@ -944,7 +944,7 @@ function ApplicationStep({
                 "flex flex-col items-start p-4 rounded-xl border text-left transition-all",
                 w.formType === value
                   ? "border-primary/100 bg-primary/10 shadow-sm"
-                  : "border-gray-200 bg-muted/50/80 hover:border-primary/30 hover:bg-primary/10/30",
+                  : "border-border bg-muted/50/80 hover:border-primary/30 hover:bg-primary/10/30",
               )}
             >
               <div className="flex items-center gap-2 mb-1">
@@ -991,7 +991,7 @@ function ApplicationStep({
               type="url"
               placeholder="https://yourcompany.com/careers/job-123"
               className={cn(
-                "pl-9 h-10 text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card focus:border-primary transition-all",
+                "pl-9 h-10 text-sm rounded-xl border-border bg-muted/50 focus:bg-card focus:border-primary transition-all",
                 errors.externalApplyUrl && "border-red-300",
               )}
             />
@@ -1013,14 +1013,14 @@ function ApplicationStep({
           <Input
             type="date"
             {...register("applicationDeadline")}
-            className="pl-9 h-10 text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card focus:border-primary transition-all w-56"
+            className="pl-9 h-10 text-sm rounded-xl border-border bg-muted/50 focus:bg-card focus:border-primary transition-all w-56"
           />
         </div>
       </div>
 
       {/* Referrals + urgent toggles */}
       <div className="grid grid-cols-2 gap-4">
-        {/* <div className="flex items-center justify-between p-4 rounded-xl border border-gray-200 bg-muted/50/50">
+        {/* <div className="flex items-center justify-between p-4 rounded-xl border border-border bg-muted/50/50">
           <div>
             <p className="text-sm font-medium text-foreground/80">
               Accept referrals
@@ -1054,7 +1054,7 @@ function ApplicationStep({
             />
           </button>
         </div> */}
-        <div className="flex items-center justify-between p-4 rounded-xl border border-gray-200 bg-muted/50/50">
+        <div className="flex items-center justify-between p-4 rounded-xl border border-border bg-muted/50/50">
           <div>
             <p className="text-sm font-medium text-foreground/80">Mark as urgent</p>
             <p className="text-xs text-muted-foreground/80">
@@ -1088,7 +1088,7 @@ function ApplicationStep({
           <Input
             {...register("referralBonus")}
             placeholder="e.g. ₹5,000 gift card on successful hire"
-            className="h-10 text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card focus:border-primary transition-all"
+            className="h-10 text-sm rounded-xl border-border bg-muted/50 focus:bg-card focus:border-primary transition-all"
           />
         </div>
       )} */}
@@ -1156,7 +1156,7 @@ function ApplicationStep({
           <button
             type="button"
             onClick={addField}
-            className="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl border-2 border-dashed border-gray-200 text-sm font-medium text-muted-foreground hover:border-primary hover:text-primary hover:bg-primary/10/30 transition-all"
+            className="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl border-2 border-dashed border-border text-sm font-medium text-muted-foreground hover:border-primary hover:text-primary hover:bg-primary/10/30 transition-all"
           >
             <Plus size={16} /> Add a custom field
           </button>
@@ -1179,7 +1179,7 @@ function ApplicationStep({
           variant="outline"
           onClick={onBack}
           disabled={isLoading}
-          className="flex-1 h-11 rounded-xl border-gray-200 text-muted-foreground hover:bg-muted/50 text-sm font-medium transition-all disabled:opacity-50"
+          className="flex-1 h-11 rounded-xl border-border text-muted-foreground hover:bg-muted/50 text-sm font-medium transition-all disabled:opacity-50"
         >
           Back
         </Button>
@@ -1494,7 +1494,7 @@ function PostJobContent() {
       {/* Header */}
       <header className="w-full bg-card border-b border-gray-100 px-6 lg:px-10 py-4 flex items-center gap-3">
         <div className="shrink-0">
-          <Link href="/" className="flex items-center gap-2.5">
+          <Link href="/recruiter/dashboard" className="flex items-center gap-2.5">
             <Image
               src="/icon.png"
               alt="ReferNest Logo"

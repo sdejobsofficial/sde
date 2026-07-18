@@ -57,7 +57,7 @@ export function Pagination({
           variant="outline"
           onClick={() => onPageChange(page - 1)}
           disabled={page === 1}
-          className="h-8 px-3 rounded-xl border-gray-200 text-xs text-muted-foreground disabled:opacity-40 hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-all"
+          className="h-8 px-3 rounded-xl border-border text-xs text-muted-foreground disabled:opacity-40 hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-all"
         >
           Previous
         </Button>
@@ -83,7 +83,7 @@ export function Pagination({
           variant="outline"
           onClick={() => onPageChange(page + 1)}
           disabled={!hasMore}
-          className="h-8 px-3 rounded-xl border-gray-200 text-xs text-muted-foreground disabled:opacity-40 hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-all"
+          className="h-8 px-3 rounded-xl border-border text-xs text-muted-foreground disabled:opacity-40 hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-all"
         >
           Next
         </Button>

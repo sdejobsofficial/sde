@@ -220,7 +220,7 @@ export default function ApplicantDetailPage({
                         "w-8 h-8 rounded-xl flex items-center justify-center border transition-all",
                         app.IsStarred
                           ? "bg-amber-50 border-amber-200 text-amber-500"
-                          : "bg-card border-gray-200 text-muted-foreground/80 hover:text-amber-500 hover:border-amber-200 hover:bg-amber-50",
+                          : "bg-card border-border text-muted-foreground/80 hover:text-amber-500 hover:border-amber-200 hover:bg-amber-50",
                       )}
                     >
                       {app.IsStarred ? (
@@ -232,7 +232,7 @@ export default function ApplicantDetailPage({
                     <a href={`mailto:${app.CandidateEmail}`}>
                       <Button
                         variant="outline"
-                        className="h-8 px-3 rounded-xl border-gray-200 text-xs text-muted-foreground hover:bg-primary/10 hover:border-primary/30 hover:text-primary flex items-center gap-1.5"
+                        className="h-8 px-3 rounded-xl border-border text-xs text-muted-foreground hover:bg-primary/10 hover:border-primary/30 hover:text-primary flex items-center gap-1.5"
                       >
                         <Mail size={12} /> Email
                       </Button>
@@ -382,7 +382,7 @@ export default function ApplicantDetailPage({
                     onChange={(e) => setNoteText(e.target.value)}
                     placeholder="Add an internal note visible only to your team..."
                     rows={3}
-                    className="text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card resize-none"
+                    className="text-sm rounded-xl border-border bg-muted/50 focus:bg-card resize-none"
                     autoFocus
                   />
                   <div className="flex gap-2">
@@ -393,7 +393,7 @@ export default function ApplicantDetailPage({
                         setShowNoteInput(false);
                         setNoteText("");
                       }}
-                      className="h-8 px-3 rounded-xl border-gray-200 text-xs text-muted-foreground"
+                      className="h-8 px-3 rounded-xl border-border text-xs text-muted-foreground"
                     >
                       Cancel
                     </Button>
@@ -525,7 +525,7 @@ export default function ApplicantDetailPage({
                 <a href={`mailto:${app.CandidateEmail}`} className="block">
                   <Button
                     variant="outline"
-                    className="w-full h-9 rounded-xl border-gray-200 text-xs text-muted-foreground hover:bg-primary/10 hover:border-primary/30 hover:text-primary flex items-center justify-center gap-1.5"
+                    className="w-full h-9 rounded-xl border-border text-xs text-muted-foreground hover:bg-primary/10 hover:border-primary/30 hover:text-primary flex items-center justify-center gap-1.5"
                   >
                     <Mail size={12} /> Send email
                   </Button>
@@ -539,7 +539,7 @@ export default function ApplicantDetailPage({
                   >
                     <Button
                       variant="outline"
-                      className="w-full h-9 rounded-xl border-gray-200 text-xs text-muted-foreground hover:bg-primary/10 hover:border-primary/30 hover:text-primary flex items-center justify-center gap-1.5"
+                      className="w-full h-9 rounded-xl border-border text-xs text-muted-foreground hover:bg-primary/10 hover:border-primary/30 hover:text-primary flex items-center justify-center gap-1.5"
                     >
                       <Download size={12} /> Download resume
                     </Button>
@@ -585,7 +585,7 @@ export default function ApplicantDetailPage({
             <Link href="/recruiter/applicants">
               <Button
                 variant="outline"
-                className="w-full h-9 rounded-xl border-gray-200 text-xs text-muted-foreground hover:bg-muted/50 flex items-center justify-center gap-1.5"
+                className="w-full h-9 rounded-xl border-border text-xs text-muted-foreground hover:bg-muted/50 flex items-center justify-center gap-1.5"
               >
                 <ArrowLeft size={12} /> Back to applicants
               </Button>

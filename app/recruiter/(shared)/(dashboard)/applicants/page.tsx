@@ -141,7 +141,7 @@ function ApplicantsContent() {
                 setSearch(e.target.value);
                 setPage(1);
               }}
-              className="pl-8 h-9 text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card focus:border-primary transition-all"
+              className="pl-8 h-9 text-sm rounded-xl border-border bg-muted/50 focus:bg-card focus:border-primary transition-all"
             />
           </div>
 
@@ -157,7 +157,7 @@ function ApplicantsContent() {
                 setJobFilter(e.target.value);
                 setPage(1);
               }}
-              className="pl-8 pr-8 h-9 text-sm rounded-xl border border-gray-200 bg-muted/50 focus:bg-card focus:border-primary outline-none transition-all appearance-none min-w-[180px]"
+              className="pl-8 pr-8 h-9 text-sm rounded-xl border border-border bg-muted/50 focus:bg-card focus:border-primary outline-none transition-all appearance-none min-w-[180px]"
             >
               <option value="">All jobs</option>
               {myJobs.map((j) => (
@@ -182,7 +182,7 @@ function ApplicantsContent() {
               "flex items-center gap-2 px-3 h-9 rounded-xl border text-xs font-medium transition-all",
               starredOnly
                 ? "bg-amber-50 border-amber-200 text-amber-600"
-                : "bg-muted/50 border-gray-200 text-muted-foreground hover:border-amber-200 hover:text-amber-600",
+                : "bg-muted/50 border-border text-muted-foreground hover:border-amber-200 hover:text-amber-600",
             )}
           >
             <Star size={13} fill={starredOnly ? "currentColor" : "none"} />
@@ -256,7 +256,7 @@ function ApplicantsContent() {
                   variant="outline"
                   disabled={page === 1}
                   onClick={() => setPage((p) => p - 1)}
-                  className="h-8 px-3 rounded-xl border-gray-200 text-xs text-muted-foreground hover:bg-muted/50 disabled:opacity-40"
+                  className="h-8 px-3 rounded-xl border-border text-xs text-muted-foreground hover:bg-muted/50 disabled:opacity-40"
                 >
                   Previous
                 </Button>
@@ -264,7 +264,7 @@ function ApplicantsContent() {
                   variant="outline"
                   disabled={!data?.HasMore}
                   onClick={() => setPage((p) => p + 1)}
-                  className="h-8 px-3 rounded-xl border-gray-200 text-xs text-muted-foreground hover:bg-muted/50 disabled:opacity-40"
+                  className="h-8 px-3 rounded-xl border-border text-xs text-muted-foreground hover:bg-muted/50 disabled:opacity-40"
                 >
                   Next
                 </Button>
@@ -295,7 +295,7 @@ function ApplicantsContent() {
                 setStatusFilter(null);
                 setStarredOnly(false);
               }}
-              className="h-8 px-4 rounded-xl border-gray-200 text-xs text-muted-foreground hover:bg-muted/50"
+              className="h-8 px-4 rounded-xl border-border text-xs text-muted-foreground hover:bg-muted/50"
             >
               Clear filters
             </Button>

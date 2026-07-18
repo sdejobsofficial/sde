@@ -125,7 +125,7 @@ function DynamicField({
   error?: string;
 }) {
   const base =
-    "h-10 text-sm rounded-xl border-gray-200 bg-muted/50/80 focus:bg-card focus:border-primary transition-all";
+    "h-10 text-sm rounded-xl border-border bg-muted/50/80 focus:bg-card focus:border-primary transition-all";
   const errClass = error ? "border-red-300" : "";
 
   switch (field.Type) {
@@ -147,7 +147,7 @@ function DynamicField({
           placeholder={field.Placeholder}
           rows={4}
           className={cn(
-            "text-sm rounded-xl border-gray-200 bg-muted/50/80 focus:bg-card focus:border-primary resize-none transition-all",
+            "text-sm rounded-xl border-border bg-muted/50/80 focus:bg-card focus:border-primary resize-none transition-all",
             errClass,
           )}
         />
@@ -159,7 +159,7 @@ function DynamicField({
           value={value ?? ""}
           onChange={(e) => onChange(e.target.value)}
           className={cn(
-            "w-full h-10 px-3 text-sm rounded-xl border border-gray-200 bg-muted/50/80 focus:bg-card focus:border-primary outline-none transition-all",
+            "w-full h-10 px-3 text-sm rounded-xl border border-border bg-muted/50/80 focus:bg-card focus:border-primary outline-none transition-all",
             errClass,
           )}
         >
@@ -400,7 +400,7 @@ function SuccessScreen({
         <Link href="/jobs">
           <Button
             variant="outline"
-            className="h-10 px-5 rounded-xl border-gray-200 text-sm font-medium hover:bg-muted/50"
+            className="h-10 px-5 rounded-xl border-border text-sm font-medium hover:bg-muted/50"
           >
             Browse more jobs
           </Button>
@@ -584,7 +584,7 @@ export default function ApplyPage({
               <Link href="/jobs">
                 <Button
                   variant="outline"
-                  className="h-9 px-4 rounded-xl text-sm border-gray-200"
+                  className="h-9 px-4 rounded-xl text-sm border-border"
                 >
                   Browse jobs
                 </Button>
@@ -663,7 +663,7 @@ export default function ApplyPage({
                             ? "border-primary bg-primary/10"
                             : errors["__resume"]
                               ? "border-red-300 bg-red-50/30"
-                              : "border-gray-200 bg-muted/50/80 hover:border-primary/40 hover:bg-primary/10/40",
+                              : "border-border bg-muted/50/80 hover:border-primary/40 hover:bg-primary/10/40",
                         )}
                       >
                         <input
@@ -712,7 +712,7 @@ export default function ApplyPage({
                         <button
                           type="button"
                           onClick={() => setResumeFile(null)}
-                          className="w-7 h-7 rounded-lg bg-card border border-gray-200 flex items-center justify-center text-muted-foreground/80 hover:text-red-500 hover:border-red-200 transition-all flex-shrink-0"
+                          className="w-7 h-7 rounded-lg bg-card border border-border flex items-center justify-center text-muted-foreground/80 hover:text-red-500 hover:border-red-200 transition-all flex-shrink-0"
                         >
                           <X size={13} />
                         </button>
@@ -751,7 +751,7 @@ export default function ApplyPage({
                       onChange={(e) => setCoverLetter(e.target.value)}
                       placeholder="Tell the recruiter why you're excited about this role and what makes you a great fit..."
                       rows={5}
-                      className="text-sm rounded-xl border-gray-200 bg-muted/50/80 focus:bg-card focus:border-primary resize-none transition-all"
+                      className="text-sm rounded-xl border-border bg-muted/50/80 focus:bg-card focus:border-primary resize-none transition-all"
                     />
                   </div>
                 )}
@@ -769,7 +769,7 @@ export default function ApplyPage({
                         value={linkedInUrl}
                         onChange={(e) => setLinkedInUrl(e.target.value)}
                         placeholder="https://linkedin.com/in/yourname"
-                        className="pl-10 h-10 text-sm rounded-xl border-gray-200 bg-muted/50/80 focus:bg-card focus:border-primary transition-all"
+                        className="pl-10 h-10 text-sm rounded-xl border-border bg-muted/50/80 focus:bg-card focus:border-primary transition-all"
                       />
                     </div>
                   </div>
@@ -789,7 +789,7 @@ export default function ApplyPage({
                         value={portfolioUrl}
                         onChange={(e) => setPortfolioUrl(e.target.value)}
                         placeholder="https://yourportfolio.com"
-                        className="pl-9 h-10 text-sm rounded-xl border-gray-200 bg-muted/50/80 focus:bg-card focus:border-primary transition-all"
+                        className="pl-9 h-10 text-sm rounded-xl border-border bg-muted/50/80 focus:bg-card focus:border-primary transition-all"
                       />
                     </div>
                   </div>
@@ -832,7 +832,7 @@ export default function ApplyPage({
                     <Button
                       type="button"
                       variant="outline"
-                      className="w-full h-11 rounded-xl border-gray-200 text-muted-foreground hover:bg-muted/50 text-sm font-medium"
+                      className="w-full h-11 rounded-xl border-border text-muted-foreground hover:bg-muted/50 text-sm font-medium"
                     >
                       Cancel
                     </Button>

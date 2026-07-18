@@ -52,7 +52,7 @@ export function CompanyJobCard({ job }: { job: JobCard }) {
             </span>
           )}
           {job.Status !== JobStatus.Active && (
-            <span className="text-xs bg-muted text-muted-foreground/80 border border-gray-200 px-2 py-0.5 rounded-full font-medium">
+            <span className="text-xs bg-muted text-muted-foreground/80 border border-border px-2 py-0.5 rounded-full font-medium">
               Closed
             </span>
           )}

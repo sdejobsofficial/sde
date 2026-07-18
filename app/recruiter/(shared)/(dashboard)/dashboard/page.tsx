@@ -367,7 +367,7 @@ export default function CompanyProfilePage() {
                   <Button
                     onClick={() => setModal("basic")}
                     variant="outline"
-                    className="h-8 px-4 text-xs rounded-xl border-gray-200 text-muted-foreground hover:border-primary/40 hover:text-primary hover:bg-primary/10 transition-all flex items-center gap-1.5"
+                    className="h-8 px-4 text-xs rounded-xl border-border text-muted-foreground hover:border-primary/40 hover:text-primary hover:bg-primary/10 transition-all flex items-center gap-1.5"
                   >
                     <Pencil size={12} /> Edit profile
                   </Button>
@@ -540,7 +540,7 @@ export default function CompanyProfilePage() {
           <div className="space-y-1.5">
             <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Company name</Label>
             <Input {...basicForm.register("name")}
-              className="h-10 text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card" />
+              className="h-10 text-sm rounded-xl border-border bg-muted/50 focus:bg-card" />
             <FieldError message={basicForm.formState.errors.name?.message} />
           </div>
 
@@ -548,13 +548,13 @@ export default function CompanyProfilePage() {
             <div className="space-y-1.5">
               <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Phone</Label>
               <Input {...basicForm.register("phone")}
-                className="h-10 text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card" />
+                className="h-10 text-sm rounded-xl border-border bg-muted/50 focus:bg-card" />
               <FieldError message={basicForm.formState.errors.phone?.message} />
             </div>
             <div className="space-y-1.5">
               <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Location</Label>
               <Input {...basicForm.register("location")} placeholder="Bengaluru, KA"
-                className="h-10 text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card" />
+                className="h-10 text-sm rounded-xl border-border bg-muted/50 focus:bg-card" />
               <FieldError message={basicForm.formState.errors.location?.message} />
             </div>
           </div>
@@ -562,7 +562,7 @@ export default function CompanyProfilePage() {
           <div className="space-y-1.5">
             <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Website</Label>
             <Input {...basicForm.register("website")} type="url" placeholder="https://yourcompany.com"
-              className="h-10 text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card" />
+              className="h-10 text-sm rounded-xl border-border bg-muted/50 focus:bg-card" />
             <FieldError message={basicForm.formState.errors.website?.message} />
           </div>
 
@@ -570,7 +570,7 @@ export default function CompanyProfilePage() {
             <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">About</Label>
             <Textarea {...basicForm.register("about")} rows={4}
               placeholder="Describe your company..."
-              className="text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card resize-none" />
+              className="text-sm rounded-xl border-border bg-muted/50 focus:bg-card resize-none" />
             <div className="flex items-center justify-between">
               <FieldError message={basicForm.formState.errors.about?.message} />
               <span className="text-xs text-muted-foreground/80 ml-auto">
@@ -581,7 +581,7 @@ export default function CompanyProfilePage() {
 
           <div className="flex gap-3 pt-2">
             <Button type="button" variant="outline" onClick={close}
-              className="flex-1 h-10 rounded-xl border-gray-200 text-sm">
+              className="flex-1 h-10 rounded-xl border-border text-sm">
               Cancel
             </Button>
             <Button type="submit" disabled={isSubmitting}
@@ -618,7 +618,7 @@ export default function CompanyProfilePage() {
             <div className="flex flex-wrap gap-1.5">
               {INDUSTRIES.filter(i => !(Array.isArray(dw.industries) ? dw.industries : []).includes(i)).map(ind => (
                 <button key={ind} type="button" onClick={() => toggleIndustry(ind)}
-                  className="text-xs px-3 py-1.5 rounded-full border border-gray-200 bg-card text-muted-foreground hover:border-primary/40 hover:text-primary hover:bg-primary/10 transition-all flex items-center gap-1">
+                  className="text-xs px-3 py-1.5 rounded-full border border-border bg-card text-muted-foreground hover:border-primary/40 hover:text-primary hover:bg-primary/10 transition-all flex items-center gap-1">
                   <Plus size={10} /> {ind}
                 </button>
               ))}
@@ -637,7 +637,7 @@ export default function CompanyProfilePage() {
                     "flex flex-col items-center py-2.5 rounded-xl border text-center transition-all",
                     dw.size === value
                       ? "border-primary/100 bg-primary/10 shadow-sm shadow-primary/20"
-                      : "border-gray-200 bg-muted/50 hover:border-primary/30 hover:bg-primary/10/40",
+                      : "border-border bg-muted/50 hover:border-primary/30 hover:bg-primary/10/40",
                   )}>
                   <span className={cn("text-xs font-bold", dw.size === value ? "text-primary/90" : "text-foreground/80")}>
                     {label}
@@ -651,7 +651,7 @@ export default function CompanyProfilePage() {
 
           <div className="flex gap-3 pt-2">
             <Button type="button" variant="outline" onClick={close}
-              className="flex-1 h-10 rounded-xl border-gray-200 text-sm">
+              className="flex-1 h-10 rounded-xl border-border text-sm">
               Cancel
             </Button>
             <Button type="submit" disabled={isSubmitting}
@@ -680,7 +680,7 @@ export default function CompanyProfilePage() {
                 <Input type="url" placeholder={placeholder}
                   {...socialForm.register(label as keyof SocialValues)}
                   className={cn(
-                    "h-10 text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card transition-all",
+                    "h-10 text-sm rounded-xl border-border bg-muted/50 focus:bg-card transition-all",
                     socialForm.formState.errors[label as keyof SocialValues] && "border-red-300",
                   )}
                 />
@@ -690,7 +690,7 @@ export default function CompanyProfilePage() {
           ))}
           <div className="flex gap-3 pt-2">
             <Button type="button" variant="outline" onClick={close}
-              className="flex-1 h-10 rounded-xl border-gray-200 text-sm">
+              className="flex-1 h-10 rounded-xl border-border text-sm">
               Cancel
             </Button>
             <Button type="submit" disabled={isSubmitting}
@@ -709,7 +709,7 @@ export default function CompanyProfilePage() {
           {/* Drop zone */}
           <div
             onClick={() => logoInputRef.current?.click()}
-            className="flex flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed border-gray-200 py-10 cursor-pointer hover:border-primary/40 hover:bg-primary/10/30 transition-all relative"
+            className="flex flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed border-border py-10 cursor-pointer hover:border-primary/40 hover:bg-primary/10/30 transition-all relative"
           >
             <input
               ref={logoInputRef}
@@ -749,7 +749,7 @@ export default function CompanyProfilePage() {
 
           <div className="flex gap-3">
             <Button type="button" variant="outline" onClick={close}
-              className="flex-1 h-10 rounded-xl border-gray-200 text-sm">
+              className="flex-1 h-10 rounded-xl border-border text-sm">
               Cancel
             </Button>
             <Button

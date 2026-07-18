@@ -46,7 +46,7 @@ export function PillSelector<T extends number>({
             "flex flex-col items-center py-2.5 px-2 rounded-xl border text-center transition-all duration-150",
             value === v
               ? "border-primary/100 bg-primary/10 shadow-sm shadow-primary/20"
-              : "border-gray-200 bg-muted/50/80 hover:border-primary/30 hover:bg-primary/10/30",
+              : "border-border bg-muted/50/80 hover:border-primary/30 hover:bg-primary/10/30",
           )}
         >
           {Icon && (
@@ -82,7 +82,7 @@ export function DescriptionEditor({
 }) {
   return (
     <div>
-      <div className="flex items-center gap-1 px-3 py-2 border border-gray-200 border-b-0 rounded-t-xl bg-muted/50">
+      <div className="flex items-center gap-1 px-3 py-2 border border-border border-b-0 rounded-t-xl bg-muted/50">
         {["B", "I", "U"].map((f) => (
           <button
             key={f}
@@ -108,7 +108,7 @@ export function DescriptionEditor({
         onChange={(e) => onChange(e.target.value)}
         placeholder="Describe the role, responsibilities, what a typical day looks like, and what success looks like in this position..."
         rows={7}
-        className="rounded-t-none rounded-b-xl border-gray-200 bg-card resize-none text-sm focus:border-primary focus:ring-primary/20 transition-all"
+        className="rounded-t-none rounded-b-xl border-border bg-card resize-none text-sm focus:border-primary focus:ring-primary/20 transition-all"
       />
       <p className="text-xs text-muted-foreground/80 mt-1.5">
         Tip: Use headings and bullet points — well-formatted JDs get 2× more
@@ -135,7 +135,7 @@ export function SkillInput({
 
   return (
     <div className="space-y-2.5">
-      <div className="min-h-[80px] rounded-xl border p-3 bg-muted/50/80 focus-within:bg-card focus-within:border-primary transition-all border-gray-200">
+      <div className="min-h-[80px] rounded-xl border p-3 bg-muted/50/80 focus-within:bg-card focus-within:border-primary transition-all border-border">
         <div className="flex flex-wrap gap-1.5 mb-2">
           {value.map((s) => (
             <span
@@ -174,7 +174,7 @@ export function SkillInput({
               key={s}
               type="button"
               onClick={() => add(s)}
-              className="text-xs px-2.5 py-1 rounded-full border border-gray-200 bg-card text-muted-foreground hover:border-primary/40 hover:text-primary hover:bg-primary/10 transition-all flex items-center gap-1"
+              className="text-xs px-2.5 py-1 rounded-full border border-border bg-card text-muted-foreground hover:border-primary/40 hover:text-primary hover:bg-primary/10 transition-all flex items-center gap-1"
             >
               <Plus size={10} /> {s}
             </button>
@@ -201,7 +201,7 @@ export function Stepper({ current }: { current: Step }) {
                   "w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 border-2 transition-all duration-300 z-10",
                   done && "bg-primary border-primary text-primary-foreground",
                   active && "bg-card border-primary text-primary",
-                  pending && "bg-card border-gray-200 text-gray-300",
+                  pending && "bg-card border-border text-gray-300",
                 )}
               >
                 {done ? (

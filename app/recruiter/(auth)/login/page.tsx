@@ -92,7 +92,7 @@ function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
         variant="outline"
         onClick={() => googleAuth()}
         disabled={loading}
-        className="w-full h-10 rounded-xl border-gray-200 bg-card hover:bg-muted/50 text-foreground/80 font-medium text-sm gap-2.5 transition-all"
+        className="w-full h-10 rounded-xl border-border bg-card hover:bg-muted/50 text-foreground/80 font-medium text-sm gap-2.5 transition-all"
       >
         <GoogleIcon />
         Continue with Google
@@ -125,7 +125,7 @@ function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
               placeholder="Your Company Name"
               {...rhf("companyName")}
               className={cn(
-                "pl-9 h-10 text-sm rounded-xl border-gray-200 bg-muted/50/80 focus:bg-card transition-all",
+                "pl-9 h-10 text-sm rounded-xl border-border bg-muted/50/80 focus:bg-card transition-all",
                 errors.companyName && "border-red-400 focus:border-red-400",
               )}
             />
@@ -154,7 +154,7 @@ function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
                 {...rhf("email")}
                 disabled={emailVerified}
                 className={cn(
-                  "pl-9 h-10 text-sm rounded-xl border-gray-200 bg-muted/50/80 focus:bg-card transition-all",
+                  "pl-9 h-10 text-sm rounded-xl border-border bg-muted/50/80 focus:bg-card transition-all",
                   errors.email && "border-red-400 focus:border-red-400",
                   emailVerified && "border-green-400 bg-green-50/50 text-green-700"
                 )}
@@ -196,7 +196,7 @@ function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
           </Label>
           <div className="flex gap-2">
             {/* Country code badge */}
-            <div className="h-10 px-3 flex items-center gap-1.5 border border-gray-200 bg-muted/50/80 rounded-xl text-sm text-foreground/80 font-bold flex-shrink-0 select-none">
+            <div className="h-10 px-3 flex items-center gap-1.5 border border-border bg-muted/50/80 rounded-xl text-sm text-foreground/80 font-bold flex-shrink-0 select-none">
               <Phone size={13} className="text-muted-foreground/80" />
               +91
             </div>
@@ -209,7 +209,7 @@ function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
               {...rhf("phone")}
               maxLength={10}
               className={cn(
-                "h-10 text-sm rounded-xl border-gray-200 bg-muted/50/80 focus:bg-card transition-all",
+                "h-10 text-sm rounded-xl border-border bg-muted/50/80 focus:bg-card transition-all",
                 errors.phone && "border-red-400 focus:border-red-400"
               )}
             />
@@ -253,7 +253,7 @@ function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
                 placeholder="Min 8 characters"
                 {...rhf("password")}
                 className={cn(
-                  "pl-9 pr-9 h-10 text-sm rounded-xl border-gray-200 bg-muted/50/80 focus:bg-card transition-all",
+                  "pl-9 pr-9 h-10 text-sm rounded-xl border-border bg-muted/50/80 focus:bg-card transition-all",
                   errors.password && "border-red-400 focus:border-red-400",
                 )}
               />
@@ -286,7 +286,7 @@ function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
                 placeholder="Repeat password"
                 {...rhf("confirmPassword")}
                 className={cn(
-                  "pl-9 pr-9 h-10 text-sm rounded-xl border-gray-200 bg-muted/50/80 focus:bg-card transition-all",
+                  "pl-9 pr-9 h-10 text-sm rounded-xl border-border bg-muted/50/80 focus:bg-card transition-all",
                   errors.confirmPassword &&
                     "border-red-400 focus:border-red-400",
                 )}
@@ -446,7 +446,7 @@ function LoginForm({ onSwitch }: { onSwitch: () => void }) {
         variant="outline"
         onClick={() => googleAuth()}
         disabled={loading}
-        className="w-full h-10 rounded-xl border-gray-200 bg-card hover:bg-muted/50 text-foreground/80 font-medium text-sm gap-2.5 transition-all"
+        className="w-full h-10 rounded-xl border-border bg-card hover:bg-muted/50 text-foreground/80 font-medium text-sm gap-2.5 transition-all"
       >
         <GoogleIcon />
         Continue with Google
@@ -479,7 +479,7 @@ function LoginForm({ onSwitch }: { onSwitch: () => void }) {
               placeholder="you@company.com"
               {...register("email")}
               className={cn(
-                "pl-9 h-10 text-sm rounded-xl border-gray-200 bg-muted/50/80 focus:bg-card transition-all",
+                "pl-9 h-10 text-sm rounded-xl border-border bg-muted/50/80 focus:bg-card transition-all",
                 errors.email && "border-red-400 focus:border-red-400",
               )}
             />
@@ -514,7 +514,7 @@ function LoginForm({ onSwitch }: { onSwitch: () => void }) {
               placeholder="Enter your password"
               {...register("password")}
               className={cn(
-                "pl-9 pr-10 h-10 text-sm rounded-xl border-gray-200 bg-muted/50/80 focus:bg-card transition-all",
+                "pl-9 pr-10 h-10 text-sm rounded-xl border-border bg-muted/50/80 focus:bg-card transition-all",
                 errors.password && "border-red-400 focus:border-red-400",
               )}
             />

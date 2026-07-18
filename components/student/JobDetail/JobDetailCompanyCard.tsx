@@ -98,7 +98,7 @@ export function CompanyCard({ companyMeta }: { companyMeta: CompanyProfile }) {
           <Link href={`/companies/${companyId}`}>
             <Button
               variant="outline"
-              className="w-full h-8 rounded-xl border-gray-200 text-xs text-primary hover:bg-primary/10 hover:border-primary/30 font-medium flex items-center gap-1.5"
+              className="w-full h-8 rounded-xl border-border text-xs text-primary hover:bg-primary/10 hover:border-primary/30 font-medium flex items-center gap-1.5"
             >
               View company profile <ChevronRight size={13} />
             </Button>

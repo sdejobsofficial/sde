@@ -146,7 +146,7 @@ export default function StudentHeader() {
                       height={40}
                       src={avatarUrl}
                       alt="Profile"
-                      className="w-8 h-8 rounded-full object-cover border border-gray-200"
+                      className="w-8 h-8 rounded-full object-cover border border-border"
                     />
                   ) : (
                     <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary/90 text-xs font-bold border border-primary/30 flex-shrink-0">

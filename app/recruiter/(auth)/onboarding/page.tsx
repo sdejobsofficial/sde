@@ -92,7 +92,7 @@ function InfoStep({
               {...register("companyName")}
               readOnly
               className={cn(
-                "pl-9 h-10 text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card focus:border-primary transition-all",
+                "pl-9 h-10 text-sm rounded-xl border-border bg-muted/50 focus:bg-card focus:border-primary transition-all",
                 errors.companyName && "border-red-300",
               )}
             />
@@ -107,7 +107,7 @@ function InfoStep({
               Contact no. <span className="text-red-400">*</span>
             </Label>
             <div className="flex gap-2">
-              <div className="h-10 px-2.5 flex items-center border border-gray-200 bg-muted/50 rounded-xl text-xs text-muted-foreground font-medium flex-shrink-0 gap-1 select-none">
+              <div className="h-10 px-2.5 flex items-center border border-border bg-muted/50 rounded-xl text-xs text-muted-foreground font-medium flex-shrink-0 gap-1 select-none">
                 <Phone size={11} className="text-muted-foreground/80" /> +91
               </div>
               <Input
@@ -117,7 +117,7 @@ function InfoStep({
                 readOnly
                 {...register("phone")}
                 className={cn(
-                  "h-10 text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card focus:border-primary transition-all",
+                  "h-10 text-sm rounded-xl border-border bg-muted/50 focus:bg-card focus:border-primary transition-all",
                   errors.phone && "border-red-300",
                 )}
               />
@@ -138,7 +138,7 @@ function InfoStep({
                 placeholder="Bengaluru, KA"
                 {...register("location")}
                 className={cn(
-                  "pl-9 h-10 text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card focus:border-primary transition-all",
+                  "pl-9 h-10 text-sm rounded-xl border-border bg-muted/50 focus:bg-card focus:border-primary transition-all",
                   errors.location && "border-red-300",
                 )}
               />
@@ -165,7 +165,7 @@ function InfoStep({
               placeholder="https://yourcompany.com"
               {...register("website")}
               className={cn(
-                "pl-9 h-10 text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card focus:border-primary transition-all",
+                "pl-9 h-10 text-sm rounded-xl border-border bg-muted/50 focus:bg-card focus:border-primary transition-all",
                 errors.website && "border-red-300",
               )}
             />
@@ -183,7 +183,7 @@ function InfoStep({
             {...register("about")}
             rows={4}
             className={cn(
-              "text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card focus:border-primary resize-none transition-all",
+              "text-sm rounded-xl border-border bg-muted/50 focus:bg-card focus:border-primary resize-none transition-all",
               errors.about && "border-red-300",
             )}
           />
@@ -297,7 +297,7 @@ function DetailsStep({
                   "flex flex-col items-center py-3 rounded-xl border text-center transition-all duration-150",
                   w.size === value
                     ? "border-primary/100 bg-primary/10 shadow-sm shadow-primary/20"
-                    : "border-gray-200 bg-muted/50/80 hover:border-primary/30 hover:bg-primary/10/30",
+                    : "border-border bg-muted/50/80 hover:border-primary/30 hover:bg-primary/10/30",
                 )}
               >
                 <span
@@ -345,7 +345,7 @@ function DetailsStep({
             type="number"
             placeholder="e.g. 2015"
             {...register("founded")}
-            className="h-10 text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card focus:border-primary transition-all w-36"
+            className="h-10 text-sm rounded-xl border-border bg-muted/50 focus:bg-card focus:border-primary transition-all w-36"
           />
         </div>
       </div>
@@ -355,7 +355,7 @@ function DetailsStep({
           type="button"
           variant="outline"
           onClick={onBack}
-          className="flex-1 h-11 rounded-xl border-gray-200 text-muted-foreground text-sm font-medium flex items-center justify-center gap-1.5 hover:bg-muted/50 transition-all"
+          className="flex-1 h-11 rounded-xl border-border text-muted-foreground text-sm font-medium flex items-center justify-center gap-1.5 hover:bg-muted/50 transition-all"
         >
           <ArrowLeft size={14} /> Back
         </Button>
@@ -441,7 +441,7 @@ function BrandStep({
                 "flex flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed py-8 cursor-pointer transition-all",
                 dragOver
                   ? "border-primary bg-primary/10"
-                  : "border-gray-200 bg-muted/50 hover:border-primary/40 hover:bg-primary/10/30",
+                  : "border-border bg-muted/50 hover:border-primary/40 hover:bg-primary/10/30",
               )}
             >
               <input
@@ -530,7 +530,7 @@ function BrandStep({
                   placeholder={placeholder}
                   {...register(name)}
                   className={cn(
-                    "h-10 text-sm rounded-xl border-gray-200 bg-muted/50 focus:bg-card focus:border-primary pr-8 transition-all",
+                    "h-10 text-sm rounded-xl border-border bg-muted/50 focus:bg-card focus:border-primary pr-8 transition-all",
                     errors[name] && "border-red-300",
                   )}
                 />
@@ -561,7 +561,7 @@ function BrandStep({
           variant="outline"
           onClick={onBack}
           disabled={loading}
-          className="flex-1 h-11 rounded-xl border-gray-200 text-muted-foreground text-sm font-medium flex items-center justify-center gap-1.5 hover:bg-muted/50 transition-all disabled:opacity-50"
+          className="flex-1 h-11 rounded-xl border-border text-muted-foreground text-sm font-medium flex items-center justify-center gap-1.5 hover:bg-muted/50 transition-all disabled:opacity-50"
         >
           <ArrowLeft size={14} /> Back
         </Button>

@@ -20,7 +20,7 @@ import {
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useDeleteJob } from "@/hooks/useJobs";
+import { useDeleteJob, useUpdateJob } from "@/hooks/useJobs";
 
 const STATUS_CONFIG: Record<
   JobStatus,
@@ -28,7 +28,7 @@ const STATUS_CONFIG: Record<
 > = {
   [JobStatus.Draft]: {
     label: "Draft",
-    color: "bg-muted text-muted-foreground border-gray-200",
+    color: "bg-muted text-muted-foreground border-border",
     dot: "bg-gray-400",
   },
   [JobStatus.PendingApproval]: {
@@ -96,6 +96,7 @@ export function CompanyJobCard({
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const { mutateAsync: deleteJob, isPending } = useDeleteJob();
+  const { mutateAsync: updateJob, isPending: isUpdating } = useUpdateJob(job.Id);
   const router = useRouter();
 
   const status = STATUS_CONFIG[job.Status as JobStatus];
@@ -230,16 +231,26 @@ export function CompanyJobCard({
                   </button>
                   {job.Status === JobStatus.Active && (
                     <button
-                      onClick={(e) => e.stopPropagation()}
-                      className="w-full flex items-center gap-2.5 px-3 py-2 text-xs text-muted-foreground hover:bg-orange-50 hover:text-orange-500 transition-colors"
+                      onClick={async (e) => {
+                        e.stopPropagation();
+                        await updateJob({ Status: JobStatus.Paused });
+                        setMenuOpen(false);
+                      }}
+                      disabled={isUpdating}
+                      className="w-full flex items-center gap-2.5 px-3 py-2 text-xs text-muted-foreground hover:bg-orange-50 hover:text-orange-500 transition-colors disabled:opacity-50"
                     >
                       <Pause size={12} /> Pause
                     </button>
                   )}
                   {job.Status === JobStatus.Paused && (
                     <button
-                      onClick={(e) => e.stopPropagation()}
-                      className="w-full flex items-center gap-2.5 px-3 py-2 text-xs text-muted-foreground hover:bg-green-50 hover:text-green-600 transition-colors"
+                      onClick={async (e) => {
+                        e.stopPropagation();
+                        await updateJob({ Status: JobStatus.Active });
+                        setMenuOpen(false);
+                      }}
+                      disabled={isUpdating}
+                      className="w-full flex items-center gap-2.5 px-3 py-2 text-xs text-muted-foreground hover:bg-green-50 hover:text-green-600 transition-colors disabled:opacity-50"
                     >
                       <CircleDot size={12} /> Activate
                     </button>

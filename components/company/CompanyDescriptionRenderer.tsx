@@ -148,7 +148,7 @@ const htmlClasses = cn(
   "[&_pre]:bg-muted [&_pre]:rounded-lg [&_pre]:px-3 [&_pre]:py-2 [&_pre]:text-xs [&_pre]:font-mono [&_pre]:my-2 [&_pre]:text-foreground/80",
   "[&_blockquote]:border-l-4 [&_blockquote]:border-primary/40 [&_blockquote]:pl-3 [&_blockquote]:italic [&_blockquote]:text-muted-foreground [&_blockquote]:my-2",
   "[&_a]:text-primary [&_a]:underline",
-  "[&_hr]:border-gray-200 [&_hr]:my-3",
+  "[&_hr]:border-border [&_hr]:my-3",
 );
 
 export function DescriptionRenderer({

@@ -22,7 +22,7 @@ export function VerificationBadge({ status }: { status: VerificationStatus }) {
       </span>
     );
   return (
-    <span className="inline-flex items-center gap-1 text-xs bg-muted text-muted-foreground border border-gray-200 px-2 py-0.5 rounded-full font-medium">
+    <span className="inline-flex items-center gap-1 text-xs bg-muted text-muted-foreground border border-border px-2 py-0.5 rounded-full font-medium">
       <ShieldX size={11} /> Unverified
     </span>
   );

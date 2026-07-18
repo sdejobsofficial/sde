@@ -134,8 +134,8 @@ export function ChipSelector<T extends string | number>({
           className={cn(
             "text-xs px-3 py-1.5 rounded-full border transition-all",
             value === v
-              ? "bg-gray-900 text-primary-foreground border-gray-900"
-              : "border-gray-200 bg-card text-muted-foreground hover:border-primary/40 hover:text-primary hover:bg-primary/10",
+              ? "bg-foreground text-background border-foreground"
+              : "border-border bg-card text-muted-foreground hover:border-primary/40 hover:text-primary hover:bg-primary/10",
           )}
         >
           {label}

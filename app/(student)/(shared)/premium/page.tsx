@@ -893,7 +893,7 @@ function PremiumJobsPageContent({ isPremiumPlus }: { isPremiumPlus: boolean }) {
                 <Button
                   variant="outline"
                   onClick={clearAll}
-                  className="h-9 px-4 rounded-xl border-gray-200 text-sm text-muted-foreground hover:bg-primary/10 hover:border-primary/30 hover:text-primary"
+                  className="h-9 px-4 rounded-xl border-border text-sm text-muted-foreground hover:bg-primary/10 hover:border-primary/30 hover:text-primary"
                 >
                   Clear filters
                 </Button>
