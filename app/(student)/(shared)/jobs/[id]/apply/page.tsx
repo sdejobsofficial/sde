@@ -29,6 +29,8 @@ import { useHasApplied, useSubmitApplication } from "@/hooks/useApplication";
 import { useJobById } from "@/hooks/useJobs";
 import { AnswerType, FieldAnswer } from "@/models/applicationModel";
 import Image from "next/image";
+import { fileUpload } from "@/clients/uploadClient";
+import toast from "react-hot-toast";
 
 // ─── Field type → AnswerType map ──────────────────────────────────────────
 
@@ -468,6 +470,19 @@ export default function ApplyPage({
     e.preventDefault();
     if (!validate()) return;
 
+    // Upload resume to Supabase Storage first if provided
+    let resumeUrl: string | undefined;
+    let resumeFileName: string | undefined;
+    if (resumeFile && user?.Id) {
+      try {
+        resumeUrl = await fileUpload(resumeFile, user.Id);
+        resumeFileName = resumeFile.name;
+      } catch (err) {
+        toast.error("Failed to upload resume. Please try again.");
+        return;
+      }
+    }
+
     const fieldAnswers: Omit<FieldAnswer, "FieldLabel">[] = fields.map(
       (field) => ({
         FieldId: field.Id,
@@ -479,8 +494,8 @@ export default function ApplyPage({
     await submitApplication({
       JobId: id,
       AutoFields: {
-        ResumeUrl: undefined, // TODO: upload resumeFile to Supabase Storage
-        ResumeFileName: resumeFile?.name,
+        ResumeUrl: resumeUrl,
+        ResumeFileName: resumeFileName,
         CoverLetter: coverLetter || undefined,
         LinkedInUrl: linkedInUrl || undefined,
         PortfolioUrl: portfolioUrl || undefined,

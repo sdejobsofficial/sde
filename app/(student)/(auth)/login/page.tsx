@@ -13,7 +13,8 @@ import {
   useJobSeekerEmailLogin,
   useJobSeekerGoogleLogin,
 } from "@/hooks/useUser";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import { FieldError } from "@/components/common/FormComponents";
 import {
   LoginFormValues,
@@ -22,12 +23,29 @@ import {
 } from "@/constants/student/SLoginConstants";
 
 export default function LoginPage() {
-  const { mutateAsync: emailLogin, isPending: emailLoading } =
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const nextPath = searchParams.get("next");
+  const externalApplyUrl = searchParams.get("externalApply");
+
+  const { mutateAsync: emailLogin, isPending: emailLoading, isSuccess: emailSuccess } =
     useJobSeekerEmailLogin();
   const { mutateAsync: googleLogin, isPending: googleLoading } =
     useJobSeekerGoogleLogin();
   const loading = emailLoading || googleLoading;
   const [showPassword, setShowPassword] = useState(false);
+
+  // After successful login, handle redirect + optional external apply
+  useEffect(() => {
+    if (emailSuccess) {
+      if (externalApplyUrl) {
+        window.open(decodeURIComponent(externalApplyUrl), "_blank", "noopener,noreferrer");
+      }
+      if (nextPath) {
+        router.push(decodeURIComponent(nextPath));
+      }
+    }
+  }, [emailSuccess, externalApplyUrl, nextPath, router]);
 
   const {
     register,

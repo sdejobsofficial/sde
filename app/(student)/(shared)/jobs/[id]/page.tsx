@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useState } from "react";
+import { use, useState, useCallback } from "react";
 import Link from "next/link";
 import {
   MapPin,
@@ -28,6 +28,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useCompany, useJobById, useJobs } from "@/hooks/useJobs";
+import { useCurrentUser } from "@/hooks/useUser";
+import { useRouter } from "next/navigation";
 import { SalaryVisibility, JobStatus, FormType } from "@/models/jobModel";
 import type { Job } from "@/models/jobModel";
 import Image from "next/image";
@@ -64,7 +66,22 @@ export default function JobDetailPage({
     .filter((j) => j.Id !== id)
     .slice(0, 3);
 
+  const { data: currentUser } = useCurrentUser();
+  const router = useRouter();
   const [copied, setCopied] = useState(false);
+
+  const handleExternalApply = useCallback(
+    (url: string) => {
+      if (!currentUser) {
+        // Encode the job page URL so we can return after login
+        const returnTo = encodeURIComponent(`/jobs/${id}`);
+        router.push(`/login?next=${returnTo}&externalApply=${encodeURIComponent(url)}`);
+        return;
+      }
+      window.open(url, "_blank", "noopener,noreferrer");
+    },
+    [currentUser, id, router],
+  );
 
   const handleShare = async () => {
     const url = `${window.location.origin}/jobs/${id}`;
@@ -317,16 +334,14 @@ export default function JobDetailPage({
               {/* Primary CTA */}
               <div className="flex gap-3 mt-5">
                 {j.FormType === FormType.External && j.ExternalApplyUrl ? (
-                  <a
-                    href={j.ExternalApplyUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <button
+                    onClick={() => handleExternalApply(j.ExternalApplyUrl!)}
                     className="flex-1"
                   >
                     <Button className="w-full h-11 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl text-sm font-bold shadow-lg shadow-primary/30 flex items-center justify-center gap-2 transition-all">
                       Apply on company site <ExternalLink size={14} />
                     </Button>
-                  </a>
+                  </button>
                 ) : (
                   <Link href={`/jobs/${j.Id}/apply`} className="flex-1">
                     <Button className="w-full h-11 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl text-sm font-bold shadow-lg shadow-primary/30 flex items-center justify-center gap-2 transition-all">
@@ -437,15 +452,11 @@ export default function JobDetailPage({
                   {j.CompanyName} · {j.Location}
                 </p>
                 {j.FormType === FormType.External && j.ExternalApplyUrl ? (
-                  <a
-                    href={j.ExternalApplyUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                  <button onClick={() => handleExternalApply(j.ExternalApplyUrl!)}>
                     <Button className="h-9 px-5 bg-card text-primary/90 hover:bg-primary/10 rounded-xl text-sm font-bold flex items-center gap-1.5">
                       Apply on company site <ExternalLink size={13} />
                     </Button>
-                  </a>
+                  </button>
                 ) : (
                   <Link href={`/jobs/${j.Id}/apply`}>
                     <Button className="h-9 px-5 bg-card text-primary/90 hover:bg-primary/10 rounded-xl text-sm font-bold flex items-center gap-1.5">

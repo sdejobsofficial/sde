@@ -128,6 +128,22 @@ function BasicsStep({
         <FieldError message={errors.title?.message} />
       </div>
 
+      {/* Company Name */}
+      <div className="space-y-1.5">
+        <Label className="text-sm font-medium text-foreground/80">
+          Company name <span className="text-red-500 ml-0.5">*</span>
+        </Label>
+        <Input
+          {...register("companyName")}
+          placeholder="e.g. Google, Infosys, Startup Inc."
+          className={cn(
+            "h-10 text-sm rounded-xl border-border bg-muted/50 focus:bg-card focus:border-primary transition-all",
+            errors.companyName && "border-red-300",
+          )}
+        />
+        <FieldError message={errors.companyName?.message} />
+      </div>
+
       {/* Description */}
       <div className="space-y-1.5">
         <Label className="text-sm font-medium text-foreground/80">

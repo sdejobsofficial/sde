@@ -205,6 +205,7 @@ export interface FormField {
 
 export const basicsSchema = z.object({
   title: z.string().min(3, "Title must be at least 3 characters"),
+  companyName: z.string().min(2, "Company name must be at least 2 characters").max(100, "Company name must be 100 characters or less"),
   location: z.string().min(2, "Enter a location"),
   jobType: z.number({ error: "Select job type" }).min(0, "Select job type"),
   workMode: z.number({ error: "Select work mode" }).min(0, "Select work mode"),
