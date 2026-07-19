@@ -265,7 +265,7 @@ export const useGetCurrentSession = () => {
 export const useHandlePremiumUpgrade = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (userId: string) => handlePremiumUpgrade(userId),
+    mutationFn: ({ userId, type }: { userId: string; type?: "tech" | "non-tech" }) => handlePremiumUpgrade(userId, type),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["currentUser"] });
       toast.success("Subscription upgraded successfully!");

@@ -16,7 +16,9 @@ import {
   PremiumPromo,
 } from "@/components/student/JobList/JobListComp";
 import { PAGE_SIZE } from "@/constants/student/SJobList";
-import { Briefcase, MapPin, Search, Star, X } from "lucide-react";
+import { Briefcase, MapPin, Search, Star, X, Sparkles, Laptop, ArrowRight } from "lucide-react";
+import Link from "next/link";
+import { isTechJob } from "@/models/jobModel";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────
 
@@ -50,10 +52,10 @@ function syncParams(
 
 // ─── Inner component (uses useSearchParams — must be inside Suspense) ──────
 
-function JobsPageContent() {
+export function JobsPageContent({ category }: { category?: "tech" | "non-tech" }) {
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams(); // ← safe here: inside <Suspense>
+  const searchParams = useSearchParams();
 
   const [filters, setFilters] = useState<JobFilters>(() =>
     getInitialFilters(searchParams),
@@ -65,11 +67,12 @@ function JobsPageContent() {
   const { data: facetsData } = useFilterFacets();
   const facets = facetsData ?? { locations: [], industries: [] };
 
+  // Fetch with a large page size to handle client-side category filtering seamlessly
   const {
     data: jobsData,
     isFetching,
     isLoading,
-  } = useJobs({ ...filters, search: search || undefined }, page, PAGE_SIZE);
+  } = useJobs({ ...filters, search: search || undefined }, 1, 100);
 
   const updateFilters = useCallback(
     (partial: Partial<JobFilters>) => {
@@ -120,6 +123,18 @@ function JobsPageContent() {
     filters.salaryMin !== undefined ? 1 : 0,
     filters.referralOpen ? 1 : 0,
   ].reduce<number>((s, v) => s + (v || 0), 0);
+
+  // Client-side category filtering
+  const allJobs = jobsData?.data ?? [];
+  const filteredJobs = allJobs.filter((job) => {
+    if (!category) return true;
+    const isTech = isTechJob(job.Title, job.Skills);
+    return category === "tech" ? isTech : !isTech;
+  });
+
+  const totalFiltered = filteredJobs.length;
+  const paginatedJobs = filteredJobs.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const hasMore = page * PAGE_SIZE < totalFiltered;
 
   return (
     <div className="min-h-screen bg-background">
@@ -251,9 +266,9 @@ function JobsPageContent() {
                 ) : (
                   <>
                     <span className="font-extrabold text-foreground text-base">
-                      {(jobsData?.total ?? 0).toLocaleString()}
+                      {totalFiltered.toLocaleString()}
                     </span>{" "}
-                    jobs found
+                    {category ? `${category} ` : ""}jobs found
                     {search && (
                       <>
                         {" "}
@@ -278,7 +293,7 @@ function JobsPageContent() {
                   <JobCardSkeleton key={i} />
                 ))}
               </div>
-            ) : (jobsData?.data ?? []).length === 0 ? (
+            ) : paginatedJobs.length === 0 ? (
               <div className="bg-background rounded-2xl border border-border shadow-md shadow-sm flex flex-col items-center justify-center py-20 gap-5">
                 <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center">
                   <Briefcase className="text-primary/40" size={26} />
@@ -306,18 +321,18 @@ function JobsPageContent() {
                   isFetching && "opacity-60",
                 )}
               >
-                {(jobsData?.data ?? []).map((job) => (
+                {paginatedJobs.map((job) => (
                   <JobCardComponent key={job.Id} job={job} />
                 ))}
               </div>
             )}
 
             {/* Pagination */}
-            {!isLoading && (jobsData?.total ?? 0) > PAGE_SIZE && (
+            {!isLoading && totalFiltered > PAGE_SIZE && (
               <Pagination
                 page={page}
-                hasMore={jobsData?.hasMore ?? false}
-                total={jobsData?.total ?? 0}
+                hasMore={hasMore}
+                total={totalFiltered}
                 pageSize={PAGE_SIZE}
                 onPageChange={handlePageChange}
               />
@@ -335,25 +350,66 @@ function JobsPageContent() {
   );
 }
 
-// ─── Page export — wraps content in Suspense ──────────────────────────────
+// ─── Default Export: Category Selection Page ───────────────────────────────
 
-export default function JobsHomePage() {
+export default function JobsCategorySelectionPage() {
   return (
-    <Suspense
-      fallback={
-        <div className="min-h-screen bg-muted/50/80 flex items-center justify-center">
-          <div className="space-y-4 w-full max-w-2xl px-4">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <div
-                key={i}
-                className="h-28 rounded-2xl bg-card border border-gray-100 animate-pulse"
-              />
-            ))}
-          </div>
+    <div className="min-h-screen bg-muted/50/80 flex flex-col justify-center items-center py-12 px-4">
+      <div className="max-w-3xl w-full text-center space-y-8">
+        <div className="space-y-4">
+          <span className="inline-flex items-center gap-1.5 text-xs font-semibold tracking-widest uppercase text-teal-600 bg-teal-50 border border-teal-100 px-3 py-1 rounded-full">
+            <Sparkles size={11} /> Explore opportunities
+          </span>
+          <h1 className="text-4xl font-black text-foreground">
+            Select Job Category
+          </h1>
+          <p className="text-muted-foreground text-sm max-w-md mx-auto">
+            Choose a sector below to explore matching active jobs and internships.
+          </p>
         </div>
-      }
-    >
-      <JobsPageContent />
-    </Suspense>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
+          {/* Tech Jobs Card */}
+          <Link
+            href="/jobs/tech"
+            className="group bg-card border border-border hover:border-teal-500 hover:shadow-xl hover:shadow-teal-50/50 rounded-2xl p-6 flex flex-col items-center text-center transition-all duration-300 transform hover:-translate-y-1"
+          >
+            <div className="w-16 h-16 rounded-2xl bg-teal-50 group-hover:bg-teal-100/80 flex items-center justify-center mb-4 transition-colors">
+              <Laptop size={28} className="text-teal-600" />
+            </div>
+            <h3 className="font-bold text-foreground text-lg group-hover:text-teal-600 transition-colors">
+              Tech Jobs
+            </h3>
+            <p className="text-xs text-muted-foreground mt-2 flex-1">
+              Explore software, engineering, product, QA, and core tech development roles.
+            </p>
+            <span className="mt-5 inline-flex items-center gap-1.5 text-xs font-bold text-teal-600 group-hover:gap-2.5 transition-all">
+              Browse Tech Jobs
+              <ArrowRight size={13} />
+            </span>
+          </Link>
+
+          {/* Non-Tech Jobs Card */}
+          <Link
+            href="/jobs/non-tech"
+            className="group bg-card border border-border hover:border-indigo-500 hover:shadow-xl hover:shadow-indigo-50/50 rounded-2xl p-6 flex flex-col items-center text-center transition-all duration-300 transform hover:-translate-y-1"
+          >
+            <div className="w-16 h-16 rounded-2xl bg-indigo-50 group-hover:bg-indigo-100/80 flex items-center justify-center mb-4 transition-colors">
+              <Briefcase size={28} className="text-indigo-600" />
+            </div>
+            <h3 className="font-bold text-foreground text-lg group-hover:text-indigo-600 transition-colors">
+              Non-Tech Jobs
+            </h3>
+            <p className="text-xs text-muted-foreground mt-2 flex-1">
+              Explore marketing, sales, content creation, operations, and human resources roles.
+            </p>
+            <span className="mt-5 inline-flex items-center gap-1.5 text-xs font-bold text-indigo-600 group-hover:gap-2.5 transition-all">
+              Browse Non-Tech Jobs
+              <ArrowRight size={13} />
+            </span>
+          </Link>
+        </div>
+      </div>
+    </div>
   );
 }

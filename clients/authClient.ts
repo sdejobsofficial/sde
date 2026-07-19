@@ -11,6 +11,11 @@ import { createClient } from "@/supabase/server";
 
 export const jobSeekerEmailRegister = async (payload: RegisterJobSeekerDTO) => {
   const supabase = await createClient();
+
+  // If referralCode is present, we store it on the auth user metadata.
+  // Then, after signup, the client can link accounts on first profile creation.
+  const referralCode = payload.ReferralCode ? payload.ReferralCode : undefined;
+
   const { data, error } = await supabase.auth.signUp({
     email: payload.Email,
     password: payload.Password,
@@ -19,6 +24,7 @@ export const jobSeekerEmailRegister = async (payload: RegisterJobSeekerDTO) => {
         role: UserRole.JobSeeker,
         name: payload.Name,
         phone: payload.Phone,
+        ...(referralCode ? { referral_code: referralCode } : {}),
       },
     },
   });
@@ -92,7 +98,7 @@ export const logout = async () => {
   if (error) throw new Error(error.message);
 };
 
-export const handlePremiumUpgrade = async (userId: string) => {
+export const handlePremiumUpgrade = async (userId: string, type?: "tech" | "non-tech") => {
   const supabase = await createClient({ useServiceRole: true });
 
   const { data: user, error: fetchError } = await supabase
@@ -110,13 +116,18 @@ export const handlePremiumUpgrade = async (userId: string) => {
   const threeMonthsLater = new Date(now);
   threeMonthsLater.setMonth(threeMonthsLater.getMonth() + 3);
 
+  // Read existing subscription fields so we can merge them
+  const existingSub = user.meta?.subscription || {};
+
   const subscription = {
     Plan: SubscriptionPlan.Premium,
     Status: SubscriptionStatus.Active,
-    CurrentPeriodStart: now.toISOString(),
-    CurrentPeriodEnd: threeMonthsLater.toISOString(),
+    CurrentPeriodStart: existingSub.current_period_start || now.toISOString(),
+    CurrentPeriodEnd: existingSub.current_period_end || threeMonthsLater.toISOString(),
     CancelledAt: null,
-    IsPremiumPlus: false,
+    IsPremiumPlus: existingSub.is_premium_plus || false,
+    IsTechPremium: type === "tech" ? true : (existingSub.is_tech_premium || false),
+    IsNonTechPremium: type === "non-tech" ? true : (existingSub.is_non_tech_premium || false),
   };
 
   const { error } = await supabase

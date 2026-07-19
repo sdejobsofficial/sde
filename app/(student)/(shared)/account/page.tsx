@@ -346,44 +346,8 @@ export default function AccountPage() {
     subscription?.Plan === SubscriptionPlan.Premium &&
     subscription?.Status === SubscriptionStatus.Active;
 
-  const handleCheckout = async () => {
-    if (!user) return;
-
-    const userId = IsJobSeeker(user) ? user.Id : null;
-    if (!userId) {
-      toast.error("User not found");
-      return;
-    }
-
-    const res = await fetch("/api/createOrder", {
-      method: "POST",
-      body: JSON.stringify({ amount: PRICE * 100 }),
-    });
-    const data = await res.json();
-    const paymentData = {
-      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-      order_id: data.id,
-
-      handler: async function (response: any) {
-        const res = await fetch("/api/verifyOrder", {
-          method: "POST",
-          body: JSON.stringify({
-            orderId: response.razorpay_order_id,
-            razorpayPaymentId: response.razorpay_payment_id,
-            razorpaySignature: response.razorpay_signature,
-          }),
-        });
-        const data = await res.json();
-        if (data.isOk) {
-          await handlePremiumUpgrade(userId);
-        } else {
-          toast.error("Payment failed");
-        }
-      },
-    };
-
-    const payment = new (window as any).Razorpay(paymentData);
-    payment.open();
+  const handleCheckout = () => {
+    router.push("/premium");
   };
 
   return (

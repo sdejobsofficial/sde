@@ -133,6 +133,8 @@ export interface SubscriptionDetails {
   CurrentPeriodEnd?: string;
   CancelledAt?: string;
   IsPremiumPlus?: boolean;
+  IsTechPremium?: boolean;
+  IsNonTechPremium?: boolean;
 }
 
 export interface UsageLimits {
@@ -276,6 +278,14 @@ export function IsPremiumPlus(user: JobSeekerUser): boolean {
   return user.Meta?.Subscription?.IsPremiumPlus === true;
 }
 
+export function HasTechPremium(user: JobSeekerUser): boolean {
+  return IsPremium(user) && user.Meta?.Subscription?.IsTechPremium === true;
+}
+
+export function HasNonTechPremium(user: JobSeekerUser): boolean {
+  return IsPremium(user) && user.Meta?.Subscription?.IsNonTechPremium === true;
+}
+
 export const CanApply = (User: JobSeekerUser): boolean => {
   if (!User.Meta) return false;
   if (IsPremium(User)) return true;
@@ -308,6 +318,7 @@ export interface RegisterJobSeekerDTO {
   Name: string;
   Phone: string;
   Role: UserRole.JobSeeker;
+  ReferralCode?: string;
 }
 
 // Company registers with just email + password + role

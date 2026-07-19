@@ -334,14 +334,15 @@ export default function JobDetailPage({
               {/* Primary CTA */}
               <div className="flex gap-3 mt-5">
                 {j.FormType === FormType.External && j.ExternalApplyUrl ? (
-                  <button
-                    onClick={() => handleExternalApply(j.ExternalApplyUrl!)}
-                    className="flex-1"
-                  >
-                    <Button className="w-full h-11 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl text-sm font-bold shadow-lg shadow-primary/30 flex items-center justify-center gap-2 transition-all">
+                  <div className="flex-1">
+                    <Button
+                      className="w-full h-11 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl text-sm font-bold shadow-lg shadow-primary/30 flex items-center justify-center gap-2 transition-all"
+                      onClick={() => handleExternalApply(j.ExternalApplyUrl!)}
+                    >
                       Apply on company site <ExternalLink size={14} />
                     </Button>
-                  </button>
+                  </div>
+
                 ) : (
                   <Link href={`/jobs/${j.Id}/apply`} className="flex-1">
                     <Button className="w-full h-11 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl text-sm font-bold shadow-lg shadow-primary/30 flex items-center justify-center gap-2 transition-all">

@@ -16,6 +16,7 @@ import {
   ArrowRight,
   Sparkles,
   CheckCircle2,
+  Hash,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { UserRole } from "@/models/userModel";
@@ -46,11 +47,20 @@ export default function RegisterPage() {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<RegisterFormValues>({
+} = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
-    defaultValues: { fullName: "", email: "", phone: "", password: "", agreeTerms: false },
+    defaultValues: {
+      fullName: "",
+      email: "",
+      phone: "",
+      password: "",
+      // keep non-optional shape for RHF
+      referralCode: "",
+      agreeTerms: false,
+    },
     mode: "onTouched",
   });
+
 
   const emailValue = useWatch({ control, name: "email" });
   const isEmailComplete = emailValue && emailValue.includes("@");
@@ -63,6 +73,7 @@ export default function RegisterPage() {
         Name: values.fullName,
         Phone: values.phone,
         Role: UserRole.JobSeeker,
+        ReferralCode: values.referralCode || undefined,
       });
     } catch {
       // Auth errors are already surfaced by the mutation hook toast.
@@ -308,6 +319,34 @@ export default function RegisterPage() {
                 >
                   Mobile number
                 </Label>
+
+              {/* Referral code (optional) */}
+              <div className="space-y-1.5">
+                <Label
+                  htmlFor="referralCode"
+                  className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1 flex items-center gap-2"
+                >
+                  Referral code
+                  <span className="text-[10px] font-semibold text-muted-foreground/60 normal-case">(optional)</span>
+                </Label>
+                <div className="relative">
+                  <Hash
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/50 pointer-events-none"
+                    size={16}
+                  />
+                  <Input
+                    id="referralCode"
+                    type="text"
+                    placeholder="e.g. ROHIT25"
+                    {...register("referralCode")}
+                    className={cn(
+                      "pl-11 h-12 text-sm rounded-xl border-border bg-background focus:bg-card focus:border-primary/50 transition-all font-medium",
+                      errors.referralCode && "border-red-400 focus:border-red-500 focus:ring-red-500/10",
+                    )}
+                  />
+                </div>
+                <FieldError message={errors.referralCode?.message} />
+              </div>
                 <div className="flex gap-2">
                   {/* Country code badge */}
                   <div className="h-12 px-4 flex items-center gap-2 border border-border bg-background rounded-xl text-sm text-foreground font-bold flex-shrink-0 select-none shadow-sm">

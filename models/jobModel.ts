@@ -348,3 +348,32 @@ export interface PaginatedCompanies {
   total: number;
   hasMore: boolean;
 }
+
+export function isTechJob(title: string, skills: string[] = []): boolean {
+  const techKeywords = [
+    "software", "engineer", "developer", "programmer", "data", "qa", 
+    "frontend", "backend", "fullstack", "cloud", "devops", "system", 
+    "network", "architect", "analyst", "tech", "technology", "web",
+    "coder", "programming", "coding", "it", "design", "security", "database"
+  ];
+  const lowerTitle = title.toLowerCase();
+  const hasTechKeyword = techKeywords.some(kw => lowerTitle.includes(kw));
+  
+  const techSkills = [
+    "react", "node", "python", "sql", "git", "java", "typescript", "ts", "js",
+    "javascript", "postgres", "html", "css", "c++", "c#", "ruby", "php", "aws",
+    "docker", "kubernetes", "go", "golang", "swift", "kotlin", "rust"
+  ];
+  const hasTechSkill = skills.some(skill => 
+    techSkills.some(ts => skill.toLowerCase().includes(ts))
+  );
+
+  const nonTechKeywords = ["marketing", "producer", "video", "sales", "hr", "recruiter", "writer", "content", "finance", "accountant", "operation", "operations", "non-tech", "non tech"];
+  const hasNonTechKeyword = nonTechKeywords.some(kw => lowerTitle.includes(kw));
+  
+  if (hasNonTechKeyword && !lowerTitle.includes("engineer") && !lowerTitle.includes("developer")) {
+    return false;
+  }
+  
+  return true;
+}

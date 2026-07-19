@@ -34,11 +34,13 @@ import {
   ArrowUpRight,
   Crown,
   ArrowRight,
+  Laptop,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useCurrentUser } from "@/hooks/useUser";
-import { IsJobSeeker, IsPremium, IsPremiumPlus } from "@/models/userModel";
+import { IsJobSeeker, IsPremium, IsPremiumPlus, HasTechPremium, HasNonTechPremium } from "@/models/userModel";
+import { isTechJob } from "@/models/jobModel";
 import PricingPage from "@/components/student/Premium/Pricing";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -580,7 +582,13 @@ function Pagination({
 
 // ─── Page Content ─────────────────────────────────────────────────────────────
 
-function PremiumJobsPageContent({ isPremiumPlus }: { isPremiumPlus: boolean }) {
+export function PremiumJobsPageContent({
+  isPremiumPlus,
+  category,
+}: {
+  isPremiumPlus: boolean;
+  category?: "tech" | "non-tech";
+}) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -639,16 +647,17 @@ function PremiumJobsPageContent({ isPremiumPlus }: { isPremiumPlus: boolean }) {
   const { data: facetsData } = usePremiumFilterFacets();
   const facets = facetsData ?? { locations: [], industries: [] };
 
+  // Fetch with a large page size to handle client-side category filtering seamlessly
   const delayed = usePremiumJobs(
     { ...filters, search: search || undefined },
-    page,
-    PAGE_SIZE,
+    1,
+    100,
     { enabled: !isPremiumPlus },
   );
   const instant = usePremiumPlusJobs(
     { ...filters, search: search || undefined },
-    page,
-    PAGE_SIZE,
+    1,
+    100,
     { enabled: isPremiumPlus },
   );
   const {
@@ -697,6 +706,18 @@ function PremiumJobsPageContent({ isPremiumPlus }: { isPremiumPlus: boolean }) {
     filters.salaryMin !== undefined ? 1 : 0,
   ].reduce<number>((s, v) => s + (v || 0), 0);
 
+  // Client-side category filtering
+  const allJobs = jobsData?.data ?? [];
+  const filteredJobs = allJobs.filter((job) => {
+    if (!category) return true;
+    const isTech = isTechJob(job.Title, job.Skills);
+    return category === "tech" ? isTech : !isTech;
+  });
+
+  const totalFiltered = filteredJobs.length;
+  const paginatedJobs = filteredJobs.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const hasMore = page * PAGE_SIZE < totalFiltered;
+
   return (
     <div
       className="min-h-screen bg-background select-none"
@@ -710,12 +731,11 @@ function PremiumJobsPageContent({ isPremiumPlus }: { isPremiumPlus: boolean }) {
             <Sparkles size={12} className="text-[#39c8c9]" />
             Exclusive Opportunities
           </div>
-          <h1 className="text-3xl font-extrabold text-primary-foreground tracking-tight mb-2">
-            Premium Jobs
+          <h1 className="text-3xl font-extrabold text-primary-foreground tracking-tight mb-2 capitalize">
+            {category ? `${category} ` : ""}Premium Jobs
           </h1>
           <p className="text-[#39c8c9]/90 text-sm font-medium max-w-md mx-auto">
-            Hand-picked, high-quality roles from top companies — curated just
-            for you.
+            Hand-picked, high-quality {category ? `${category} ` : ""}roles from top companies — curated just for you.
           </p>
         </div>
 
@@ -849,7 +869,7 @@ function PremiumJobsPageContent({ isPremiumPlus }: { isPremiumPlus: boolean }) {
                 ) : (
                   <>
                     <span className="font-extrabold text-foreground text-base">
-                      {(jobsData?.total ?? 0).toLocaleString()}
+                      {totalFiltered.toLocaleString()}
                     </span>{" "}
                     premium jobs found
                     {search && (
@@ -877,7 +897,7 @@ function PremiumJobsPageContent({ isPremiumPlus }: { isPremiumPlus: boolean }) {
                   <PremiumJobCardSkeleton key={i} />
                 ))}
               </div>
-            ) : (jobsData?.data ?? []).length === 0 ? (
+            ) : paginatedJobs.length === 0 ? (
               <div className="bg-background rounded-2xl border border-border shadow-md flex flex-col items-center justify-center py-20 gap-5">
                 <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center">
                   <Star className="text-primary/40" size={26} />
@@ -905,18 +925,18 @@ function PremiumJobsPageContent({ isPremiumPlus }: { isPremiumPlus: boolean }) {
                   isFetching && "opacity-60",
                 )}
               >
-                {(jobsData?.data ?? []).map((job) => (
+                {paginatedJobs.map((job) => (
                   <PremiumJobCardComponent key={job.Id} job={job} />
                 ))}
               </div>
             )}
 
             {/* Pagination */}
-            {!isLoading && (jobsData?.total ?? 0) > PAGE_SIZE && (
+            {!isLoading && totalFiltered > PAGE_SIZE && (
               <Pagination
                 page={page}
-                hasMore={jobsData?.hasMore ?? false}
-                total={jobsData?.total ?? 0}
+                hasMore={hasMore}
+                total={totalFiltered}
                 pageSize={PAGE_SIZE}
                 onPageChange={handlePageChange}
               />
@@ -930,7 +950,7 @@ function PremiumJobsPageContent({ isPremiumPlus }: { isPremiumPlus: boolean }) {
 
 // ─── Loading skeleton ─────────────────────────────────────────────────────────
 
-function LoadingSkeleton() {
+export function LoadingSkeleton() {
   return (
     <div className="min-h-screen bg-background flex items-center justify-center">
       <div className="space-y-4 w-full max-w-2xl px-4">
@@ -945,10 +965,87 @@ function LoadingSkeleton() {
   );
 }
 
+// ─── Gateway Screen (For users holding BOTH premium plans) ────────────────────
+
+function PremiumGatewayPage() {
+  return (
+    <div className="min-h-screen bg-muted/50/80 flex flex-col justify-center items-center py-12 px-4">
+      <div className="max-w-3xl w-full text-center space-y-8">
+        <div className="space-y-4">
+          <span className="inline-flex items-center gap-1.5 text-xs font-semibold tracking-widest uppercase text-teal-600 bg-teal-50 border border-teal-100 px-3 py-1 rounded-full">
+            <Sparkles size={11} /> Double Premium Active
+          </span>
+          <h1 className="text-4xl font-black text-foreground">
+            Select Premium Portal
+          </h1>
+          <p className="text-muted-foreground text-sm max-w-md mx-auto">
+            You have active subscriptions for both Tech and Non-Tech Premium. Select a category below to explore.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
+          {/* Tech Premium Card */}
+          <Link
+            href="/premium/tech"
+            className="group bg-card border border-border hover:border-teal-500 hover:shadow-xl hover:shadow-teal-50/50 rounded-2xl p-6 flex flex-col items-center text-center transition-all duration-300 transform hover:-translate-y-1"
+          >
+            <div className="w-16 h-16 rounded-2xl bg-teal-50 group-hover:bg-teal-100/80 flex items-center justify-center mb-4 transition-colors">
+              <Laptop size={28} className="text-teal-600" />
+            </div>
+            <h3 className="font-bold text-foreground text-lg group-hover:text-teal-600 transition-colors">
+              Tech Premium Jobs
+            </h3>
+            <p className="text-xs text-muted-foreground mt-2 flex-1">
+              Access software development, data science, product design, engineering, and cybersecurity roles.
+            </p>
+            <span className="mt-5 inline-flex items-center gap-1.5 text-xs font-bold text-teal-600 group-hover:gap-2.5 transition-all">
+              Enter Portal
+              <ArrowRight size={13} />
+            </span>
+          </Link>
+
+          {/* Non-Tech Premium Card */}
+          <Link
+            href="/premium/non-tech"
+            className="group bg-card border border-border hover:border-indigo-500 hover:shadow-xl hover:shadow-indigo-50/50 rounded-2xl p-6 flex flex-col items-center text-center transition-all duration-300 transform hover:-translate-y-1"
+          >
+            <div className="w-16 h-16 rounded-2xl bg-indigo-50 group-hover:bg-indigo-100/80 flex items-center justify-center mb-4 transition-colors">
+              <Briefcase size={28} className="text-indigo-600" />
+            </div>
+            <h3 className="font-bold text-foreground text-lg group-hover:text-indigo-600 transition-colors">
+              Non-Tech Premium Jobs
+            </h3>
+            <p className="text-xs text-muted-foreground mt-2 flex-1">
+              Access marketing, business development, sales, operations, creative design, and human resources roles.
+            </p>
+            <span className="mt-5 inline-flex items-center gap-1.5 text-xs font-bold text-indigo-600 group-hover:gap-2.5 transition-all">
+              Enter Portal
+              <ArrowRight size={13} />
+            </span>
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── Page entry ───────────────────────────────────────────────────────────────
 
 export default function PremiumJobsPage() {
   const { data: user, isLoading } = useCurrentUser();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isLoading && user && IsJobSeeker(user) && IsPremium(user)) {
+      const hasTech = HasTechPremium(user);
+      const hasNonTech = HasNonTechPremium(user);
+      if (hasTech && !hasNonTech) {
+        router.replace("/premium/tech");
+      } else if (!hasTech && hasNonTech) {
+        router.replace("/premium/non-tech");
+      }
+    }
+  }, [user, isLoading, router]);
 
   if (isLoading) return <LoadingSkeleton />;
 
@@ -957,11 +1054,14 @@ export default function PremiumJobsPage() {
     return <PricingPage />;
   }
 
-  const premiumPlus = IsPremiumPlus(user);
+  const hasTech = HasTechPremium(user);
+  const hasNonTech = HasNonTechPremium(user);
 
-  return (
-    <Suspense fallback={<LoadingSkeleton />}>
-      <PremiumJobsPageContent isPremiumPlus={premiumPlus} />
-    </Suspense>
-  );
+  // If they have both, we show a gorgeous selection gateway screen.
+  if (hasTech && hasNonTech) {
+    return <PremiumGatewayPage />;
+  }
+
+  // Fallback loading while redirecting
+  return <LoadingSkeleton />;
 }

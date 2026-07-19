@@ -187,7 +187,40 @@ export default function CompanyProfilePage({
                   </Button>
                 </a>
               )}
-              <Button className="h-9 px-4 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl text-xs font-bold shadow-md shadow-primary/30">
+              <Button
+                type="button"
+                onClick={async (e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+
+                  const url = `${window.location.origin}/companies/${id}`;
+
+                  if (navigator.share) {
+                    try {
+                      await navigator.share({
+                        title: company.Name ?? "Company",
+                        text: `Check out this company: ${company.Name ?? "Company"}`,
+                        url,
+                      });
+                      return;
+                    } catch {
+                      // fall through to clipboard
+                    }
+                  }
+
+                  try {
+                    await navigator.clipboard.writeText(url);
+                  } catch {
+                    const el = document.createElement("input");
+                    el.value = url;
+                    document.body.appendChild(el);
+                    el.select();
+                    document.execCommand("copy");
+                    document.body.removeChild(el);
+                  }
+                }}
+                className="h-9 px-4 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl text-xs font-bold shadow-md shadow-primary/30"
+              >
                 Share <Share2 size={15} />
               </Button>
             </div>

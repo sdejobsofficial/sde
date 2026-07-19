@@ -13,6 +13,20 @@ export const registerSchema = z.object({
     .string()
     .length(10, "Enter a valid 10-digit mobile number")
     .regex(/^[6-9]\d{9}$/, "Enter a valid Indian mobile number"),
+
+  // Optional refer-to-earn code
+  referralCode: z
+    .string()
+    .trim()
+    // Keep it as a string in TS (RHF defaultValues expects it non-optional).
+    // Empty string means "not provided".
+    .transform((v) => (v ? v.toUpperCase() : ""))
+    .refine(
+      (v) => v === "" || /^[A-Z0-9]{3,20}$/.test(v),
+      "Referral code must be 3–20 chars (A–Z, 0–9)",
+    ),
+
+
   password: z
     .string()
     .min(8, "Password must be at least 8 characters")
@@ -24,6 +38,14 @@ export const registerSchema = z.object({
 });
 
 export type RegisterFormValues = z.infer<typeof registerSchema>;
+
+// React Hook Form + zodResolver expects stable TS shapes.
+// Ensure referralCode is always present as a string (even if empty),
+// while still being optional/ignored in backend payload.
+export type RegisterFormValuesWithNonOptionalReferralCode = Omit<RegisterFormValues, "referralCode"> & {
+  referralCode: string;
+};
+
 
 // ─── Left panel perks ─────────────────────────────────────────────────────
 export const PERKS = [
