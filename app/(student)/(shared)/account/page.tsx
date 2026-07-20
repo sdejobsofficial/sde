@@ -30,6 +30,7 @@ import {
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import Image from "next/image";
+import ReferralSection from "@/components/student/Referral/ReferralSection";
 
 const PREMIUM_FEATURES = [
   {
@@ -411,6 +412,9 @@ export default function AccountPage() {
             </div>
           </div>
         </div>
+
+        {/* ── Referral section — every user can share referrals ── */}
+        <ReferralSection />
 
         {/* ── Premium member card OR upgrade section ── */}
         {isPremium ? (

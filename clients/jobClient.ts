@@ -399,11 +399,14 @@ export const createJob = async (payload: JobInteraction) => {
   //   posted_by: user.id, // same as company_id for now; could be different if we track individual recruiters
   // };
 
+  // Strip non-DB fields before insert
+  const { CompanyName, ...dbPayload } = payload;
+
   const { data, error } = await supabase
     .from("jobs")
     .insert([
       convertToSnakeCase({
-        ...payload,
+        ...dbPayload,
         company_id: userSession.id,
         posted_by: userSession.id,
       }),

@@ -3,6 +3,7 @@
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -21,7 +22,7 @@ import {
 import { cn } from "@/lib/utils";
 import { UserRole } from "@/models/userModel";
 import { useJobSeekerEmailRegister, useJobSeekerGoogleLogin } from "@/hooks/useUser";
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { FieldError } from "@/components/common/FormComponents";
 import {
   RegisterFormValues,
@@ -32,7 +33,9 @@ import {
 import Image from "next/image";
 import EmailOtpModal from "@/components/common/EmailOtpModal";
 
-export default function RegisterPage() {
+function RegisterPageContent() {
+  const searchParams = useSearchParams();
+  const refFromUrl = searchParams.get("ref")?.toUpperCase() || "";
   const { mutateAsync: emailRegister, isPending: emailRegistering } =
     useJobSeekerEmailRegister();
   const { mutateAsync: googleLogin, isPending: googleLoginLoading } =
@@ -55,7 +58,7 @@ export default function RegisterPage() {
       phone: "",
       password: "",
       // keep non-optional shape for RHF
-      referralCode: "",
+      referralCode: refFromUrl,
       agreeTerms: false,
     },
     mode: "onTouched",
@@ -566,5 +569,37 @@ export default function RegisterPage() {
         </Link>
       </footer>
     </div>
+  );
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center">
+          <svg
+            className="animate-spin h-6 w-6 text-primary"
+            viewBox="0 0 24 24"
+            fill="none"
+          >
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            />
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8v8z"
+            />
+          </svg>
+        </div>
+      }
+    >
+      <RegisterPageContent />
+    </Suspense>
   );
 }

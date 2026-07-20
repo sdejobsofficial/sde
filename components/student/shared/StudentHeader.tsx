@@ -193,6 +193,14 @@ export default function StudentHeader() {
                         <ClipboardList size={14} />
                         My Applications
                       </Link>
+                      <Link
+                        href="/account"
+                        onClick={() => setProfileOpen(false)}
+                        className="flex items-center gap-2.5 px-4 py-2 text-sm text-muted-foreground hover:bg-primary/10 hover:text-primary transition-colors"
+                      >
+                        <Settings size={14} />
+                        Account
+                      </Link>
                       <div className="border-t border-gray-50 mt-1 pt-1">
                         <button
                           disabled={isPending}
