@@ -30,10 +30,11 @@ export async function POST(request: NextRequest) {
 
   // 1. Check sales_profiles first (existing system for sales people)
   const { data: salesProfile, error: salesError } = await supabase
-    .rpc("get_active_sales_profile_by_code", {
-      p_code: normalizedCode,
-    })
-    .single<{ id: string; name: string }>();
+    .from("sales_profiles")
+    .select("id, name")
+    .eq("referral_code", normalizedCode)
+    .eq("is_active", true)
+    .maybeSingle();
 
   if (!salesError && salesProfile) {
     return NextResponse.json(
@@ -78,4 +79,5 @@ export async function POST(request: NextRequest) {
     { status: 200 },
   );
 }
+
 

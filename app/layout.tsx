@@ -4,6 +4,7 @@ import { Nunito } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import { Metadata } from "next";
 import { ThemeProvider } from "@/components/theme-provider";
+import ReferralTracker from "@/components/ReferralTracker";
 
 const nunito = Nunito({
   variable: "--font-nunito",
@@ -41,6 +42,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <Toaster />
+            <ReferralTracker />
             {children}
           </ThemeProvider>
         </QueryProvider>
@@ -48,3 +50,4 @@ export default function RootLayout({
     </html>
   );
 }
+

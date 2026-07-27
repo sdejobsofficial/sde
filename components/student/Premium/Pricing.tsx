@@ -21,15 +21,11 @@ import {
 import { cn } from "@/lib/utils";
 import { IsJobSeeker, HasTechPremium, HasNonTechPremium } from "@/models/userModel";
 import { useCurrentUser, useHandlePremiumUpgrade } from "@/hooks/useUser";
-import { useValidateReferralCode } from "@/hooks/useSales";
-// Referral credits are finalized server-side (idempotent) via /api/finalizeReferralConversion
-// import { recordReferral } from "@/clients/salesClient";
+import { useReferralTracker } from "@/hooks/useReferralTracker";
 import Script from "next/script";
 import toast from "react-hot-toast";
 
 // ─── Config ───────────────────────────────────────────────────────────────
-
-const PRICE = 299;
 
 const FREE_BENEFITS = [
   { label: "Limited access to platform features", included: true },
@@ -75,75 +71,42 @@ const FAQS = [
   },
 ];
 
-// ─── Types ────────────────────────────────────────────────────────────────
-
-type ReferralState =
-  | { status: "idle" }
-  | { status: "validating" }
-  | {
-      status: "valid";
-      salesProfileId: string;
-      salesPersonName: string;
-      code: string;
-    }
-  | { status: "invalid" };
-
 // ─── Checkout Modal ───────────────────────────────────────────────────────
 
 function CheckoutModal({
   onClose,
   onProceed,
   isPending,
-  prefillCode,
   type,
+  appliedCode,
+  discountActive,
+  applyManualCode,
+  clearReferral,
 }: {
   onClose: () => void;
-  onProceed: (referralState: ReferralState) => void;
+  onProceed: () => void;
   isPending: boolean;
-  prefillCode?: string;
   type: "tech" | "non-tech";
+  appliedCode: string | null;
+  discountActive: boolean;
+  applyManualCode: (code: string) => Promise<boolean>;
+  clearReferral: () => void;
 }) {
-  const [code, setCode] = useState(prefillCode ?? "");
-  const [referralState, setReferralState] = useState<ReferralState>({
-    status: "idle",
-  });
-  const { mutate: validate } = useValidateReferralCode();
+  const [manualCode, setManualCode] = useState("");
+  const [isValidatingLocal, setIsValidatingLocal] = useState(false);
 
-  const handleValidate = (codeToValidate?: string) => {
-    const trimmed = (codeToValidate ?? code).trim().toUpperCase();
+  const handleApply = async () => {
+    const trimmed = manualCode.trim().toUpperCase();
     if (!trimmed) return;
-    setReferralState({ status: "validating" });
-    validate(trimmed, {
-      onSuccess: (result) => {
-        if (result) {
-          setReferralState({
-            status: "valid",
-            salesProfileId: result.id,
-            salesPersonName: result.name,
-            code: trimmed,
-          });
-        } else {
-          setReferralState({ status: "invalid" });
-        }
-      },
-      onError: () => setReferralState({ status: "invalid" }),
-    });
+    setIsValidatingLocal(true);
+    const success = await applyManualCode(trimmed);
+    setIsValidatingLocal(false);
+    if (success) {
+      setManualCode("");
+    }
   };
 
-  useEffect(() => {
-    if (!prefillCode) return;
-    queueMicrotask(() => handleValidate(prefillCode));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const handleClear = () => {
-    setCode("");
-    setReferralState({ status: "idle" });
-  };
-
-  const isValidating = referralState.status === "validating";
-  const isValid = referralState.status === "valid";
-  const isInvalid = referralState.status === "invalid";
+  const displayedPrice = discountActive ? 299 : 349;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -176,7 +139,12 @@ function CheckoutModal({
           </div>
           <p className="text-xs text-muted-foreground">
             3 months full access · one-time payment of{" "}
-            <span className="font-bold text-foreground">₹{PRICE}</span>
+            <span className="font-bold text-foreground">₹{displayedPrice}</span>
+            {discountActive && (
+              <span className="text-xs text-emerald-600 font-semibold ml-1.5">
+                (₹50 referral discount applied)
+              </span>
+            )}
           </p>
         </div>
 
@@ -205,91 +173,56 @@ function CheckoutModal({
             <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide flex items-center gap-1.5">
               <Hash size={11} />
               Referral code
-              <span className="font-normal normal-case tracking-normal text-muted-foreground/60">
-                (optional)
-              </span>
             </p>
 
-            <div className="flex gap-2">
-              <div className="relative flex-1">
-                <input
-                  value={code}
-                  onChange={(e) => {
-                    setCode(e.target.value.toUpperCase());
-                    if (referralState.status !== "idle")
-                      setReferralState({ status: "idle" });
-                  }}
-                  onKeyDown={(e) =>
-                    e.key === "Enter" && !isValid && handleValidate()
-                  }
-                  placeholder="e.g. ROHIT25"
-                  maxLength={20}
-                  disabled={isValid || isPending}
-                  className={cn(
-                    "w-full h-10 pl-3 pr-9 text-sm border rounded-xl font-mono tracking-widest placeholder:font-sans placeholder:tracking-normal placeholder:text-gray-300 focus:outline-none transition-all",
-                    isValid
-                      ? "bg-emerald-50 border-emerald-200 text-emerald-700 cursor-not-allowed"
-                      : isInvalid
-                        ? "bg-red-50 border-red-200 text-red-700 focus:border-red-400"
-                        : "bg-background border-border text-foreground focus:border-primary",
-                  )}
-                />
-                <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                  {isValidating && (
-                    <Loader2
-                      size={13}
-                      className="text-muted-foreground/50 animate-spin"
-                    />
-                  )}
-                  {isValid && (
-                    <CheckCircle2 size={13} className="text-emerald-500" />
-                  )}
-                  {isInvalid && <XCircle size={13} className="text-red-400" />}
+            {discountActive && appliedCode ? (
+              <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-3 flex items-center justify-between">
+                <div className="flex items-center gap-2 text-emerald-700 text-xs">
+                  <CheckCircle2 size={14} />
+                  <span>Code <strong>{appliedCode}</strong> active</span>
                 </div>
-              </div>
-
-              {isValid ? (
                 <button
                   type="button"
-                  onClick={handleClear}
+                  onClick={clearReferral}
                   disabled={isPending}
-                  className="h-10 px-3.5 rounded-xl border border-border text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all whitespace-nowrap disabled:opacity-40"
+                  className="text-xs text-emerald-600 hover:text-emerald-800 font-semibold underline"
                 >
                   Remove
                 </button>
-              ) : (
+              </div>
+            ) : (
+              <div className="flex gap-2">
+                <div className="relative flex-1">
+                  <input
+                    value={manualCode}
+                    onChange={(e) => setManualCode(e.target.value.toUpperCase())}
+                    onKeyDown={(e) => e.key === "Enter" && handleApply()}
+                    placeholder="e.g. REFERNEST50"
+                    maxLength={20}
+                    disabled={isPending || isValidatingLocal}
+                    className="w-full h-10 px-3 text-sm bg-background border border-border rounded-xl font-mono tracking-widest placeholder:font-sans placeholder:tracking-normal placeholder:text-gray-300 focus:outline-none focus:border-primary transition-all"
+                  />
+                  {isValidatingLocal && (
+                    <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                      <Loader2 size={13} className="text-muted-foreground animate-spin" />
+                    </div>
+                  )}
+                </div>
                 <button
                   type="button"
-                  onClick={() => handleValidate()}
-                  disabled={!code.trim() || isValidating || isPending}
+                  onClick={handleApply}
+                  disabled={!manualCode.trim() || isValidatingLocal || isPending}
                   className="h-10 px-3.5 rounded-xl bg-primary/10 hover:bg-primary/20 text-primary text-xs font-semibold disabled:opacity-40 disabled:cursor-not-allowed transition-all whitespace-nowrap"
                 >
                   Apply
                 </button>
-              )}
-            </div>
-
-            {/* Feedback */}
-            {isValid && referralState.status === "valid" && (
-              <p className="text-xs text-emerald-600 font-medium flex items-center gap-1.5">
-                <CheckCircle2 size={11} />
-                Referred by{" "}
-                <span className="font-bold">
-                  {referralState.salesPersonName}
-                </span>
-              </p>
-            )}
-            {isInvalid && (
-              <p className="text-xs text-red-500 flex items-center gap-1.5">
-                <XCircle size={11} />
-                Invalid or inactive code. Please check and try again.
-              </p>
+              </div>
             )}
           </div>
 
           {/* CTA */}
           <button
-            onClick={() => onProceed(referralState)}
+            onClick={onProceed}
             disabled={isPending}
             className="w-full py-3 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground text-sm font-bold shadow-lg shadow-primary/20 flex items-center justify-center gap-2 transition-all disabled:opacity-60"
           >
@@ -301,7 +234,7 @@ function CheckoutModal({
             ) : (
               <>
                 <Crown size={14} />
-                Pay ₹{PRICE} &amp; Get Premium
+                Pay ₹{displayedPrice} &amp; Get Premium
                 <ExternalLink size={12} className="opacity-70" />
               </>
             )}
@@ -327,10 +260,20 @@ function CheckoutModal({
 function PricingPageContent() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [isPaying, setIsPaying] = useState(false);
+  const [manualCodeInput, setManualCodeInput] = useState("");
 
   const { data: user, isLoading } = useCurrentUser();
   const { mutateAsync: handlePremiumUpgrade } = useHandlePremiumUpgrade();
   const router = useRouter();
+
+  // Use the global referral cookie tracker hook
+  const {
+    appliedCode,
+    discountActive,
+    applyManualCode,
+    clearReferral,
+    isValidating: isReferralValidating,
+  } = useReferralTracker();
 
   const searchParams = useSearchParams();
   const refCode = searchParams.get("ref")?.toUpperCase() || undefined;
@@ -346,7 +289,9 @@ function PricingPageContent() {
   const isTechActive = !!user && IsJobSeeker(user) && HasTechPremium(user);
   const isNonTechActive = !!user && IsJobSeeker(user) && HasNonTechPremium(user);
 
-  const handleProceed = async (referralState: ReferralState) => {
+  const currentPrice = discountActive ? 299 : 349;
+
+  const handleProceed = async () => {
     if (!user || !checkoutType) return;
 
     const userId = IsJobSeeker(user) ? user.Id : null;
@@ -357,19 +302,29 @@ function PricingPageContent() {
 
     setIsPaying(true);
     try {
+      // Server validates code and sets correct Razorpay amount (299 or 349)
       const res = await fetch("/api/createOrder", {
         method: "POST",
-        body: JSON.stringify({ amount: PRICE * 100 }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          subscriptionType: checkoutType,
+          referralCode: appliedCode || undefined,
+        }),
       });
-      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error("Failed to create order");
+      }
+      const orderData = await res.json();
 
       const paymentData = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-        order_id: data.id,
+        order_id: orderData.id,
 
         handler: async function (response: any) {
           const verifyRes = await fetch("/api/verifyOrder", {
             method: "POST",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               orderId: response.razorpay_order_id,
               razorpayPaymentId: response.razorpay_payment_id,
@@ -379,42 +334,38 @@ function PricingPageContent() {
           const verifyData = await verifyRes.json();
 
           if (verifyData.isOk) {
-            if (referralState.status === "valid") {
-              try {
-                // Single source of truth for referral credits: server finalizes the conversion
-                // only when (register with valid referral code) AND (verified payment) AND (premium upgrade).
-                const finalizeRes = await fetch(
-                  "/api/finalizeReferralConversion",
-                  {
-                    method: "POST",
-                    body: JSON.stringify({
-                      referred_user_id: userId,
-                      sales_profile_id: referralState.salesProfileId,
-                      referral_code: referralState.code,
-                      subscription_type: checkoutType,
-                      payment_id: response.razorpay_payment_id,
-                      order_id: response.razorpay_order_id,
-                      razorpay_signature: response.razorpay_signature,
-                      amount: PRICE,
-                    }),
-                  },
-                );
+            try {
+              // Finalize conversion and log database metrics
+              const finalizeRes = await fetch(
+                "/api/finalizeReferralConversion",
+                {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({
+                    referred_user_id: userId,
+                    referral_code: appliedCode || undefined,
+                    subscription_type: checkoutType,
+                    payment_id: response.razorpay_payment_id,
+                    order_id: response.razorpay_order_id,
+                    razorpay_signature: response.razorpay_signature,
+                  }),
+                },
+              );
 
-                const finalizeJson = await finalizeRes.json();
-                if (!finalizeJson?.isOk) {
-                  // Do not block premium upgrade; credits may fail due to DB/RPC.
-                  console.warn("finalizeReferralConversion failed", finalizeJson);
-                }
-              } catch (e) {
-                console.warn("finalizeReferralConversion error", e);
+              const finalizeJson = await finalizeRes.json();
+              if (!finalizeJson?.isOk) {
+                console.warn("finalizeReferralConversion warning", finalizeJson);
               }
+            } catch (e) {
+              console.warn("finalizeReferralConversion error", e);
             }
-            // Premium upgrade is still required regardless of referral credits.
+
+            // Execute client premium state upgrade
             await handlePremiumUpgrade({ userId, type: checkoutType });
             setCheckoutType(null);
             router.refresh();
           } else {
-            toast.error("Payment failed");
+            toast.error("Payment validation failed");
           }
           setIsPaying(false);
         },
@@ -426,8 +377,8 @@ function PricingPageContent() {
 
       const payment = new (window as any).Razorpay(paymentData);
       payment.open();
-    } catch {
-      toast.error("Something went wrong. Please try again.");
+    } catch (err: any) {
+      toast.error(err.message || "Something went wrong. Please try again.");
       setIsPaying(false);
     }
   };
@@ -438,6 +389,15 @@ function PricingPageContent() {
       router.push(`/login?callbackUrl=/premium`);
     } else {
       setCheckoutType(type);
+    }
+  };
+
+  const handleManualApplyMain = async () => {
+    const trimmed = manualCodeInput.trim().toUpperCase();
+    if (!trimmed) return;
+    const success = await applyManualCode(trimmed);
+    if (success) {
+      setManualCodeInput("");
     }
   };
 
@@ -465,6 +425,40 @@ function PricingPageContent() {
             Start for free. Upgrade to either Tech or Non-Tech subscription, or both when you&apos;re ready to go all-in.
           </p>
         </div>
+
+        {/* ── Referral Input Callout (Main Page) ── */}
+        {discountActive && appliedCode ? (
+          <div className="max-w-md mx-auto bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl px-4 py-3 flex items-center justify-between text-sm shadow-sm">
+            <span className="flex items-center gap-2">
+              <CheckCircle2 size={16} className="text-emerald-600 flex-shrink-0" />
+              <span>Referral code <strong>{appliedCode}</strong> applied. ₹50 discount active!</span>
+            </span>
+            <button
+              onClick={clearReferral}
+              className="text-emerald-700 hover:text-emerald-950 font-bold underline text-xs ml-4"
+            >
+              Remove
+            </button>
+          </div>
+        ) : (
+          <div className="max-w-md mx-auto bg-card border border-gray-200/60 rounded-xl p-2.5 flex gap-2 items-center shadow-sm">
+            <input
+              value={manualCodeInput}
+              onChange={(e) => setManualCodeInput(e.target.value.toUpperCase())}
+              onKeyDown={(e) => e.key === "Enter" && handleManualApplyMain()}
+              placeholder="HAVE A REFERRAL CODE?"
+              className="flex-1 bg-transparent px-3 py-1.5 text-xs font-mono tracking-widest focus:outline-none placeholder:text-muted-foreground/60 placeholder:font-sans placeholder:tracking-normal"
+              disabled={isReferralValidating}
+            />
+            <button
+              onClick={handleManualApplyMain}
+              disabled={!manualCodeInput.trim() || isReferralValidating}
+              className="bg-primary hover:bg-primary/95 text-primary-foreground text-xs font-semibold px-4 py-2 rounded-lg transition-all disabled:opacity-40"
+            >
+              {isReferralValidating ? "Checking..." : "Apply"}
+            </button>
+          </div>
+        )}
 
         {/* ── Plan cards ── */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -498,20 +492,16 @@ function PricingPageContent() {
                       <X size={10} className="text-gray-300" />
                     )}
                   </span>
-                  <span
-                    className={cn(
-                      "text-sm leading-snug",
-                      included ? "text-foreground/80" : "text-gray-300",
-                    )}
-                  >
-                    {label}
-                  </span>
+                  <span className="text-sm text-foreground/80">{label}</span>
                 </li>
               ))}
             </ul>
 
-            <button className="w-full py-3 rounded-xl border border-border text-sm font-semibold text-muted-foreground cursor-default">
-              {!user || (!isTechActive && !isNonTechActive) ? "Current plan" : "Basic Free Version"}
+            <button
+              disabled
+              className="w-full py-3 rounded-xl bg-muted text-muted-foreground text-sm font-semibold cursor-not-allowed"
+            >
+              Current Active Plan
             </button>
           </div>
 
@@ -537,9 +527,14 @@ function PricingPageContent() {
               </p>
               <div className="flex items-baseline gap-1">
                 <span className="text-4xl font-black text-foreground">
-                  ₹{PRICE}
+                  ₹{currentPrice}
                 </span>
                 <span className="text-sm text-muted-foreground/80">/3mo</span>
+                {discountActive && (
+                  <span className="text-xs text-emerald-600 line-through decoration-red-400 font-semibold ml-2">
+                    ₹349
+                  </span>
+                )}
               </div>
               <p className="text-xs text-muted-foreground/80 mt-1">
                 one-time payment, 3 months access
@@ -589,7 +584,7 @@ function PricingPageContent() {
               ) : (
                 <>
                   <Crown size={14} />
-                  Get Tech Premium — ₹{PRICE}
+                  Get Tech Premium — ₹{currentPrice}
                   <ExternalLink size={12} className="opacity-70" />
                 </>
               )}
@@ -618,9 +613,14 @@ function PricingPageContent() {
               </p>
               <div className="flex items-baseline gap-1">
                 <span className="text-4xl font-black text-foreground">
-                  ₹{PRICE}
+                  ₹{currentPrice}
                 </span>
                 <span className="text-sm text-muted-foreground/80">/3mo</span>
+                {discountActive && (
+                  <span className="text-xs text-emerald-600 line-through decoration-red-400 font-semibold ml-2">
+                    ₹349
+                  </span>
+                )}
               </div>
               <p className="text-xs text-muted-foreground/80 mt-1">
                 one-time payment, 3 months access
@@ -670,7 +670,7 @@ function PricingPageContent() {
               ) : (
                 <>
                   <Crown size={14} />
-                  Get Non-Tech Premium — ₹{PRICE}
+                  Get Non-Tech Premium — ₹{currentPrice}
                   <ExternalLink size={12} className="opacity-70" />
                 </>
               )}
@@ -734,8 +734,11 @@ function PricingPageContent() {
           onClose={() => !isPaying && setCheckoutType(null)}
           onProceed={handleProceed}
           isPending={isPaying}
-          prefillCode={refCode}
           type={checkoutType}
+          appliedCode={appliedCode}
+          discountActive={discountActive}
+          applyManualCode={applyManualCode}
+          clearReferral={clearReferral}
         />
       )}
     </div>
