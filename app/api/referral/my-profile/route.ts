@@ -66,16 +66,48 @@ export async function GET() {
     }
   }
 
-  // Get conversion stats — count how many times this code has been used
-  // The code may appear in the `referrals` table or be tracked via auth user metadata
-  // We query the referrals table where referral_code matches
-  const { count: conversionCount, error: countError } = await supabase
-    .from("referrals")
+  // ── P2P Stats: referrals made by this user ──────────────────────────────
+  // user_referrals tracks peer-to-peer relationships (referrer → referred)
+  const { count: totalReferrals, error: referralCountError } = await supabase
+    .from("user_referrals")
     .select("*", { count: "exact", head: true })
-    .eq("referral_code", referralCode);
+    .eq("referrer_user_id", dbUser.id);
 
-  if (countError) {
-    console.error("Failed to fetch conversion count:", countError);
+  if (referralCountError) {
+    console.error("Failed to fetch referral count:", referralCountError);
+  }
+
+  // P2P premium conversions = user_referrals that have a matching referral_reward (granted)
+  const { count: premiumConversions, error: conversionError } = await supabase
+    .from("referral_rewards")
+    .select("*", { count: "exact", head: true })
+    .eq("referrer_id", dbUser.id)
+    .eq("status", "granted");
+
+  if (conversionError) {
+    console.error("Failed to fetch premium conversions:", conversionError);
+  }
+
+  // ── Credit Balance: sum of all credit_transactions for this user ─────────
+  const { data: txData, error: txError } = await supabase
+    .from("credit_transactions")
+    .select("amount")
+    .eq("user_id", dbUser.id);
+
+  if (txError) {
+    console.error("Failed to fetch credit balance:", txError);
+  }
+  const creditBalance = (txData ?? []).reduce((sum, t) => sum + t.amount, 0);
+
+  // ── Redemption Count ─────────────────────────────────────────────────────
+  const { count: redemptionCount, error: redemptionError } = await supabase
+    .from("redemptions")
+    .select("*", { count: "exact", head: true })
+    .eq("user_id", dbUser.id)
+    .eq("status", "completed");
+
+  if (redemptionError) {
+    console.error("Failed to fetch redemption count:", redemptionError);
   }
 
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000";
@@ -87,8 +119,14 @@ export async function GET() {
       data: {
         referralCode,
         shareUrl,
-        conversionCount: conversionCount ?? 0,
         name: dbUser.name,
+        // P2P stats
+        totalReferrals: totalReferrals ?? 0,
+        premiumConversions: premiumConversions ?? 0,
+        creditBalance,
+        redemptionCount: redemptionCount ?? 0,
+        // Derived: credits needed to next redemption
+        creditsToNextRedemption: Math.max(0, 10 - (creditBalance % 10)),
       },
     },
     { status: 200 },
