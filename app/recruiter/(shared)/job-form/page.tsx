@@ -939,7 +939,7 @@ function ApplicationStep({
         <Label className="text-sm font-medium text-foreground/80">
           Application method
         </Label>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           {[
             {
               label: "Internal form",
@@ -950,6 +950,11 @@ function ApplicationStep({
               label: "External link",
               sub: "Redirect to your own ATS or careers page",
               value: FormType.External,
+            },
+            {
+              label: "Email",
+              sub: "Receive applications via email",
+              value: FormType.Email,
             },
           ].map(({ label, sub, value }) => (
             <button
@@ -991,21 +996,28 @@ function ApplicationStep({
         </div>
       </div>
 
-      {/* External URL */}
+      {/* External URL / Email */}
       {!isInternal && (
         <div className="space-y-1.5">
           <Label className="text-sm font-medium text-foreground/80">
-            External apply URL <span className="text-red-500 ml-0.5">*</span>
+            {w.formType === FormType.Email ? "Email address" : "External apply URL"} <span className="text-red-500 ml-0.5">*</span>
           </Label>
           <div className="relative">
-            <LinkIcon
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/80 pointer-events-none"
-              size={14}
-            />
+            {w.formType === FormType.Email ? (
+              <Type
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/80 pointer-events-none"
+                size={14}
+              />
+            ) : (
+              <LinkIcon
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/80 pointer-events-none"
+                size={14}
+              />
+            )}
             <Input
               {...register("externalApplyUrl")}
-              type="url"
-              placeholder="https://yourcompany.com/careers/job-123"
+              type={w.formType === FormType.Email ? "email" : "url"}
+              placeholder={w.formType === FormType.Email ? "e.g. hr@company.com" : "https://yourcompany.com/careers/job-123"}
               className={cn(
                 "pl-9 h-10 text-sm rounded-xl border-border bg-muted/50 focus:bg-card focus:border-primary transition-all",
                 errors.externalApplyUrl && "border-red-300",

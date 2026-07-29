@@ -50,6 +50,7 @@ export enum ExperienceLevel {
 export enum FormType {
   Internal = 0, // custom form built inside ReferNest
   External = 1, // redirect to company's own ATS/URL
+  Email = 2, // receive applications via email
 }
 
 export enum FormFieldType {
@@ -214,7 +215,13 @@ export interface ExternalJob extends Job {
   ApplicationForm: undefined;
 }
 
-export type AppJob = InternalJob | ExternalJob;
+export interface EmailJob extends Job {
+  FormType: FormType.Email;
+  ExternalApplyUrl: string; // Used to store the email address
+  ApplicationForm: undefined;
+}
+
+export type AppJob = InternalJob | ExternalJob | EmailJob;
 
 // ─────────────────────────────────────────────
 // Type Guards

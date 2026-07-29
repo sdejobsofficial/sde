@@ -238,7 +238,6 @@ export const applicationSchema = z
     formType: z.number(),
     externalApplyUrl: z
       .string()
-      .url("Enter valid URL")
       .optional()
       .or(z.literal("")),
     referralStatus: z.number(),
@@ -246,8 +245,12 @@ export const applicationSchema = z
     applicationDeadline: z.string().optional(),
     isUrgent: z.boolean(),
   })
-  .refine((d) => d.formType !== FormType.External || !!d.externalApplyUrl, {
-    message: "External apply URL is required",
+  .refine((d) => d.formType !== FormType.External || (!!d.externalApplyUrl && z.string().url().safeParse(d.externalApplyUrl).success), {
+    message: "Valid external apply URL is required",
+    path: ["externalApplyUrl"],
+  })
+  .refine((d) => d.formType !== FormType.Email || (!!d.externalApplyUrl && z.string().email().safeParse(d.externalApplyUrl).success), {
+    message: "Valid email address is required",
     path: ["externalApplyUrl"],
   });
 

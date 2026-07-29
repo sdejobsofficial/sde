@@ -337,13 +337,13 @@ export default function JobDetailPage({
 
               {/* Primary CTA */}
               <div className="flex gap-3 mt-5">
-                {j.FormType === FormType.External && j.ExternalApplyUrl ? (
+                {(j.FormType === FormType.External || j.FormType === FormType.Email) && j.ExternalApplyUrl ? (
                   <div className="flex-1">
                     <Button
                       className="w-full h-11 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl text-sm font-bold shadow-lg shadow-primary/30 flex items-center justify-center gap-2 transition-all"
-                      onClick={() => handleExternalApply(j.ExternalApplyUrl!)}
+                      onClick={() => handleExternalApply(j.FormType === FormType.Email ? `mailto:${j.ExternalApplyUrl}?subject=${encodeURIComponent(`Application for ${j.Title}`)}` : j.ExternalApplyUrl!)}
                     >
-                      Apply on company site <ExternalLink size={14} />
+                      {j.FormType === FormType.Email ? "Apply via Email" : "Apply on company site"} <ExternalLink size={14} />
                     </Button>
                   </div>
 
@@ -456,10 +456,10 @@ export default function JobDetailPage({
                 <p className="text-xs text-primary/30 mb-4">
                   {j.CompanyName} · {j.Location}
                 </p>
-                {j.FormType === FormType.External && j.ExternalApplyUrl ? (
-                  <button onClick={() => handleExternalApply(j.ExternalApplyUrl!)}>
+                {(j.FormType === FormType.External || j.FormType === FormType.Email) && j.ExternalApplyUrl ? (
+                  <button onClick={() => handleExternalApply(j.FormType === FormType.Email ? `mailto:${j.ExternalApplyUrl}` : j.ExternalApplyUrl!)}>
                     <Button className="h-9 px-5 bg-card text-primary/90 hover:bg-primary/10 rounded-xl text-sm font-bold flex items-center gap-1.5">
-                      Apply on company site <ExternalLink size={13} />
+                      {j.FormType === FormType.Email ? "Apply via Email" : "Apply on company site"} <ExternalLink size={13} />
                     </Button>
                   </button>
                 ) : (

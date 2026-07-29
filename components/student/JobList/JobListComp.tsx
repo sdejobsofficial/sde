@@ -7,6 +7,7 @@ import {
   ChevronRight,
   Sparkles,
   ArrowRight,
+  Share2,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -130,6 +131,38 @@ export function PremiumPromo() {
         <Link href={"/premium"}>
           <Button className="w-full h-10 bg-card text-primary hover:bg-muted/50 transition-all rounded-xl text-xs font-medium flex items-center justify-center gap-1.5 shadow-md">
             Upgrade to Premium <ArrowRight size={14} />
+          </Button>
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+export function ReferralPromo() {
+  return (
+    <div className="bg-linear-to-br from-[#0f172a] via-[#1e3a8a] to-[#3b82f6] rounded-2xl p-6 relative overflow-hidden shadow-lg shadow-blue-900/20">
+      <div className="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-white/10" />
+      <div className="absolute bottom-0 left-0 w-16 h-16 rounded-full bg-white/5" />
+      
+      <div className="absolute -top-2 right-4 text-4xl opacity-80 z-0 select-none pointer-events-none">
+        🦒
+      </div>
+
+      <div className="relative z-10">
+        <div className="flex items-center gap-1.5 mb-2">
+          <Share2 size={13} className="text-amber-300" />
+          <span className="text-[10px] font-semibold text-amber-300 uppercase tracking-wider">Referral</span>
+        </div>
+        <h3 className="text-[15px] font-semibold text-white mb-2 leading-tight">
+          Refer. Earn. Repeat.
+        </h3>
+        <p className="text-[11px] text-white/90 leading-relaxed mb-5 font-normal">
+          Introduce your friends to Premium, Earn Unlimited Rewards! 10 credits for successful referrals. No limits. No caps. Just Earnings!
+        </p>
+        
+        <Link href={"/account"}>
+          <Button className="w-full h-10 bg-white text-[#1e3a8a] hover:bg-white/90 transition-all rounded-xl text-xs font-medium flex items-center justify-center gap-1.5 shadow-md">
+            Start Referring Today! <ArrowRight size={14} />
           </Button>
         </Link>
       </div>

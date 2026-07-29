@@ -14,6 +14,7 @@ import {
   Pagination,
   FeaturedCompaniesSidebar,
   PremiumPromo,
+  ReferralPromo,
 } from "@/components/student/JobList/JobListComp";
 import { PAGE_SIZE } from "@/constants/student/SJobList";
 import { Briefcase, MapPin, Search, Star, X, Sparkles, Laptop, ArrowRight } from "lucide-react";
@@ -258,8 +259,9 @@ export function JobsPageContent({ category }: { category?: "tech" | "non-tech" }
 
           {/* ── Center: Job list ── */}
           <div className="flex-1 min-w-0 space-y-4">
+            
             {/* Result count */}
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between mt-2">
               <p className="text-sm text-muted-foreground font-medium">
                 {isLoading ? (
                   <span className="h-4 w-32 bg-muted rounded animate-pulse inline-block" />
@@ -342,6 +344,7 @@ export function JobsPageContent({ category }: { category?: "tech" | "non-tech" }
           {/* ── Right: Companies + promo ── */}
           <aside className="hidden xl:flex w-64 flex-shrink-0 flex-col gap-4 sticky top-20">
             <FeaturedCompaniesSidebar />
+            <ReferralPromo />
             <PremiumPromo />
           </aside>
         </div>
