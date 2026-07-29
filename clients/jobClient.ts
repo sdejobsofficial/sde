@@ -223,7 +223,31 @@ export const getJobById = async (id: string): Promise<Job | null> => {
     return null;
   }
 
-  return convertToPascalCase(data) as Job;
+  const job = convertToPascalCase(data) as any;
+
+  // Reconstruct nested fields from flat DB columns
+  job.Salary = {
+    Min: data.salary_min ?? 0,
+    Max: data.salary_max ?? 0,
+    Currency: data.salary_currency ?? "INR",
+    Type: data.salary_type,
+    Visibility: data.salary_visibility ?? 0,
+  };
+
+  job.ExperienceRequired = {
+    Level: data.experience_level ?? 0,
+    MinYears: data.experience_min_years ?? 0,
+    MaxYears: data.experience_max_years ?? undefined,
+  };
+
+  if (data.users?.name) {
+    job.CompanyName = data.users.name;
+  }
+  if (data.users?.meta?.avatar_url) {
+    job.CompanyLogoUrl = data.users.meta.avatar_url;
+  }
+
+  return job as Job;
 };
 
 // ─── getFeaturedCompanies — top 5 active hiring companies ─────────────────

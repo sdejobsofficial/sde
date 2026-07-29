@@ -30,14 +30,16 @@ export function SimilarJobCard({ job }: { job: JobCard }) {
 
   const salary = (() => {
     if (s.Visibility === SalaryVisibility.HiddenFromCandidates) return "";
-    if (s.Visibility === SalaryVisibility.Negotiable) return "Negotiable";
+    if (s.Visibility === SalaryVisibility.Negotiable && !s.Min && !s.Max) return "Negotiable";
     if (!s.Min && !s.Max) return "";
     const sym = (s.Currency ?? "INR") === "INR" ? "₹" : "$";
     const fmt = (n: number) =>
       n >= 100000
         ? `${sym}${(n / 100000).toFixed(n % 100000 === 0 ? 0 : 1)}L`
         : `${sym}${(n / 1000).toFixed(0)}K`;
-    return `${fmt(s.Min ?? 0)}–${fmt(s.Max ?? 0)}`;
+    const rangeStr = `${fmt(s.Min ?? 0)}–${fmt(s.Max ?? 0)}`;
+    if (s.Visibility === SalaryVisibility.Negotiable) return `${rangeStr} (Negotiable)`;
+    return rangeStr;
   })();
 
   return (

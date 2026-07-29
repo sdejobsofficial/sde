@@ -1,7 +1,7 @@
 import { SalaryVisibility } from "@/models/jobModel";
 import { Globe, Building2, Laptop } from "lucide-react";
 
-export  function formatSalary(
+export function formatSalary(
   min: number,
   max: number,
   currency: string,
@@ -9,12 +9,16 @@ export  function formatSalary(
 ) {
   if (visibility === SalaryVisibility.HiddenFromCandidates)
     return "Salary hidden";
-  if (visibility === SalaryVisibility.Negotiable) return "Negotiable";
+  if (visibility === SalaryVisibility.Negotiable && !min && !max) return "Negotiable";
+  if (!min && !max) return "Not specified";
+  const sym = currency === "INR" ? "₹" : "$";
   const fmt = (n: number) =>
     n >= 100000
-      ? `${currency === "INR" ? "₹" : "$"}${(n / 100000).toFixed(n % 100000 === 0 ? 0 : 1)}L`
-      : `${currency === "INR" ? "₹" : "$"}${(n / 1000).toFixed(0)}K`;
-  return `${fmt(min)} – ${fmt(max)}`;
+      ? `${sym}${(n / 100000).toFixed(n % 100000 === 0 ? 0 : 1)}L`
+      : `${sym}${(n / 1000).toFixed(0)}K`;
+  const rangeStr = `${fmt(min)} – ${fmt(max)}`;
+  if (visibility === SalaryVisibility.Negotiable) return `${rangeStr} (Negotiable)`;
+  return rangeStr;
 }
 
 export function timeAgo(dateStr?: string) {

@@ -304,7 +304,11 @@ export default function JobDetailPage({
                 <StatPill
                   icon={Award}
                   label="Experience"
-                  value={expLabel}
+                  value={
+                    exp.MinYears != null
+                      ? `${exp.MinYears}${exp.MaxYears ? `–${exp.MaxYears}` : "+"} yrs`
+                      : expLabel
+                  }
                   color="text-blue-500"
                 />
                 <StatPill
