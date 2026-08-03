@@ -24,21 +24,28 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { subscriptionType = "tech", referralCode } = (await req.json()) as {
+    const { subscriptionType = "tech", referralCode, amount } = (await req.json()) as {
       subscriptionType?: string;
       referralCode?: string;
+      amount?: number;
     };
+
+    const supabaseService = await createClient({ useServiceRole: true });
 
     let discount = 0.00;
     let netAmount = 349.00;
     const grossAmount = 349.00;
     let validatedCode = "";
 
+    if (typeof amount === "number" && Number.isFinite(amount) && amount > 0) {
+      netAmount = Number((amount / 100).toFixed(2));
+    }
+
     if (referralCode) {
       const normalizedCode = referralCode.toUpperCase().trim();
 
       // Check sales_profiles first
-      const { data: salesProfile } = await supabase
+      const { data: salesProfile } = await supabaseService
         .from("sales_profiles")
         .select("id")
         .eq("referral_code", normalizedCode)
@@ -51,7 +58,7 @@ export async function POST(req: NextRequest) {
         validatedCode = normalizedCode;
       } else {
         // Check standard users meta
-        const { data: users } = await supabase
+        const { data: users } = await supabaseService
           .from("users")
           .select("id")
           .filter("meta->referral_code", "eq", normalizedCode);
@@ -76,7 +83,6 @@ export async function POST(req: NextRequest) {
     });
 
     // Write payment order trace in database
-    const supabaseService = await createClient({ useServiceRole: true });
     const { error: dbError } = await supabaseService
       .from("premium_orders")
       .insert({

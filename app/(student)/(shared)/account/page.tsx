@@ -200,7 +200,7 @@ function PricingSection({
             </p>
           </div>
           <div className="text-right">
-            <p className="text-3xl font-black text-primary">₹299</p>
+            <p className="text-3xl font-black text-primary">₹349</p>
             <p className="text-xs text-primary/50 font-medium">for 3 months</p>
           </div>
         </div>
@@ -297,7 +297,7 @@ function PricingSection({
             ) : (
               <>
                 <Crown size={15} className="fill-white/30" />
-                Get Premium — ₹299
+                Get Premium — ₹349
                 <ArrowRight size={14} className="ml-1" />
               </>
             )}
@@ -323,11 +323,7 @@ function PricingSection({
 export default function AccountPage() {
   const router = useRouter();
 
-  const PRICE = 299;
-
   const { data: user } = useCurrentUser();
-  const { mutateAsync: handlePremiumUpgrade } = useHandlePremiumUpgrade();
-
   const meta = user?.Meta as JobSeekerMeta | undefined;
   const name = user?.Name ?? "Your Account";
   const email = user?.Email ?? "";

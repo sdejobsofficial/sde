@@ -309,6 +309,7 @@ function PricingPageContent() {
         body: JSON.stringify({
           subscriptionType: checkoutType,
           referralCode: appliedCode || undefined,
+          amount: currentPrice * 100,
         }),
       });
 
@@ -316,10 +317,14 @@ function PricingPageContent() {
         throw new Error("Failed to create order");
       }
       const orderData = await res.json();
+      const amountInPaise = Number(
+        orderData?.amount ?? (orderData?.net_amount ? orderData.net_amount * 100 : currentPrice * 100),
+      );
 
       const paymentData = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
         order_id: orderData.id,
+        amount: amountInPaise,
 
         handler: async function (response: any) {
           const verifyRes = await fetch("/api/verifyOrder", {

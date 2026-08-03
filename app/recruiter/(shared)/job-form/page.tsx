@@ -1423,9 +1423,12 @@ function PostJobContent() {
     } else {
       if (myJobs.length >= 4) {
         try {
-          const res = await fetch("/api/createOrder", {
+          const res = await fetch("/api/createJobPostingOrder", {
             method: "POST",
-            body: JSON.stringify({ amount: JOB_POSTING_FEE * 100 }),
+            body: JSON.stringify({
+              amount: JOB_POSTING_FEE * 100,
+              purpose: "job_posting",
+            }),
           });
           const data = await res.json();
 

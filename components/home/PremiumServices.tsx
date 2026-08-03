@@ -49,7 +49,7 @@ export default function PremiumServices() {
             </Link>
 
             <span className="text-[10px] text-muted-foreground/60">
-              ₹299/month
+              ₹349/month
             </span>
           </div>
         </div>
