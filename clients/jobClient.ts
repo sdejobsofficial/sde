@@ -95,8 +95,7 @@ export const getJobs = async (
     `,
       { count: "exact" },
     )
-    // .eq("status", JobStatus.Active)
-    .is("company_meta", null)
+    .eq("status", JobStatus.Active)
     .order("is_featured", { ascending: false })
     .order("published_at", { ascending: false })
     .range(from, to);
@@ -433,6 +432,7 @@ export const createJob = async (payload: JobInteraction) => {
         ...dbPayload,
         company_id: userSession.id,
         posted_by: userSession.id,
+        published_at: new Date().toISOString(),
       }),
     ])
     .select()

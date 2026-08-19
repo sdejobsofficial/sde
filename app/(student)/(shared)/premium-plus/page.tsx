@@ -20,7 +20,7 @@ import {
   ChevronRight,
   Copy,
   Check,
-  Mail,
+  Send,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -271,56 +271,56 @@ function PremiumPlusUpsell({ userId }: { userId: string }) {
     <div className="min-h-screen bg-background flex items-center justify-center px-4 py-16">
       <div className="w-full max-w-lg">
         {/* Card */}
-        <div className="bg-card rounded-3xl border border-border shadow-xl overflow-hidden">
+        <div className="bg-card dark:bg-slate-900 rounded-3xl border border-border dark:border-slate-800 shadow-xl overflow-hidden">
           {/* Top gradient bar */}
           <div className="h-1.5 bg-gradient-to-r from-[#121d2b] via-[#166164] to-[#36b9b7]" />
 
           <div className="p-8 text-center">
             {/* Icon */}
-            <div className="w-16 h-16 mx-auto mb-5 rounded-2xl bg-gradient-to-br from-[#166164]/10 to-[#36b9b7]/10 border border-[#39c8c9]/20 flex items-center justify-center">
-              <Sparkles size={28} className="text-[#0d9488]" />
+            <div className="w-16 h-16 mx-auto mb-5 rounded-2xl bg-gradient-to-br from-primary/10 to-teal-500/10 dark:from-primary/20 dark:to-teal-500/20 border border-primary/20 dark:border-primary/30 flex items-center justify-center">
+              <Sparkles size={28} className="text-primary dark:text-primary-foreground" />
             </div>
 
             {/* Badge */}
-            <div className="inline-flex items-center gap-1.5 bg-primary/8 text-primary text-[10px] font-bold px-3 py-1 rounded-full border border-primary/20 uppercase tracking-wider mb-4">
+            <div className="inline-flex items-center gap-1.5 bg-primary/10 text-primary dark:text-primary-foreground text-[10px] font-bold px-3 py-1 rounded-full border border-primary/20 dark:border-primary/30 uppercase tracking-wider mb-4">
               <Star size={10} fill="currentColor" /> Premium Plus
             </div>
 
-            <h1 className="text-2xl font-extrabold text-foreground tracking-tight mb-2">
+            <h1 className="text-2xl font-extrabold text-foreground dark:text-white tracking-tight mb-2">
               Unlock Premium Plus
             </h1>
-            <p className="text-sm text-muted-foreground font-medium leading-relaxed mb-8">
+            <p className="text-sm text-muted-foreground dark:text-slate-300 font-medium leading-relaxed mb-8">
               Get instant access to all jobs the moment they're published —
               before any other user sees them. To activate Premium Plus, send an
               offer letter along with your{" "}
-              <span className="font-bold text-foreground">User ID</span> to our
-              team.
+              <span className="font-bold text-foreground dark:text-white">User ID</span> to our
+              team via email.
             </p>
 
             {/* Steps */}
-            <div className="bg-muted/40 rounded-2xl border border-border p-5 text-left space-y-4 mb-6">
-              <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-1">
+            <div className="bg-muted/40 dark:bg-slate-800/80 rounded-2xl border border-border dark:border-slate-700 p-5 text-left space-y-4 mb-6">
+              <p className="text-[10px] font-bold text-muted-foreground dark:text-slate-400 uppercase tracking-widest mb-1">
                 How to activate
               </p>
 
               <div className="flex items-start gap-3">
-                <div className="w-6 h-6 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <span className="text-[10px] font-bold text-primary">1</span>
+                <div className="w-6 h-6 rounded-lg bg-primary/10 dark:bg-primary/20 border border-primary/20 dark:border-primary/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <span className="text-[10px] font-bold text-primary dark:text-primary-foreground">1</span>
                 </div>
-                <p className="text-sm text-foreground font-medium">
+                <p className="text-sm text-foreground dark:text-white font-medium">
                   Copy your User ID below
                 </p>
               </div>
 
               <div className="flex items-start gap-3">
-                <div className="w-6 h-6 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <span className="text-[10px] font-bold text-primary">2</span>
+                <div className="w-6 h-6 rounded-lg bg-primary/10 dark:bg-primary/20 border border-primary/20 dark:border-primary/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <span className="text-[10px] font-bold text-primary dark:text-primary-foreground">2</span>
                 </div>
-                <p className="text-sm text-foreground font-medium">
-                  Send your offer letter + User ID to{" "}
+                <p className="text-sm text-foreground dark:text-white font-medium">
+                  Send your offer letter + User ID via email:{" "}
                   <a
                     href={`mailto:${COMPANY_EMAIL}`}
-                    className="text-primary font-bold hover:underline"
+                    className="text-primary dark:text-teal-400 font-bold hover:underline"
                   >
                     {COMPANY_EMAIL}
                   </a>
@@ -328,10 +328,10 @@ function PremiumPlusUpsell({ userId }: { userId: string }) {
               </div>
 
               <div className="flex items-start gap-3">
-                <div className="w-6 h-6 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <span className="text-[10px] font-bold text-primary">3</span>
+                <div className="w-6 h-6 rounded-lg bg-primary/10 dark:bg-primary/20 border border-primary/20 dark:border-primary/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <span className="text-[10px] font-bold text-primary dark:text-primary-foreground">3</span>
                 </div>
-                <p className="text-sm text-foreground font-medium">
+                <p className="text-sm text-foreground dark:text-white font-medium">
                   Our team will activate Premium Plus on your account within 24
                   hours
                 </p>
@@ -340,11 +340,11 @@ function PremiumPlusUpsell({ userId }: { userId: string }) {
 
             {/* User ID copy box */}
             <div className="mb-6">
-              <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-2 text-left">
+              <p className="text-[10px] font-bold text-muted-foreground dark:text-slate-400 uppercase tracking-widest mb-2 text-left">
                 Your User ID
               </p>
-              <div className="flex items-center gap-2 bg-muted/50 border border-border rounded-xl px-4 py-3">
-                <code className="flex-1 text-sm font-mono text-foreground truncate select-all">
+              <div className="flex items-center gap-2 bg-muted/50 dark:bg-slate-800 border border-border dark:border-slate-700 rounded-xl px-4 py-3">
+                <code className="flex-1 text-sm font-mono text-foreground dark:text-slate-200 truncate select-all">
                   {userId}
                 </code>
                 <button
@@ -352,8 +352,8 @@ function PremiumPlusUpsell({ userId }: { userId: string }) {
                   className={cn(
                     "flex-shrink-0 inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-lg transition-all",
                     copied
-                      ? "bg-green-50 text-green-600 border border-green-200"
-                      : "bg-primary/10 text-primary border border-primary/20 hover:bg-primary/15",
+                      ? "bg-green-500/10 text-green-600 dark:text-green-400 border border-green-500/20 dark:border-green-400/30"
+                      : "bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-foreground border border-primary/20 dark:border-primary/30 hover:bg-primary/15 dark:hover:bg-primary/30",
                   )}
                 >
                   {copied ? (
@@ -369,12 +369,16 @@ function PremiumPlusUpsell({ userId }: { userId: string }) {
               </div>
             </div>
 
-            {/* Mail CTA */}
+            {/* Email CTA */}
             <a
-              href={`mailto:${COMPANY_EMAIL}?subject=Premium Plus Activation — ${userId}&body=Hi,%0A%0AI'd like to activate Premium Plus on my account.%0A%0AUser ID: ${userId}%0A%0APlease find my offer letter attached.%0A%0AThank you`}
+              href={`mailto:${COMPANY_EMAIL}?subject=${encodeURIComponent(
+                "Premium Plus Activation Request"
+              )}&body=${encodeURIComponent(
+                `Hello Team,\n\nI would like to activate Premium Plus on my account.\n\nUser ID: ${userId}\n\nI have attached my offer letter for verification.\n\nThank you.`
+              )}`}
               className="w-full inline-flex items-center justify-center gap-2 h-12 bg-primary text-primary-foreground text-sm font-bold rounded-xl hover:bg-primary/90 active:scale-[0.98] transition-all shadow-lg shadow-primary/20"
             >
-              <Mail size={15} />
+              <Send size={15} />
               Send activation email
             </a>
           </div>

@@ -114,27 +114,29 @@ function syncParams(
 
 // ─── Premium Plus Banner ──────────────────────────────────────────────────────
 
+const COMPANY_EMAIL = process.env.NEXT_PUBLIC_PREMIUM_PLUS_CONTACT_EMAIL ?? "premiumplus@yourdomain.com";
+
 function PremiumPlusBanner({ isPremiumPlus }: { isPremiumPlus: boolean }) {
   if (isPremiumPlus) {
     return (
       <Link
         href="/premium-plus"
-        className="group flex items-center justify-between gap-4 px-5 py-4 bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-2xl hover:border-amber-300 hover:shadow-md hover:shadow-amber-100 transition-all duration-200"
+        className="group flex items-center justify-between gap-4 px-5 py-4 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/40 dark:to-orange-950/40 border border-amber-200 dark:border-amber-900/50 rounded-2xl hover:border-amber-300 dark:hover:border-amber-800 hover:shadow-md hover:shadow-amber-100 dark:hover:shadow-amber-900/20 transition-all duration-200"
       >
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 to-orange-400 flex items-center justify-center flex-shrink-0 shadow-sm shadow-amber-200">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 to-orange-400 flex items-center justify-center flex-shrink-0 shadow-sm shadow-amber-200 dark:shadow-amber-900/50">
             <Crown size={16} className="text-white" />
           </div>
           <div>
-            <p className="text-sm font-bold text-amber-900 leading-tight">
+            <p className="text-sm font-bold text-amber-900 dark:text-amber-100 leading-tight">
               You&apos;re a Premium Plus member
             </p>
-            <p className="text-xs text-amber-700/80 font-medium mt-0.5">
+            <p className="text-xs text-amber-700/80 dark:text-amber-300/80 font-medium mt-0.5">
               See all jobs the moment they&apos;re published — zero delay
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-1.5 text-xs font-bold text-amber-700 group-hover:gap-2.5 transition-all flex-shrink-0">
+        <div className="flex items-center gap-1.5 text-xs font-bold text-amber-700 dark:text-amber-400 group-hover:gap-2.5 transition-all flex-shrink-0">
           View jobs
           <ArrowRight size={13} />
         </div>
@@ -145,10 +147,10 @@ function PremiumPlusBanner({ isPremiumPlus }: { isPremiumPlus: boolean }) {
   return (
     <Link
       href="/premium-plus"
-      className="group flex items-center justify-between gap-4 px-5 py-4 bg-gradient-to-r from-slate-50 to-slate-100/80 border border-slate-200 rounded-2xl hover:border-primary/30 hover:bg-gradient-to-r hover:from-primary/5 hover:to-primary/3 hover:shadow-md hover:shadow-primary/5 transition-all duration-200"
+      className="group flex items-center justify-between gap-4 px-5 py-4 bg-gradient-to-r from-slate-50 to-slate-100/80 dark:from-slate-800/80 dark:to-slate-900/80 border border-slate-200 dark:border-slate-700 rounded-2xl hover:border-primary/30 dark:hover:border-primary/50 hover:bg-gradient-to-r hover:from-primary/5 hover:to-primary/3 dark:hover:from-primary/20 dark:hover:to-primary/10 hover:shadow-md hover:shadow-primary/5 dark:hover:shadow-primary/20 transition-all duration-200"
     >
       <div className="flex items-center gap-3">
-        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#166164] to-[#36b9b7] flex items-center justify-center flex-shrink-0 shadow-sm shadow-teal-200">
+        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#166164] to-[#36b9b7] flex items-center justify-center flex-shrink-0 shadow-sm shadow-teal-200 dark:shadow-teal-900/50">
           <Zap size={15} className="text-white" fill="white" />
         </div>
         <div>
@@ -156,7 +158,7 @@ function PremiumPlusBanner({ isPremiumPlus }: { isPremiumPlus: boolean }) {
             See jobs 24 hours early
           </p>
           <p className="text-xs text-muted-foreground font-medium mt-0.5">
-            Upgrade to Premium Plus — be first to apply before anyone else
+            Upgrade to Premium Plus — email {COMPANY_EMAIL} to activate
           </p>
         </div>
       </div>
