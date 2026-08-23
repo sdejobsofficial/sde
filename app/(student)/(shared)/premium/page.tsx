@@ -42,6 +42,7 @@ import { useCurrentUser } from "@/hooks/useUser";
 import { IsJobSeeker, IsPremium, IsPremiumPlus, HasTechPremium, HasNonTechPremium } from "@/models/userModel";
 import { isTechJob } from "@/models/jobModel";
 import PricingPage from "@/components/student/Premium/Pricing";
+import { DescriptionRenderer } from "@/components/company/CompanyDescriptionRenderer";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -280,6 +281,12 @@ function PremiumJobCardComponent({ job }: { job: PremiumJobCard }) {
             </div>
 
             <p className="text-sm font-bold text-primary mt-2">{salaryStr}</p>
+
+            {job.Description && (
+              <div className="mt-3 max-h-36 overflow-hidden">
+                <DescriptionRenderer description={job.Description} />
+              </div>
+            )}
 
             {job.Skills.length > 0 && (
               <div className="flex flex-wrap gap-1.5 mt-3">

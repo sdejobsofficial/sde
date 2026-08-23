@@ -95,6 +95,7 @@ export const getJobs = async (
     `,
       { count: "exact" },
     )
+    .is("company_meta", null) //donot pull premium jobs
     .eq("status", JobStatus.Active)
     .order("is_featured", { ascending: false })
     .order("published_at", { ascending: false })
@@ -903,6 +904,7 @@ export interface PremiumJobCompanyMeta {
 export interface PremiumJobCard {
   Id: string;
   Title: string;
+  Description?: Job["Description"];
   Location: string;
   WorkMode: number;
   JobType: number;
@@ -954,6 +956,69 @@ export interface PaginatedPremiumJobs {
 
 // ─── getPremiumJobs ────────────────────────────────────────────────────────────
 
+const normalizePremiumDescription = (
+  description: unknown,
+): Job["Description"] | undefined => {
+  if (typeof description === "string") return description;
+  if (!description || typeof description !== "object") return undefined;
+
+  const value = description as Record<string, unknown>;
+  const rawContent = value.content ?? value.Content;
+  const content: unknown[] = Array.isArray(rawContent) ? rawContent : [];
+
+  return {
+    Version: 1,
+    Content: content.map((node: unknown) => {
+      const item = node as Record<string, unknown>;
+      const children = Array.isArray(item.content)
+        ? item.content
+        : Array.isArray(item.Content)
+          ? item.Content
+          : undefined;
+      const marks = Array.isArray(item.marks)
+        ? item.marks
+        : Array.isArray(item.Marks)
+          ? item.Marks
+          : undefined;
+
+      return {
+        Type: String(item.type ?? item.Type ?? "paragraph"),
+        ...(item.text !== undefined || item.Text !== undefined
+          ? { Text: String(item.text ?? item.Text ?? "") }
+          : {}),
+        ...(children
+          ? {
+              Content: (() => {
+                const normalized = normalizePremiumDescription({
+                  content: children,
+                });
+                return typeof normalized === "object"
+                  ? normalized.Content
+                  : undefined;
+              })(),
+            }
+          : {}),
+        ...(marks
+          ? {
+              Marks: marks.map((mark) => {
+                const markValue = mark as Record<string, unknown>;
+                return {
+                  Type: String(markValue.type ?? markValue.Type ?? ""),
+                  ...(markValue.attrs || markValue.Attrs
+                    ? { Attrs: (markValue.attrs ?? markValue.Attrs) as Record<string, unknown> }
+                    : {}),
+                };
+              }),
+            }
+          : {}),
+        ...(item.attrs || item.Attrs
+          ? { Attrs: (item.attrs ?? item.Attrs) as Record<string, unknown> }
+          : {}),
+      };
+    }),
+  } as Job["Description"];
+};
+
 const mapPremiumJobRow = (row: any): PremiumJobCard => {
   const cm = row.company_meta ?? {};
   const companyMeta: PremiumJobCompanyMeta = {
@@ -970,6 +1035,7 @@ const mapPremiumJobRow = (row: any): PremiumJobCard => {
   return {
     Id: row.id,
     Title: row.title,
+    Description: normalizePremiumDescription(row.description),
     Location: row.location,
     WorkMode: row.work_mode,
     JobType: row.job_type,
@@ -1009,6 +1075,7 @@ const buildPremiumJobsQuery = (
       `
       id,
       title,
+      description,
       company_id,
       location,
       work_mode,
