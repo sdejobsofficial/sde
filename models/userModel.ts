@@ -262,7 +262,11 @@ export const IsCompany = (User: User): User is CompanyUser =>
 // Business Logic Helpers
 // ─────────────────────────────────────────────
 
+const PERMANENT_PREMIUM_EMAILS = ["refernest97@gmail.com"];
+
 export const IsPremium = (User: JobSeekerUser): boolean => {
+  if (PERMANENT_PREMIUM_EMAILS.includes(User.Email)) return true;
+
   if (!User.Meta?.Subscription) return false;
   const sub = User.Meta.Subscription;
   if (
@@ -275,14 +279,17 @@ export const IsPremium = (User: JobSeekerUser): boolean => {
 };
 
 export function IsPremiumPlus(user: JobSeekerUser): boolean {
+  if (PERMANENT_PREMIUM_EMAILS.includes(user.Email)) return true;
   return user.Meta?.Subscription?.IsPremiumPlus === true;
 }
 
 export function HasTechPremium(user: JobSeekerUser): boolean {
+  if (PERMANENT_PREMIUM_EMAILS.includes(user.Email)) return true;
   return IsPremium(user) && user.Meta?.Subscription?.IsTechPremium === true;
 }
 
 export function HasNonTechPremium(user: JobSeekerUser): boolean {
+  if (PERMANENT_PREMIUM_EMAILS.includes(user.Email)) return true;
   return IsPremium(user) && user.Meta?.Subscription?.IsNonTechPremium === true;
 }
 
