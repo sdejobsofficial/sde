@@ -297,8 +297,8 @@ export default function StudentProfilePage() {
   };
 
   const handleSocialSave = async (v: SocialValues) => {
-    await updateMeta(
-      buildMeta(meta, {
+    await updateMeta({
+      meta: buildMeta(meta, {
         SocialLinks: {
           LinkedIn: v.LinkedIn || undefined,
           GitHub: v.GitHub || undefined,
@@ -307,13 +307,13 @@ export default function StudentProfilePage() {
           Website: v.Website || undefined,
         },
       }),
-    );
+    });
     close();
   };
 
   const handlePersonalSave = async (v: PersonalValues) => {
-    await updateMeta(
-      buildMeta(meta, {
+    await updateMeta({
+      meta: buildMeta(meta, {
         PersonalDetails: {
           DateOfBirth: v.DateOfBirth || undefined,
           MaritalStatus: v.MaritalStatus,
@@ -322,7 +322,7 @@ export default function StudentProfilePage() {
           CurrentAddress: v.CurrentAddress || undefined,
         },
       }),
-    );
+    });
     close();
   };
 
