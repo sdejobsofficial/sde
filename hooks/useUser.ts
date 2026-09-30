@@ -226,7 +226,15 @@ export const useRecruiterEmailRegister = () => {
 export const useUpdateJobSeekerMeta = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (meta: UpdateJobSeekerMetaDTO) => updateJobSeekerMeta(meta),
+    mutationFn: ({
+      meta,
+      name,
+      phone,
+    }: {
+      meta: UpdateJobSeekerMetaDTO;
+      name?: string;
+      phone?: string;
+    }) => updateJobSeekerMeta(meta, name, phone),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["currentUser"] });
       toast.success("Profile updated successfully!");
@@ -278,7 +286,11 @@ export const useHandlePremiumUpgrade = () => {
 
 export const useSendPasswordResetEmail = () => {
   return useMutation({
-    mutationFn: (email: string) => sendPasswordResetEmail(email),
+    mutationFn: async (email: string) => {
+      const res = await sendPasswordResetEmail(email);
+      if (!res.success) throw new Error(res.error);
+      return res;
+    },
     onSuccess: () => {
       toast.success("Reset link sent! Please check your inbox.");
     },

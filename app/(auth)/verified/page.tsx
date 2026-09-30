@@ -90,7 +90,7 @@ export default function EmailConfirmedPage() {
                   height={34}
                   className="rounded-md border-white border-2 bg-card"
                 />
-                <span className="text-primary-foreground font-bold text-xl tracking-tight">
+                <span className="text-white font-bold text-xl tracking-tight">
                   SDE Jobs
                 </span>
               </Link>
@@ -99,10 +99,10 @@ export default function EmailConfirmedPage() {
             {/* Copy */}
             <div className="relative z-10 space-y-7">
               <div>
-                <h1 className="text-primary-foreground text-[2rem] font-semibold leading-tight tracking-tight">
+                <h1 className="text-white text-[2rem] font-semibold leading-tight tracking-tight">
                   Your journey
                   <br />
-                  <span className="text-primary-foreground">starts</span>
+                  <span className="text-white">starts</span>
                   <br />
                   <span className="text-[#39c8c9]">right now.</span>
                 </h1>
@@ -120,7 +120,7 @@ export default function EmailConfirmedPage() {
                         {num}
                       </span>
                     </div>
-                    <span className="text-primary-foreground text-sm leading-snug font-normal pt-1">
+                    <span className="text-white text-sm leading-snug font-normal pt-1">
                       {text}
                     </span>
                   </li>
@@ -131,7 +131,7 @@ export default function EmailConfirmedPage() {
             {/* Footer */}
             <div className="relative z-10">
               <div className="h-px bg-card/20 mb-5" />
-              <p className="text-[10px] text-primary-foreground/40 leading-relaxed font-normal">
+              <p className="text-[10px] text-white/40 leading-relaxed font-normal">
                 Your profile is private until you choose to make it visible to
                 recruiters.
               </p>

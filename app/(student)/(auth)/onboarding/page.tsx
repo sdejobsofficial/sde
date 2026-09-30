@@ -1220,7 +1220,11 @@ export default function StudentOnboardingPage() {
       },
     };
 
-    await updateJobSeekerMeta(payload);
+    await updateJobSeekerMeta({
+      meta: payload,
+      name: basicData.name,
+      phone: basicData.phone,
+    });
     router.push("/profile");
   };
 

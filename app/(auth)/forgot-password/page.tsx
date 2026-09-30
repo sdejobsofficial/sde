@@ -86,7 +86,7 @@ export default function ForgotPasswordPage() {
                   height={34}
                   className="rounded-md border-white border-2 bg-card"
                 />
-                <span className="text-primary-foreground font-bold text-xl tracking-tight">
+                <span className="text-white font-bold text-xl tracking-tight">
                   SDE Jobs
                 </span>
               </Link>
@@ -95,7 +95,7 @@ export default function ForgotPasswordPage() {
             {/* Copy */}
             <div className="relative z-10 space-y-8">
               <div>
-                <h1 className="text-primary-foreground text-[2.25rem] font-semibold leading-tight tracking-tight">
+                <h1 className="text-white text-[2.25rem] font-semibold leading-tight tracking-tight">
                   Forgot your
                   <br />
                   <span>password?</span>
@@ -113,7 +113,7 @@ export default function ForgotPasswordPage() {
                       <Icon className="text-[#39c8c9]" size={16} />
                     </div>
                     <div>
-                      <p className="text-primary-foreground text-sm font-semibold">
+                      <p className="text-white text-sm font-semibold">
                         {title}
                       </p>
                       <p className="text-[#39c8c9]/80 text-[11px] mt-0.5 leading-relaxed">
@@ -132,7 +132,7 @@ export default function ForgotPasswordPage() {
                 Back to{" "}
                 <Link
                   href="/login"
-                  className="text-primary-foreground font-bold hover:underline transition-all"
+                  className="text-white font-bold hover:underline transition-all"
                 >
                   Sign in →
                 </Link>

@@ -116,7 +116,7 @@ function LoginPageContent() {
                   height={34}
                   className="rounded-md border-white border-2 bg-card"
                 />
-                <span className="text-primary-foreground font-bold text-xl tracking-tight">
+                <span className="text-white font-bold text-xl tracking-tight">
                   SDE Jobs
                 </span>
               </Link>
@@ -125,7 +125,7 @@ function LoginPageContent() {
             {/* Copy */}
             <div className="relative z-10 space-y-8">
               <div>
-                <h1 className="text-primary-foreground text-[2.25rem] font-semibold leading-tight tracking-tight">
+                <h1 className="text-white text-[2.25rem] font-semibold leading-tight tracking-tight">
                   Welcome
                   <br />
                   <span>back.</span>
@@ -143,7 +143,7 @@ function LoginPageContent() {
                       <Icon className="text-[#39c8c9]" size={16} />
                     </div>
                     <div>
-                      <p className="text-primary-foreground text-sm font-semibold">
+                      <p className="text-white text-sm font-semibold">
                         {title}
                       </p>
                       <p className="text-[#39c8c9]/80 text-[11px] mt-0.5 leading-relaxed">
@@ -162,7 +162,7 @@ function LoginPageContent() {
                 New to SDE Jobs & Internships?{" "}
                 <Link
                   href="/register"
-                  className="text-primary-foreground font-bold hover:underline transition-all"
+                  className="text-white font-bold hover:underline transition-all"
                 >
                   Create a free account →
                 </Link>

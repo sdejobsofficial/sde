@@ -36,16 +36,25 @@
     return convertToPascalCase(data) as User;
   };
 
-  export const updateJobSeekerMeta = async (meta: UpdateJobSeekerMetaDTO) => {
+  export const updateJobSeekerMeta = async (
+    meta: UpdateJobSeekerMetaDTO,
+    name?: string,
+    phone?: string,
+  ) => {
     const supabase = createClient();
     const user = await getCurrentSession();
     if (!user) {
       console.log("No user session found");
       return;
     }
+    
+    const updatePayload: any = { meta: convertToSnakeCase(meta) };
+    if (name !== undefined) updatePayload.name = name;
+    if (phone !== undefined) updatePayload.phone = phone;
+
     const { error } = await supabase
       .from("users")
-      .update({ meta: convertToSnakeCase(meta) })
+      .update(updatePayload)
       .eq("id", user.id);
     if (error) {
       console.log(error);

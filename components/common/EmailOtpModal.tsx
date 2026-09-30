@@ -35,7 +35,10 @@ export default function EmailOtpModal({
     setSending(true);
     setError("");
     try {
-      await sendEmailOtp(email);
+      const res = await sendEmailOtp(email);
+      if (!res.success) {
+        throw new Error(res.error || "Failed to send OTP.");
+      }
       setSent(true);
       setCountdown(RESEND_COUNTDOWN);
       setTimeout(() => inputRefs.current[0]?.focus(), 100);
@@ -94,7 +97,10 @@ export default function EmailOtpModal({
     setVerifying(true);
     setError("");
     try {
-      await verifyEmailOtp(email, code);
+      const res = await verifyEmailOtp(email, code);
+      if (!res.success) {
+        throw new Error(res.error || "Verification failed.");
+      }
       setVerified(true);
       setTimeout(() => {
         onVerified();

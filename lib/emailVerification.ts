@@ -27,12 +27,12 @@ export const sendEmailOtp = async (email: string) => {
       .verifications.create({ to: email, channel: "email" });
 
     if (verification.status !== "pending") {
-      throw new Error("Failed to send OTP. Please try again.");
+      return { success: false, error: "Failed to send OTP. Please try again." };
     }
     return { success: true };
   } catch (error: any) {
     console.error("Twilio sendEmailOtp error:", error);
-    throw new Error(error.message || "Failed to send OTP through Twilio.");
+    return { success: false, error: error.message || "Failed to send OTP through Twilio." };
   }
 };
 
@@ -40,7 +40,7 @@ export const verifyEmailOtp = async (email: string, code: string) => {
   const client = getTwilioClient();
   if (!client || !SERVICE_SID) {
     if (code === "123456") return { success: true };
-    throw new Error("Invalid or expired OTP. Please try again.");
+    return { success: false, error: "Invalid or expired OTP. Please try again." };
   }
 
   const result = await client.verify.v2
@@ -48,7 +48,7 @@ export const verifyEmailOtp = async (email: string, code: string) => {
     .verificationChecks.create({ to: email, code });
 
   if (result.status !== "approved") {
-    throw new Error("Invalid or expired OTP. Please try again.");
+    return { success: false, error: "Invalid or expired OTP. Please try again." };
   }
   return { success: true };
 };

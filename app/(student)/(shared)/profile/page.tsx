@@ -283,14 +283,16 @@ export default function StudentProfilePage() {
   // ── Save handlers — parameter types come from Zod inference ──
 
   const handleBasicSave = async (v: BasicValues) => {
-    await updateMeta(
-      buildMeta(meta, { Location: v.location, Bio: v.bio || undefined }),
-    );
+    await updateMeta({
+      meta: buildMeta(meta, { Location: v.location, Bio: v.bio || undefined }),
+      name: v.name,
+      phone: v.phone,
+    });
     close();
   };
 
   const handleSkillsSave = async () => {
-    await updateMeta(buildMeta(meta, { Skills: skills }));
+    await updateMeta({ meta: buildMeta(meta, { Skills: skills }) });
     close();
   };
 
@@ -341,7 +343,7 @@ export default function StudentProfilePage() {
     } else {
       existing.push(entry);
     }
-    await updateMeta(buildMeta(meta, { PreviousExperience: existing }));
+    await updateMeta({ meta: buildMeta(meta, { PreviousExperience: existing }) });
     close();
   };
 
@@ -349,7 +351,7 @@ export default function StudentProfilePage() {
     const updated: PreviousExperience[] = (
       meta?.PreviousExperience ?? []
     ).filter((_, idx) => idx !== i);
-    await updateMeta(buildMeta(meta, { PreviousExperience: updated }));
+    await updateMeta({ meta: buildMeta(meta, { PreviousExperience: updated }) });
   };
 
   const handleEduSave = async (v: EduValues) => {
@@ -372,7 +374,7 @@ export default function StudentProfilePage() {
     } else {
       existing.push(entry);
     }
-    await updateMeta(buildMeta(meta, { Education: existing }));
+    await updateMeta({ meta: buildMeta(meta, { Education: existing }) });
     close();
   };
 
@@ -380,7 +382,7 @@ export default function StudentProfilePage() {
     const updated = (meta?.Education ?? []).filter(
       (_, idx) => idx !== i,
     ) as EducationDetails[];
-    await updateMeta(buildMeta(meta, { Education: updated }));
+    await updateMeta({ meta: buildMeta(meta, { Education: updated }) });
   };
 
   const handleProjSave = async (v: ProjValues) => {
@@ -395,7 +397,7 @@ export default function StudentProfilePage() {
     } else {
       existing.push(entry);
     }
-    await updateMeta(buildMeta(meta, { Projects: existing }));
+    await updateMeta({ meta: buildMeta(meta, { Projects: existing }) });
     close();
   };
 
@@ -403,13 +405,13 @@ export default function StudentProfilePage() {
     const updated: ProjectDetails[] = (meta?.Projects ?? []).filter(
       (_, idx) => idx !== i,
     );
-    await updateMeta(buildMeta(meta, { Projects: updated }));
+    await updateMeta({ meta: buildMeta(meta, { Projects: updated }) });
   };
 
   const handleResumeSave = async () => {
     if (!resumeFile || !user?.Id) return;
     const url = await uploadFile({ file: resumeFile, userId: user.Id });
-    if (url) await updateMeta(buildMeta(meta, { ResumeUrl: url }));
+    if (url) await updateMeta({ meta: buildMeta(meta, { ResumeUrl: url }) });
     close();
   };
 
@@ -418,7 +420,7 @@ export default function StudentProfilePage() {
     setAvatarPreview(URL.createObjectURL(file));
     const uploadedUrl = await uploadImage({ file, userId: user.Id });
     if (uploadedUrl) {
-      await updateMeta(buildMeta(meta, { AvatarUrl: uploadedUrl }));
+      await updateMeta({ meta: buildMeta(meta, { AvatarUrl: uploadedUrl }) });
     }
     close();
   };

@@ -209,7 +209,7 @@ export default function VerifyEmailPage() {
                   height={34}
                   className="rounded-md border-white border-2 bg-card"
                 />
-                <span className="text-primary-foreground font-bold text-xl tracking-tight">
+                <span className="text-white font-bold text-xl tracking-tight">
                   SDE Jobs
                 </span>
               </Link>
@@ -217,10 +217,10 @@ export default function VerifyEmailPage() {
 
             <div className="relative z-10 space-y-7">
               <div>
-                <h1 className="text-primary-foreground text-[2rem] font-semibold leading-tight tracking-tight">
+                <h1 className="text-white text-[2rem] font-semibold leading-tight tracking-tight">
                   One step away
                   <br />
-                  <span className="text-primary-foreground">from your</span>
+                  <span className="text-white">from your</span>
                   <br />
                   dream role.
                 </h1>
@@ -238,7 +238,7 @@ export default function VerifyEmailPage() {
                         {num}
                       </span>
                     </div>
-                    <span className="text-primary-foreground text-sm leading-snug font-normal pt-1">
+                    <span className="text-white text-sm leading-snug font-normal pt-1">
                       {text}
                     </span>
                   </li>
@@ -248,7 +248,7 @@ export default function VerifyEmailPage() {
 
             <div className="relative z-10">
               <div className="h-px bg-card/20 mb-5" />
-              <p className="text-[10px] text-primary-foreground/40 leading-relaxed font-normal">
+              <p className="text-[10px] text-white/40 leading-relaxed font-normal">
                 The verification link expires in 24 hours. If you don&apos;t
                 see the email, check your spam or promotions folder.
               </p>
