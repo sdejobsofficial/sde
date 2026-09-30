@@ -149,7 +149,7 @@ export const handlePremiumUpgrade = async (userId: string, type?: "tech" | "non-
 export const sendPasswordResetEmail = async (email: string) => {
   const supabase = await createClient();
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/auth/confirm?next=/reset-password`,
+    redirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/auth/confirm?next=/reset-password`,
   });
   if (error) {
     console.error("sendPasswordResetEmail error:", error);
