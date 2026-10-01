@@ -148,8 +148,9 @@ export const handlePremiumUpgrade = async (userId: string, type?: "tech" | "non-
 
 export const sendPasswordResetEmail = async (email: string) => {
   const supabase = await createClient();
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://www.sdejobs.com"));
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/auth/confirm?next=/reset-password`,
+    redirectTo: `${baseUrl}/auth/confirm?next=/reset-password`,
   });
   if (error) {
     console.error("sendPasswordResetEmail error:", error);

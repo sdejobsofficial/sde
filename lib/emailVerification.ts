@@ -43,12 +43,17 @@ export const verifyEmailOtp = async (email: string, code: string) => {
     return { success: false, error: "Invalid or expired OTP. Please try again." };
   }
 
-  const result = await client.verify.v2
-    .services(SERVICE_SID)
-    .verificationChecks.create({ to: email, code });
+  try {
+    const result = await client.verify.v2
+      .services(SERVICE_SID)
+      .verificationChecks.create({ to: email, code });
 
-  if (result.status !== "approved") {
+    if (result.status !== "approved") {
+      return { success: false, error: "Invalid or expired OTP. Please try again." };
+    }
+    return { success: true };
+  } catch (error: any) {
+    console.error("Twilio verifyEmailOtp error:", error);
     return { success: false, error: "Invalid or expired OTP. Please try again." };
   }
-  return { success: true };
 };
